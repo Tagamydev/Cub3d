@@ -6,7 +6,7 @@
 #    By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/19 13:35:22 by samusanc          #+#    #+#              #
-#    Updated: 2023/07/01 15:07:50 by samusanc         ###   ########.fr        #
+#    Updated: 2023/10/19 10:27:27 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ SRC		= \
 			ft_isalnum.c \
 			ft_isascii.c \
 			ft_isprint.c \
+			\
+			ft_free.c \
 			\
 			ft_atoi.c \
 			ft_bzero.c \

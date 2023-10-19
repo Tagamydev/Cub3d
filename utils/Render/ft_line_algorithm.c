@@ -6,15 +6,10 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:51:39 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/18 10:52:41 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/07/10 16:54:54 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <mlx_funtions.h>
-
-void	ft_draw_pixel(t_point point, t_img *img)
-{
-	ft_put_pixel(img, point.x, point.y, point.color);
-}
+#include <fdf.h>
 
 static void	bb_init(t_bb *bb, t_point f, t_point s)
 {
@@ -37,7 +32,7 @@ static void	bb_init(t_bb *bb, t_point f, t_point s)
 	bb->line.end = s;
 }
 
-void	ft_put_line(t_point f, t_point s, t_img *img)
+void	ft_put_line(t_point f, t_point s, t_img *map_display)
 {
 	t_bb		bb;
 	t_point		tmp;
@@ -47,7 +42,7 @@ void	ft_put_line(t_point f, t_point s, t_img *img)
 	while (1)
 	{
 		ft_clone(&tmp, bb.line, bb.x0, bb.y0);
-		ft_draw_pixel(tmp, img);
+		ft_draw_pixel(tmp, map_display);
 		if (bb.x0 == bb.x1 && bb.y0 == bb.y1)
 			break ;
 		e2 = 2 * bb.err;

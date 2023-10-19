@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:44:16 by samusanc          #+#    #+#             */
-/*   Updated: 2023/07/07 17:52:35 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:28:21 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_H
@@ -26,7 +26,7 @@ struct s_data_base {
 	int		saved_line_len;
 };
 
-char	*ft_free(char **str);
+void	*ft_free(void **str);
 char	*ft_error(struct s_data_base *file);
 int		ft_verify_new_line(struct s_data_base *file);
 char	*ft_mem_cpy(char *str, int len);

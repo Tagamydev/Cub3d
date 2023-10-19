@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:14:03 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/18 10:50:38 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/07/10 18:35:37 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef FDF_H
@@ -22,7 +22,6 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 
-/*
 typedef enum e_projection{
 	ISO,
 	ISO_GAMES,
@@ -65,6 +64,20 @@ typedef struct s_mapi{
 	int			width;
 }				t_mapi;
 
+typedef struct s_bb{
+	int			x0;
+	int			y0;
+	int			x1;
+	int			y1;
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
+	int			err;
+	int			e2;
+	t_points	line;
+}				t_bb;
+
 typedef struct s_fdf{
 	void			*mlx;
 	void			*win;
@@ -78,9 +91,7 @@ typedef struct s_fdf{
 	unsigned char	random;
 	int				play;
 }				t_fdfc;
-*/
 
-/*
 //-------------------------|	Memory, leaks and errors	|-----------------//
 void		ft_error_log(char *str);
 int			ft_free_string(char **split);
@@ -123,6 +134,9 @@ void		ft_init_fdf(t_fdfc **fdfp, char *title);
 //-------------------------|	Render	|-------------------------------------//
 t_point		ft_proyect_minimap(t_point *point, t_fdfc *fdf);
 t_point		ft_proyect(t_point *point, t_fdfc *fdf);
+void		ft_clone(t_point *point, t_points line, int x, int y);
+void		ft_draw_pixel(t_point point, t_img *img);
+void		ft_put_line(t_point f, t_point s, t_img *map_display);
 void		ft_ft_draw(t_fdfc *fdf);
 //-------------------------|	Keys	|-------------------------------------//
 void		ft_close(void *param);
@@ -134,6 +148,5 @@ void		ft_counter(void *param);
 void		ft_controls(t_fdfc *fdf);
 t_fdfc		*ft_set_up(char *str);
 int			main(int argc, char **argv);
-*/
 
 #endif

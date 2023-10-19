@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_maths.h                                         :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 15:21:36 by samusanc          #+#    #+#             */
-/*   Updated: 2023/07/10 15:39:53 by samusanc         ###   ########.fr       */
+/*   Created: 2023/10/19 10:23:56 by samusanc          #+#    #+#             */
+/*   Updated: 2023/10/19 10:27:09 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef FT_MATHS_H
-# define FT_MATHS_H
-# include <math.h>
-# include <ft_error.h>
-# include <libft.h>
 
-typedef struct s_point{
-	int	x;
-	int	y;
-	int	z;
-	int	color;
-}				t_point;
+#include "./libft.h"
 
-typedef struct s_points{
-	t_point	start;
-	t_point	end;
-}				t_points;
-
-int			ft_min(int x, int y);
-int			ft_lineal_mix(int c1, int c2, double mix);
-int			ft_abs(int x);
-double		ft_distance_2_points(t_point a, t_point b);
-
-#endif
+void	*ft_free(void **str)
+{
+	if (*str)
+	{
+		free(*str);
+		*str = NULL;
+	}
+	return (0);
+}

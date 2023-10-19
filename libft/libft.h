@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 12:31:33 by samusanc          #+#    #+#             */
-/*   Updated: 2023/06/27 17:23:12 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:27:02 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "printf/ft_printf.h"
 # include "GNL/get_next_line.h"
 
+void			*ft_free(void **str);
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
 int				ft_isalnum(int c);

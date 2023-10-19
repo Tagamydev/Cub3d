@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_maths.h                                         :+:      :+:    :+:   */
+/*   ft_free_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 15:21:36 by samusanc          #+#    #+#             */
-/*   Updated: 2023/07/10 15:39:53 by samusanc         ###   ########.fr       */
+/*   Created: 2023/07/10 14:07:27 by samusanc          #+#    #+#             */
+/*   Updated: 2023/07/10 14:08:13 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef FT_MATHS_H
-# define FT_MATHS_H
-# include <math.h>
-# include <ft_error.h>
-# include <libft.h>
+#include <fdf.h>
 
-typedef struct s_point{
-	int	x;
-	int	y;
-	int	z;
-	int	color;
-}				t_point;
+int	ft_free_string(char **split)
+{
+	if (!*split)
+		return (0);
+	if (*split)
+		free(*split);
+	*split = NULL;
+	return (0);
+}
 
-typedef struct s_points{
-	t_point	start;
-	t_point	end;
-}				t_points;
+int	ft_free_split(char **split)
+{
+	int	i;
 
-int			ft_min(int x, int y);
-int			ft_lineal_mix(int c1, int c2, double mix);
-int			ft_abs(int x);
-double		ft_distance_2_points(t_point a, t_point b);
-
-#endif
+	i = 0;
+	if (split && *split)
+	{
+		while (split[i])
+			ft_free_string(&split[i++]);
+		free(split);
+		split = NULL;
+	}
+	return (0);
+}
