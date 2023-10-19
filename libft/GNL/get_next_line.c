@@ -6,26 +6,16 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 19:05:51 by samusanc          #+#    #+#             */
-/*   Updated: 2023/06/29 20:08:37 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:31:25 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_free(char **str)
-{
-	if (*str)
-	{
-		free(*str);
-		*str = NULL;
-	}
-	return (NULL);
-}
-
 char	*ft_error(struct s_data_base *file)
 {
 	file->saved_line_len = 0;
-	ft_free(&file->saved_line);
+	ft_free((void **)&file->saved_line);
 	return (NULL);
 }
 
@@ -57,7 +47,7 @@ char	*ft_read_line(struct s_data_base *file, int *read_number, int fd)
 	str_for_realloc = ft_realloc(file->saved_line, file->buffer_line, \
 	file->saved_line_len, *read_number);
 	file->saved_line_len = file->saved_line_len + *read_number;
-	ft_free(&file->saved_line);
+	ft_free((void **)&file->saved_line);
 	file->saved_line = str_for_realloc;
 	return (file->saved_line);
 }

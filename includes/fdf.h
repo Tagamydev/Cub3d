@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:14:03 by samusanc          #+#    #+#             */
-/*   Updated: 2023/07/10 18:35:37 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:44:23 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef FDF_H
@@ -78,7 +78,7 @@ typedef struct s_bb{
 	t_points	line;
 }				t_bb;
 
-typedef struct s_fdf{
+typedef struct s_cub{
 	void			*mlx;
 	void			*win;
 	t_mapi			*map;
@@ -90,7 +90,7 @@ typedef struct s_fdf{
 	double			translation;
 	unsigned char	random;
 	int				play;
-}				t_fdfc;
+}				t_cub;
 
 //-------------------------|	Memory, leaks and errors	|-----------------//
 void		ft_error_log(char *str);
@@ -117,36 +117,36 @@ void		ft_print_mapi(t_height *map);
 void		ft_free_line_map(t_width *map);
 void		ft_free_map(t_height *map);
 //-------------------------|	Math	|-------------------------------------//
-double		ft_get_angle(t_fdfc *fdf);
+double		ft_get_angle(t_cub *cub);
 void		ft_rotate_x(int *y, int *z, double alpha);
 void		ft_rotate_y(int *x, int *z, double beta);
 void		ft_rotate_z(int *x, int *y, double gamma);
-void		ft_iso(int *x, int *y, int z, t_fdfc *fdf);
+void		ft_iso(int *x, int *y, int z, t_cub *cub);
 int			ft_random(unsigned char seed);
-void		ft_make_maths(t_point *point, t_fdfc *fdf);
+void		ft_make_maths(t_point *point, t_cub *cub);
 //-------------------------|	Get point	|---------------------------------//
 int			ft_get_col(t_height *map, int x, int y);
 int			ft_get_z(t_height *map, int x, int y);
 t_point		*ft_get_point(t_height *map, int x, int y);
 //-------------------------|	Inits	|-------------------------------------//
 t_camera	*ft_init_cam(void);
-void		ft_init_fdf(t_fdfc **fdfp, char *title);
+void		ft_init_fdf(t_cub **cub, char *title);
 //-------------------------|	Render	|-------------------------------------//
-t_point		ft_proyect_minimap(t_point *point, t_fdfc *fdf);
-t_point		ft_proyect(t_point *point, t_fdfc *fdf);
+t_point		ft_proyect_minimap(t_point *point, t_cub *cub);
+t_point		ft_proyect(t_point *point, t_cub *cub);
 void		ft_clone(t_point *point, t_points line, int x, int y);
 void		ft_draw_pixel(t_point point, t_img *img);
 void		ft_put_line(t_point f, t_point s, t_img *map_display);
-void		ft_ft_draw(t_fdfc *fdf);
+void		ft_ft_draw(t_cub *cub);
 //-------------------------|	Keys	|-------------------------------------//
 void		ft_close(void *param);
-void		ft_change_proyection(t_fdfc *fdf);
-int			ft_rotate(int key, t_fdfc *fdf);
+void		ft_change_proyection(t_cub *cub);
+int			ft_rotate(int key, t_cub *cub);
 int			ft_key_press(int key, void *param);
 void		ft_counter(void *param);
 //-------------------------|	MAIN	|-------------------------------------//
-void		ft_controls(t_fdfc *fdf);
-t_fdfc		*ft_set_up(char *str);
+void		ft_controls(t_cub *cub);
+t_cub		*ft_set_up(char *str);
 int			main(int argc, char **argv);
 
 #endif

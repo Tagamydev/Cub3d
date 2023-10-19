@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 19:16:06 by samusanc          #+#    #+#             */
-/*   Updated: 2023/05/26 19:22:12 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:32:12 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -24,7 +24,7 @@ char	*ft_split_lines(struct s_data_base *file)
 	string_for_db = ft_mem_cpy((file->saved_line + (i + 1)), \
 	(file->saved_line_len - (i + 1)));
 	file->saved_line_len = file->saved_line_len - (i + 1);
-	ft_free(&file->saved_line);
+	ft_free((void **)&file->saved_line);
 	file->saved_line = string_for_db;
 	return (string_result);
 }
@@ -40,7 +40,7 @@ char	*ft_mem_cpy(char *str, int len)
 	if (!result || !str || len <= 0)
 	{
 		if (result)
-			ft_free(&result);
+			ft_free((void **)&result);
 		return (NULL);
 	}
 	while (i <= len)

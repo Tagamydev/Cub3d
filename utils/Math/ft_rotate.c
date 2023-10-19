@@ -6,21 +6,21 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 14:27:23 by samusanc          #+#    #+#             */
-/*   Updated: 2023/07/10 18:29:04 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:47:37 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <fdf.h>
 
-double	ft_get_angle(t_fdfc *fdf)
+double	ft_get_angle(t_cub *cub)
 {
-	if (fdf->angle.projection == ISO)
+	if (cub->angle.projection == ISO)
 		return (0.523599);
-	if (fdf->angle.projection == ISO_GAMES)
+	if (cub->angle.projection == ISO_GAMES)
 		return (0.463646716);
-	if (fdf->angle.projection == CONIC)
+	if (cub->angle.projection == CONIC)
 		return (0.785398);
-	if (fdf->angle.projection == CUSTOM)
-		return (fdf->angle.angle);
+	if (cub->angle.projection == CUSTOM)
+		return (cub->angle.angle);
 	return (0);
 }
 
@@ -53,14 +53,14 @@ void	ft_rotate_z(int *x, int *y, double gamma)
 	*y = previous_x * sin(gamma) + previous_y * cos(gamma);
 }
 
-void	ft_iso(int *x, int *y, int z, t_fdfc *fdf)
+void	ft_iso(int *x, int *y, int z, t_cub *cub)
 {
 	int	tmp_x;
 	int	tmp_y;
 
 	tmp_x = *x;
 	tmp_y = *y;
-	*x = (tmp_x - tmp_y) * cos(ft_get_angle(fdf));
-	*y = -z + (tmp_x + tmp_y) * sin(ft_get_angle(fdf));
+	*x = (tmp_x - tmp_y) * cos(ft_get_angle(cub));
+	*y = -z + (tmp_x + tmp_y) * sin(ft_get_angle(cub));
 	z = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:41:54 by samusanc          #+#    #+#             */
-/*   Updated: 2023/07/10 18:26:21 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:53:22 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <fdf.h>
@@ -17,26 +17,26 @@ void	ft_close(void *param)
 	exit(0);
 }
 
-void	ft_change_proyection(t_fdfc *fdf)
+void	ft_change_proyection(t_cub *cub)
 {
-	if (fdf->angle.projection == CONIC)
-		fdf->angle.projection = ISO;
+	if (cub->angle.projection == CONIC)
+		cub->angle.projection = ISO;
 	else
-		fdf->angle.projection++;
-	if (fdf->angle.projection == PARALLEL)
+		cub->angle.projection++;
+	if (cub->angle.projection == PARALLEL)
 	{
-		fdf->camera->alpha = 0;
-		fdf->camera->beta = 0;
-		fdf->camera->gamma = 1.55;
+		cub->camera->alpha = 0;
+		cub->camera->beta = 0;
+		cub->camera->gamma = 1.55;
 	}
-	ft_ft_draw(fdf);
+	ft_ft_draw(cub);
 }
 
 int	ft_key_press(int key, void *param)
 {
-	t_fdfc	*fdf;
+	t_cub	*cub;
 
-	fdf = (t_fdfc *)param;
+	cub = (t_cub *)param;
 	if (key == 53)
 		ft_close(param);
 	if (key == 91 || key == 86 \
@@ -47,21 +47,21 @@ int	ft_key_press(int key, void *param)
 		|| key == 49 || key == 98 \
 		|| key == 123 || key == 124 \
 		|| key == 126 || key == 125)
-		ft_rotate(key, fdf);
+		ft_rotate(key, cub);
 	if (key == 87)
-		ft_change_proyection(fdf);
+		ft_change_proyection(cub);
 	return (0);
 }
 
 void	ft_counter(void *param)
 {
-	t_fdfc	*fdf;
+	t_cub	*cub;
 
-	fdf = (t_fdfc *)param;
-	fdf->random += 1;
-	if (fdf->play)
+	cub = (t_cub *)param;
+	cub->random += 1;
+	if (cub->play)
 	{
-		fdf->camera->gamma += 0.01;
-		ft_ft_draw(fdf);
+		cub->camera->gamma += 0.01;
+		ft_ft_draw(cub);
 	}
 }

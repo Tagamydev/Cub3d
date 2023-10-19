@@ -6,7 +6,7 @@
 #    By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/19 13:35:22 by samusanc          #+#    #+#              #
-#    Updated: 2023/10/19 10:27:27 by samusanc         ###   ########.fr        #
+#    Updated: 2023/10/19 10:30:19 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,10 +106,8 @@ $(OUT)	: 	$(NAME) $(MAINO)
 #CLEAN
 clean	:
 			@rm -f $(OBJ)
-			@echo "$(MAGENTA)===> objects have been removed$(MAGENTA)"
 fclean	:
 			@rm -f $(OBJ) $(NAME) $(OUT) main.o $(MAIN)
-			@echo "$(MAGENTA)===> all clean$(MAGENTA)"
 
 #GIT
 add		:
