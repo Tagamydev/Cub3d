@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/29 18:11:23 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:14:15 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdio.h>
 # include <libft.h>
 # include <ft_perror.h>
-# include <ft_parsing.h>
 # define WIDTH 640
 # define HEIGHT 480
 

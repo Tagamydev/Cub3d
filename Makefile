@@ -6,7 +6,7 @@
 #    By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/10/29 18:34:15 by samusanc         ###   ########.fr        #
+#    Updated: 2023/10/29 20:22:52 by lyandriy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,11 @@ ERR		= src/error/
 PAR		= src/parsing/
 MAIN	= src/main.c
 SRCS	= $(MAIN) \
-
+		  $(PAR)map_parsing.c \
+		  $(PAR)test.c \
+		  $(CONTR)start_controls.c \
+		  $(CUB)start_cub.c \
+		  $(ERR)ft_perror.c \
 
 O_DIR	= ./objects/
 OBJS	= $(addprefix $(O_DIR)/, $(SRCS:.c=.o))
