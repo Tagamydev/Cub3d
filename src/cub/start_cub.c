@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 12:27:46 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/30 14:05:12 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 
 void	start_cub(t_cub *cub)
 {
-	fill_img_sky_n_ground(cub->game, cub->color_ground, cub->color_sky);
+	fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
 	return ;
 	(void)cub;

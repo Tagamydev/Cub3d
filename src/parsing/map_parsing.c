@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 12:18:13 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/30 14:03:27 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ size_t	*dup_ui_array(size_t *array, size_t len)
 
 	i = 0;
 	result = NULL;
-	result = malloc(sizeof(size_t) * len);
+	result = malloc(sizeof(size_t) * (len + 1));
 	if (!result)
 		return (NULL);
-	while (i != len + 1)
+	while (i != len)
 	{
 		result[i] = array[i];
 		i++; 	
@@ -86,7 +86,7 @@ t_cub	*map_parsing(char *file)
 	cub = malloc(sizeof(t_cub) * 1);
 	if (!cub)
 		return (NULL);
-	cub->map = malloc(sizeof(size_t *) * 24);
+	cub->map = malloc(sizeof(size_t *) * 25);
 	if (!cub->map)
 		return (NULL);
 	size_t	i = 0;
