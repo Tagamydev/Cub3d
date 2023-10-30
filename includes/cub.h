@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/29 20:14:15 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:18:26 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@ typedef struct s_img{
 	int		height;
 }				t_img;
 
+/*
+ *		map notation
+ *		1 wall
+ *		0 empty
+ *		2 player facing north
+ *		3 player facing south
+ *		4 player facing east
+ *		5 player facing west
+ *		6 door close
+ *		7 door open
+ */
+
 typedef struct s_cub{
 	//=========================//
 	//        MAP_UTILS        //
@@ -47,11 +59,14 @@ typedef struct s_cub{
 	//        MLX_UTILS        //
 	void	*mlx;
 	void	*win;
+	t_img	*game;
 }				t_cub;
 
 //============================================================================//
 //=================================MLX========================================//
-
+void	ft_put_pixel(t_img *img, int x, int y, int color);
+void	ft_fill_img(t_img *img, int color);
+t_img	*ft_init_img(void *mlx, int width, int height);
 //============================================================================//
 //================================ERROR=======================================//
 void	*ft_perror(char *error);
