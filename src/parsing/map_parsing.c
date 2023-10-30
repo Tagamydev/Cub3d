@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 14:03:27 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:11:47 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,9 @@ t_cub	*map_parsing(char *file)
 		return (NULL);
 	cub->game = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->game)
+		return (NULL);
+	cub->minimap = ft_init_img(cub->mlx, 140, 140);
+	if (!cub->minimap)
 		return (NULL);
 	cub->color_ground = 0x00FF0000;
 	cub->color_sky = 0x000000FF;

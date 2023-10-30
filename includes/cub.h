@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 14:12:27 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:11:28 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ typedef struct s_cub{
 	void	*mlx;
 	void	*win;
 	t_img	*game;
+	t_img	*minimap;
+	//=========================//
+	//          PLAYER         //
+	float	player_px;
+	float	player_py;
 }				t_cub;
 
 //============================================================================//
