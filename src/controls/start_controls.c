@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 14:26:48 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/30 20:46:23 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ void	close_doors(t_cub *cub, char *x)
 	(void)cub;
 }
 
+void	minimap_zoom(t_cub *cub, int key)
+{
+	if (key == 69)
+	{
+		if (cub->minimap_zoom == ZOOM_M)
+			cub->minimap_zoom = ZOOM_L;
+		else if (cub->minimap_zoom == ZOOM_S)
+			cub->minimap_zoom = ZOOM_M;
+	}
+	else
+	{
+		if (cub->minimap_zoom == ZOOM_M)
+			cub->minimap_zoom = ZOOM_S;
+		else if (cub->minimap_zoom == ZOOM_L)
+			cub->minimap_zoom = ZOOM_M;
+	}
+}
+
 void	key_press(int key, void *param)
 {
 	static char	door = 'C';
@@ -56,6 +74,9 @@ void	key_press(int key, void *param)
 	{
 		;
 	}
+	else if (key == 69 || key == 78)
+		minimap_zoom(cub, key);
+	printf("key: %d\n", key);
 	start_cub(cub);
 }
 

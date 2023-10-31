@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 15:11:50 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:16:00 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,60 +34,23 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 		j = 0;
 		while (j != img->width)
 		{
-			ft_put_pixel(img, j, i, color2);
-			++j;
+			ft_put_pixel(img, j++, i, color2);
 		}
 		i++;
 	}
 }
 
-void	set_zero_minimap(char minimap[7][7])
+void	free_split(char **input)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
 
 	i = 0;
-	j = 0;
-	while (i != 7)
+	while (input[i])
 	{
-		j = 0;
-		while (j != 7)
-			minimap[i][j++] = '0';
+		free(input[i]);
 		i++;
 	}
-}
-
-void	write_minimap(char minimap[7][7])
-{
-	write(1, minimap[0], 7);
-	write(1, "\n", 1);
-	write(1, minimap[1], 7);
-	write(1, "\n", 1);
-	write(1, minimap[2], 7);
-	write(1, "\n", 1);
-	write(1, minimap[3], 7);
-	write(1, "\n", 1);
-	write(1, minimap[4], 7);
-	write(1, "\n", 1);
-	write(1, minimap[5], 7);
-	write(1, "\n", 1);
-	write(1, minimap[6], 7);
-	write(1, "\n", 1);
-}
-
-void	draw_minimap(t_cub *cub)
-{
-	char	minimap[7][7];
-	int		x;
-	int		y;
-
-	x = (int)cub->player_px;
-	y = (int)cub->player_py;
-	set_zero_minimap(minimap);
-	minimap[3][3] = 'P';
-	write_minimap(minimap);
-	printf("player position: x:%d, y:%d\n", x, y);
-	(void)cub;
+	free (input);
 }
 
 void	start_cub(t_cub *cub)

@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 15:11:47 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:15:05 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ size_t	*dup_ui_array(size_t *array, size_t len)
 
 	i = 0;
 	result = NULL;
-	result = malloc(sizeof(size_t) * (len + 1));
+	result = malloc((sizeof(size_t) * (len + 1)));
 	if (!result)
 		return (NULL);
 	while (i != len)
@@ -94,11 +94,11 @@ t_cub	*map_parsing(char *file)
 	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
-	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1}, 14);
-	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1}, 14);
-	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1}, 14);
-	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1}, 14);
-	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1}, 14);
+	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1}, 24);
+	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
+	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1}, 24);
+	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
+	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
@@ -130,6 +130,9 @@ t_cub	*map_parsing(char *file)
 		return (NULL);
 	cub->color_ground = 0x00FF0000;
 	cub->color_sky = 0x000000FF;
+	cub->minimap_zoom = ZOOM_L;
+	cub->player_px = 6;
+	cub->player_py = 18;
 	return (cub);
 	(void)file;
 }
