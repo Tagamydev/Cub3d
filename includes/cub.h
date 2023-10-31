@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 13:14:29 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:15:40 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define COLOR_E 0x8C000000
 # define COLOR_D 0x8C00FF00
 # define COLOR_P 0x8CFF0000
+# define SPEED	1
 
 typedef struct s_img{
 	void	*img;
@@ -49,6 +50,7 @@ typedef struct s_img{
  *		5 player facing west
  *		6 door close
  *		7 door open
+ *		8 player in door
  */
 
 typedef struct s_cub{

@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/30 20:46:23 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:29:51 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,45 @@ void	minimap_zoom(t_cub *cub, int key)
 	}
 }
 
+void	move_player(int key, t_cub *cub)
+{
+	int	finalx;
+	int	finaly;
+	float	startx;
+	float	starty;
+
+	// this code maybe will change later
+	startx = cub->player_px;
+	starty = cub->player_py;
+	if (key == 0)
+		startx -= SPEED;
+	else if (key == 2)
+		startx += SPEED;
+	else if (key == 1)
+		starty += SPEED;
+	else if (key == 13)
+		starty -= SPEED;
+	finalx = (int)startx;
+	finaly = (int)starty;
+	if ((finalx >= 0 && finalx < (int)cub->map_width) \
+	&& (finaly >= 0 && finaly < (int)cub->map_width ))//this works
+	{
+		if (cub->map[finaly][finalx] != 1)
+		{
+			if (cub->map[(int)cub->player_py][(int)cub->player_px] != 8)
+				cub->map[(int)cub->player_py][(int)cub->player_px] = 0;
+			else
+				cub->map[(int)cub->player_py][(int)cub->player_px] = 6;
+			if (cub->map[finaly][finalx] != 6 && cub->map[finaly][finalx] != 7)
+				cub->map[finaly][finalx] = 2;
+			else
+				cub->map[finaly][finalx] = 8;
+			cub->player_px = startx;
+			cub->player_py = starty;
+		}
+	}
+}
+
 void	key_press(int key, void *param)
 {
 	static char	door = 'C';
@@ -61,7 +100,7 @@ void	key_press(int key, void *param)
 		close_x(param);
 	else if (key == 0 || key == 1 || key == 2 || key == 13)
 	{
-		;
+		move_player(key, cub);
 	}
 	else if (key == 49)
 	{

@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 13:16:00 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:11:50 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,33 @@ void	free_split(char **input)
 	free (input);
 }
 
+void write_map(t_cub *cub)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i != (int)cub->map_height)
+	{
+		j = 0;
+		while (j != (int)cub->map_width)
+		{
+			printf("[%zu]", cub->map[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+}
+
 void	start_cub(t_cub *cub)
 {
 	fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
 	ft_fill_img(cub->minimap, 0x00000000);
 	draw_minimap(cub);
+	write_map(cub);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 0, 0);
 	return ;
 	(void)cub;
