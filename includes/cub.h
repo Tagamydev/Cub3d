@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 15:00:46 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 21:30:32 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <libft.h>
 # include <ft_perror.h>
 # include <ft_utils.h>
+# include <bresenham.h>
 # define WIDTH 640
 # define HEIGHT 480
 # define ZOOM_L 7

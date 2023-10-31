@@ -6,7 +6,7 @@
 #    By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/10/31 13:18:12 by samusanc         ###   ########.fr        #
+#    Updated: 2023/10/31 21:32:28 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS	= $(MAIN) \
 		  $(CUB)start_cub.c \
 		  $(CUB)/minimap/minimap.c \
 		  $(CUB)/minimap/minimap_utils.c \
+		  $(CUB)/bresenham/bresenham.c \
 		  $(ERR)ft_perror.c \
 
 O_DIR	= ./objects/
