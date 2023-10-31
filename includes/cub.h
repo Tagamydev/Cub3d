@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 14:15:40 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:00:46 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 # define COLOR_E 0x8C000000
 # define COLOR_D 0x8C00FF00
 # define COLOR_P 0x8CFF0000
-# define SPEED	1
+# define SPEED 0.8
+# define PI 3.1415926535
 
 typedef struct s_img{
 	void	*img;
@@ -75,6 +76,9 @@ typedef struct s_cub{
 	//          PLAYER         //
 	float	player_px;
 	float	player_py;
+	float	player_dx;
+	float	player_dy;
+	float	player_a;
 	//=========================//
 	//          MINIMAP        //
 	int		minimap_zoom;

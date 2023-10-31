@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 13:25:43 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:07:42 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,9 @@ t_cub	*map_parsing(char *file)
 	cub->minimap_zoom = ZOOM_L;
 	cub->player_px = 6;
 	cub->player_py = 18;
+	cub->player_a = 0;
+	cub->player_dx = cos(cub->player_a) * SPEED;
+	cub->player_dy = sin(cub->player_a) * SPEED;
 	return (cub);
 	(void)file;
 }

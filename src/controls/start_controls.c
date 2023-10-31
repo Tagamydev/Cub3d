@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 14:29:51 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:07:45 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,43 @@ void	minimap_zoom(t_cub *cub, int key)
 	}
 }
 
+void	move_left(t_cub *cub)
+{
+	(void)cub;
+}
+void	move_right(t_cub *cub)
+{
+	(void)cub;
+}
+void	move_up(t_cub *cub)
+{
+	(void)cub;
+}
+void	move_down(t_cub *cub)
+{
+	(void)cub;
+}
+
+void	rotate_view_left(t_cub *cub)
+{
+	cub->player_a -= 0.1;
+	if (cub->player_a < 0)
+		cub->player_a += 2*PI;
+	cub->player_dx = cos(cub->player_a) * SPEED;
+	cub->player_dy = sin(cub->player_a) * SPEED;
+	(void)cub;
+}
+
+void	rotate_view_rigth(t_cub *cub)
+{
+	cub->player_a += 0.1;
+	if (cub->player_a > 2*PI)
+		cub->player_a -= 2*PI;
+	cub->player_dx = cos(cub->player_a) * SPEED;
+	cub->player_dy = sin(cub->player_a) * SPEED;
+	(void)cub;
+}
+
 void	move_player(int key, t_cub *cub)
 {
 	int	finalx;
@@ -62,13 +99,23 @@ void	move_player(int key, t_cub *cub)
 	startx = cub->player_px;
 	starty = cub->player_py;
 	if (key == 0)
+	{
 		startx -= SPEED;
+	}
 	else if (key == 2)
+	{
 		startx += SPEED;
+	}
 	else if (key == 1)
-		starty += SPEED;
+	{
+		starty -= cub->player_dy;
+		startx -= cub->player_dx;
+	}
 	else if (key == 13)
-		starty -= SPEED;
+	{
+		starty += cub->player_dy;
+		startx += cub->player_dx;
+	}
 	finalx = (int)startx;
 	finaly = (int)starty;
 	if ((finalx >= 0 && finalx < (int)cub->map_width) \
@@ -111,7 +158,10 @@ void	key_press(int key, void *param)
 	}
 	else if (key == 123 || key == 124)
 	{
-		;
+		if (key == 123)
+			rotate_view_left(cub);
+		else
+			rotate_view_rigth(cub);
 	}
 	else if (key == 69 || key == 78)
 		minimap_zoom(cub, key);
