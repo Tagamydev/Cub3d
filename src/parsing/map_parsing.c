@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 15:07:42 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/01 02:17:53 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,17 @@ t_cub	*map_parsing(char *file)
 	cub->win = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "cub3d");
 	if (!cub->win)
 		return (NULL);
+	cub->ray_win = mlx_new_window(cub->mlx, cub->map_width * 10, cub->map_height * 10, "ray-casting");
+	if (!cub->ray_win)
+		return (NULL);
 	cub->game = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->game)
 		return (NULL);
 	cub->minimap = ft_init_img(cub->mlx, 140, 140);
 	if (!cub->minimap)
+		return (NULL);
+	cub->ray_map = ft_init_img(cub->mlx, cub->map_width * 10, cub->map_height * 10);
+	if (!cub->ray_map)
 		return (NULL);
 	cub->color_ground = 0x00FF0000;
 	cub->color_sky = 0x000000FF;
@@ -136,6 +142,9 @@ t_cub	*map_parsing(char *file)
 	cub->player_a = 0;
 	cub->player_dx = cos(cub->player_a) * SPEED;
 	cub->player_dy = sin(cub->player_a) * SPEED;
+	cub->map_4_ray = ft_calloc(sizeof(int), ((cub->map_width * cub->map_height) + 1));
+	if (!cub->map_4_ray)
+		return (NULL);
 	return (cub);
 	(void)file;
 }

@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:20:28 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 12:58:25 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/01 02:28:00 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ typedef struct s_square{
 	int len;
 	int color;
 }				t_square;
+
+typedef struct s_ray{
+	int		r;
+	int		mx;
+	int		my;
+	int		mp;
+	int		dof;
+	float	rx;
+	float	ry;
+	float	ra;
+	float	x_offset;
+	float	y_offset;
+	float	atan;
+}				t_ray;
 
 #endif
 

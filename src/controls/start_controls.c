@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 15:07:45 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/01 00:58:57 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	rotate_view_left(t_cub *cub)
 {
 	cub->player_a -= 0.1;
 	if (cub->player_a < 0)
-		cub->player_a += 2*PI;
+		cub->player_a += 2 * PI;
 	cub->player_dx = cos(cub->player_a) * SPEED;
 	cub->player_dy = sin(cub->player_a) * SPEED;
 	(void)cub;
@@ -81,8 +81,8 @@ void	rotate_view_left(t_cub *cub)
 void	rotate_view_rigth(t_cub *cub)
 {
 	cub->player_a += 0.1;
-	if (cub->player_a > 2*PI)
-		cub->player_a -= 2*PI;
+	if (cub->player_a > 2 * PI)
+		cub->player_a -= 2 * PI;
 	cub->player_dx = cos(cub->player_a) * SPEED;
 	cub->player_dy = sin(cub->player_a) * SPEED;
 	(void)cub;
