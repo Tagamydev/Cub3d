@@ -6,25 +6,28 @@
 #    By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/10/29 20:22:52 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/10/31 21:32:28 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= cub3d
-CFLAGS	= -Wall -Wextra -Werror -I ./includes -I ./libft/ -I /usr/local/include
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
 CC		= gcc $(CFLAGS)
 MLX		= -L /usr/local/lib -lmlx -lm -framework OpenGL -framework AppKit
 LIBFT	= -L./libft/ -lft
 CONTR	= src/controls/
+F_MLX	= src/mlx/
 CUB		= src/cub/
 ERR		= src/error/
 PAR		= src/parsing/
 MAIN	= src/main.c
 SRCS	= $(MAIN) \
 		  $(PAR)map_parsing.c \
-		  $(PAR)test.c \
 		  $(CONTR)start_controls.c \
 		  $(CUB)start_cub.c \
+		  $(CUB)/minimap/minimap.c \
+		  $(CUB)/minimap/minimap_utils.c \
+		  $(CUB)/bresenham/bresenham.c \
 		  $(ERR)ft_perror.c \
 
 O_DIR	= ./objects/
