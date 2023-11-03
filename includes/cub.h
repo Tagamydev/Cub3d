@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/03 18:40:09 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:03:08 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ typedef struct s_cub{
 	t_img	*so_texture;
 	t_img	*ea_texture;
 	t_img	*we_texture;
-	int		color_ground[3];
-	int		color_sky[3];
+	int		color_ground;
+	int		color_sky;
 	//=========================//
 	//        MLX_UTILS        //
 	void	*mlx;
