@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:10:14 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/03 19:01:58 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/04 22:05:10 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ void	data_addres(char *line, char *data_addr, int *count)
 	int	i;
 
 	i = 0;
+	*count += 2;
 	while (line[*count] == ' ')
-		count += 1;
+		*count += 1;
 	if (line[*count])
 	{
 		while (line[*count + i] != '\t' || line[*count + i] != ' ')
@@ -66,6 +67,47 @@ void	data_addres(char *line, char *data_addr, int *count)
 		if (!data_addr)
 			return (NULL);//exit???
 		ft_strlcpy(data_addr, &line[*count], i);
+	}
+}
+
+void	identifier_color(char *line, int *color, int *count)
+{
+	int		i;
+	int		numb;
+	int		rgb[3];
+	char	*digit;
+
+	numb = 0;
+	*count += 2;
+	while (line[*count] == ' ')
+		*count += 1;
+	if (line[*count])
+	{
+		while (line[*count])
+		{
+			if (!ft_isdigit(line[*count]) || numb >= 3)
+				return (0);
+			i = 0;
+			while (ft_isdigit(line[*count + i]))
+				i++;
+			digit = malloc(sizeof(char) * (i + 1));
+			if (!digit)
+				return (0);
+			ft_strlcpy(digit, &line[*count], i);
+			*count += i;
+			rgb[numb] = ft_atoi(digit);
+			free(digit);
+			if (rgb[numb] < 0 || rgb[numb] > 255)
+				return (0);
+			numb++;
+			while (line[*count] == ' ')
+				*count += 1;
+			if (line[*count] == ',')
+				*count += 1;
+			while (line[*count] == ' ')
+				*count += 1;
+		}
+		color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
 	}
 }
 
@@ -85,9 +127,9 @@ int	fill_struct(t_cub *cub, char *line)
 	else if (!ft_strncmp(&line[count], 'WE ', 3))
 		dat_addres(&line[count], &cub->we_texture->data_addr, &count);
 	else if (!ft_strncmp(&line[count], 'F ', 2))
-		identifier_color(&line[count], &cub->color_ground, &count);//
+		identifier_color(&line[count], &cub->color_ground, &count);
 	else if (!ft_strncmp(&line[count], 'C ', 2))
-		identifier_color(&line[count], &cub->color_sky, &count);//
+		identifier_color(&line[count], &cub->color_sky, &count);
 	free(line);
 }
 
