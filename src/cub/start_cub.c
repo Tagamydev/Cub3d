@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/01 06:18:32 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/04 21:59:13 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	draw_direction(t_cub *cub)
 	point1.color = 0x0000FF00;
 	point2.x = point1.x + cub->player_dx * multiplier;
 	point2.y = point1.y + cub->player_dy * multiplier;
-	printf("this is the delta x, y:%f, %f\n", cub->player_dx, cub->player_dy);
+	//printf("this is the delta x, y:%f, %f\n", cub->player_dx, cub->player_dy);
 	point2.z = 0;
 	point2.color = 0x0000FF00;
 	ft_put_line(point1, point2, cub->minimap);
@@ -224,42 +224,45 @@ void	ray_map_draw_ray(t_cub *cub, int x, int y)
 	ft_put_line(point1, point2, cub->ray_map);
 }
 
-void	draw_walls(t_cub *cub, float x, float y, int rays)
+void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
 {
 	int	i;
-	t_point	point1;
-	t_point	point2;
+	int	j;
+	int	k;
+	int	start_x;
+	int	len;
 	double	distance;
-	int		hola;
+	int		offset_up;
+	int		offset_down;
+	int		color_degrade;
 
-	point1.z = 0;
-	point2.z = 0;
-	point1.color = 0x00000000;
-	point2.color = 0x00000000;
-	point1.x = (int)cub->player_px;
-	point2.x = (int)x;
-	point1.y = (int)cub->player_py;
-	point2.y = (int)y;
-	distance = ft_distance_2_points(point1, point2);
-	distance = HEIGHT - (distance * 2);
-	distance -= HEIGHT / 8;
+	len = WIDTH / n_rays;
+	start_x = len * ray;
+	distance = sqrt(pow((x - cub->player_px), 2) + pow((y - cub->player_py), 2));
+	color_degrade = ft_mix_color(0x0000FF00, 0x00000000, distance / 25);
+	distance = HEIGHT - distance;
+	distance = distance / 2;
+	offset_up = ((HEIGHT / 2) - distance) * 10;
+	offset_down = (HEIGHT - offset_up);
 	i = 0;
-	hola = 0;
+	x = 0;
 	while (i < HEIGHT)
 	{
-		if (i > (distance / 8) && hola < distance)
+		j = start_x;
+		k = 0;
+		while (k != len)
 		{
-			if (distance > HEIGHT - 70)
-				ft_put_pixel(cub->game, rays, i, 0x0000FF00);
-			else
-				ft_put_pixel(cub->game, rays, i, 0x00EEFFEE);
+			if (i > offset_up && i < offset_down)
+				ft_put_pixel(cub->game, j, i, color_degrade);
+			k++;
+			j++;
 		}
 		i++;
-		hola++;
 	}
 	(void)x;
 	(void)y;
 }
+
 
 void	ray_map_draw_rays(t_cub *cub)
 {
@@ -279,7 +282,7 @@ void	ray_map_draw_rays(t_cub *cub)
 	x = cub->player_px + (cos(cub->player_a - (DR * angle)) * SPEED) * multiplier;
 	y = cub->player_py + (sin(cub->player_a - (DR * angle)) * SPEED) * multiplier;
 	divisor = (angle * 2) / WIDTH;
-	while (rays < WIDTH)
+	while (rays < WIDTH * 2)
 	{
 		init = 0;
 		{
@@ -295,7 +298,7 @@ void	ray_map_draw_rays(t_cub *cub)
 	//==============================================================================//
 	//==============================================================================//
 	// esta parte ya tengo que usarla
-		draw_walls(cub, x, y, rays);
+		draw_walls(cub, x, y, rays, WIDTH);
 		ray_map_draw_ray(cub, x, y);
 	//==============================================================================//
 	//==============================================================================//
