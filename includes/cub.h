@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/04 21:59:15 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/05 14:49:23 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define COLOR_E 0x8C000000
 # define COLOR_D 0x8C00FF00
 # define COLOR_P 0x8CFF0000
-# define SPEED 0.8
+# define SPEED 1
 # define PI 3.1415926535
 # define DR 0.0174533
 

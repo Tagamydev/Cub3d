@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/04 21:35:39 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/05 14:53:21 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	rotate_view_left(t_cub *cub)
 	cub->player_a -= 0.05;
 	if (cub->player_a < 0)
 		cub->player_a += 2 * PI;
-	cub->player_dx = cos(cub->player_a) * SPEED;
-	cub->player_dy = sin(cub->player_a) * SPEED;
+	cub->player_dx = cos(cub->player_a);
+	cub->player_dy = sin(cub->player_a);
 	(void)cub;
 }
 
@@ -83,8 +83,8 @@ void	rotate_view_rigth(t_cub *cub)
 	cub->player_a += 0.05;
 	if (cub->player_a > 2 * PI)
 		cub->player_a -= 2 * PI;
-	cub->player_dx = cos(cub->player_a) * SPEED;
-	cub->player_dy = sin(cub->player_a) * SPEED;
+	cub->player_dx = cos(cub->player_a);
+	cub->player_dy = sin(cub->player_a);
 	(void)cub;
 }
 
@@ -165,7 +165,7 @@ void	key_press(int key, void *param)
 	}
 	else if (key == 69 || key == 78)
 		minimap_zoom(cub, key);
-	printf("key: %d\n", key);
+	printf("player_angle: %f\n", cub->player_a);
 	start_cub(cub);
 }
 

@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/04 21:59:13 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/05 15:00:29 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,17 @@ void write_map(t_cub *cub)
 		j = 0;
 		while (j != (int)cub->map_width)
 		{
-		//	printf("[%zu]", cub->map[i][j]);
+			printf("[%zu]", cub->map[i][j]);
 			j++;
 		}
-		//printf("\n");
+		printf("\n");
 		i++;
 	}
 }
 
 void	draw_direction(t_cub *cub)
 {
+	//====================================THIS NEED REWORK=============================================//
 	t_point	point1;
 	t_point	point2;
 	int	multiplier;
@@ -190,7 +191,7 @@ void	ray_map_draw_map(t_cub *cub)
 			if (cub->map[y][x] == 1)
 				sq.color = 0x00FFFFFF;
 			else if ((cub->map[y][x] >= 2 && cub->map[y][x] <= 5) || cub->map[y][x] == 8)
-				sq.color = 0x00FF0000;
+				sq.color = 0x00000000;
 			else
 				sq.color = 0x00000000;
 			draw_square(cub->ray_map, sq);
@@ -202,7 +203,7 @@ void	ray_map_draw_map(t_cub *cub)
 	}
 }
 
-void	ray_map_draw_ray(t_cub *cub, int x, int y)
+void	ray_map_draw_ray(t_cub *cub, float x, float y)
 {
 	t_point	point1;
 	t_point	point2;
@@ -216,16 +217,16 @@ void	ray_map_draw_ray(t_cub *cub, int x, int y)
 	point1.z = 0;
 	point1.color = 0x0000ff00;
 	point2.x = x * offset;
-	point2.x += 5;
 	point2.y = y * offset;
-	point2.y += 5;
 	point2.z = 0;
 	point2.color = 0x0000ff00;
 	ft_put_line(point1, point2, cub->ray_map);
+	ft_put_pixel(cub->ray_map, point1.x, point1.y, 0x00FF0000);
 }
 
 void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
 {
+	//====================================THIS NEED REWORK=============================================//
 	int	i;
 	int	j;
 	int	k;
@@ -235,17 +236,27 @@ void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
 	int		offset_up;
 	int		offset_down;
 	int		color_degrade;
+	float	color_ground_mix;
+	int	side;
+	float	fish;
 
+	side = 0;
 	len = WIDTH / n_rays;
 	start_x = len * ray;
 	distance = sqrt(pow((x - cub->player_px), 2) + pow((y - cub->player_py), 2));
-	color_degrade = ft_mix_color(0x0000FF00, 0x00000000, distance / 25);
+	fish = distance * 0.5;
+
+	color_degrade = ft_mix_color(0x0000FF00, 0x00000000, distance / 50);
+	if (side)
+		color_degrade = ft_mix_color(0x0000FF00, 0x00000000, 1);
+	color_degrade = ft_mix_color(color_degrade, cub->color_sky, 0.25);
 	distance = HEIGHT - distance;
 	distance = distance / 2;
-	offset_up = ((HEIGHT / 2) - distance) * 10;
+	offset_up = ((HEIGHT / 2) - distance) * fish;
 	offset_down = (HEIGHT - offset_up);
 	i = 0;
 	x = 0;
+	color_ground_mix = 0;
 	while (i < HEIGHT)
 	{
 		j = start_x;
@@ -253,7 +264,14 @@ void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
 		while (k != len)
 		{
 			if (i > offset_up && i < offset_down)
+			{
+				if (i > offset_down / 1.2)
+				{
+					color_degrade = ft_mix_color(color_degrade, cub->color_ground, color_ground_mix);
+					color_ground_mix += 0.00001;
+				}
 				ft_put_pixel(cub->game, j, i, color_degrade);
+			}
 			k++;
 			j++;
 		}
@@ -274,7 +292,7 @@ void	ray_map_draw_rays(t_cub *cub)
 	float		multiplier;
 	int		divisor;
 	float		angle;
-	int	init;
+	float	init;
 	
 	rays = 0;
 	multiplier = 25;
@@ -282,7 +300,7 @@ void	ray_map_draw_rays(t_cub *cub)
 	x = cub->player_px + (cos(cub->player_a - (DR * angle)) * SPEED) * multiplier;
 	y = cub->player_py + (sin(cub->player_a - (DR * angle)) * SPEED) * multiplier;
 	divisor = (angle * 2) / WIDTH;
-	while (rays < WIDTH * 2)
+	while (rays < WIDTH)
 	{
 		init = 0;
 		{
@@ -292,7 +310,7 @@ void	ray_map_draw_rays(t_cub *cub)
 			{
 				x = cub->player_px + (cos(cub->player_a - (DR * angle)) * SPEED) * init;
 				y = cub->player_py + (sin(cub->player_a - (DR * angle)) * SPEED) * init;
-				init += 1;
+				init += 0.05;
 			}
 		}
 	//==============================================================================//
@@ -320,7 +338,7 @@ void	start_cub(t_cub *cub)
 	fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground);
 	ft_fill_img(cub->minimap, 0x00000000);
 	draw_minimap(cub);
-	write_map(cub);
+	//write_map(cub);
 	copy_map_to_ray_map(cub);
 	draw_rays(cub);
 	draw_direction(cub);
