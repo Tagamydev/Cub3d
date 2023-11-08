@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/05 21:37:23 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:13:05 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ void	ray_map_draw_map(t_cub *cub)
 	}
 }
 
-void	ray_map_draw_ray(t_cub *cub, float x, float y)
+void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 {
 	t_point	point1;
 	t_point	point2;
@@ -229,13 +229,13 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y)
 	point1.y = (int)cub->player_py * offset;
 	point1.y += 5;
 	point1.z = 0;
-	point1.color = 0x0000ff00;
+	point1.color = color;
 	point2.x = x * offset;
 	point2.y = y * offset;
 	point2.z = 0;
-	point2.color = 0x0000ff00;
+	point2.color = color;
 	ft_put_line(point1, point2, cub->ray_map);
-	ft_put_pixel(cub->ray_map, point1.x, point1.y, 0x00FF0000);
+	ft_put_pixel(cub->ray_map, point1.x, point1.y, color);
 }
 
 	/*
@@ -290,37 +290,25 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y)
 		i++;
 	}
 	*/
-void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
+void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays)
 {
-	int	i;
-	int	j;
-	int	k;
-	int	start_x;
-	int	len;
-	double	distance;
+	int		i;
+	int		j;
+	int		k;
+	int		start_x;
+	int		len;
 	int		offset_up;
 	int		offset_down;
-	int		color_degrade;
 	float	color_ground_mix;
-	int	side;
-	float	fish;
+	double	distance;
 
-	side = 0;
-	len = WIDTH / n_rays;
-	start_x = len * ray;
-	distance = sqrt(pow((x - cub->player_px), 2) + pow((y - cub->player_py), 2));
-	fish = 15;
-
-	color_degrade = ft_mix_color(0x0000FF00, 0x00000000, distance / 50);
-	if (side)
-		color_degrade = ft_mix_color(0x0000FF00, 0x00000000, 1);
-	color_degrade = ft_mix_color(color_degrade, cub->color_sky, 0.25);
-	distance = HEIGHT - distance;
-	distance = distance / 2;
-	offset_up = ((HEIGHT / 2) - distance) * fish;
-	offset_down = (HEIGHT - offset_up);
 	i = 0;
-	x = 0;
+	len = WIDTH / total_rays;
+	start_x = len * actual_ray;
+	distance = HEIGHT - ray.distance;
+	distance = distance / 2;
+	offset_up = ((HEIGHT / 2) - distance) * 15;
+	offset_down = (HEIGHT - offset_up);
 	color_ground_mix = 0;
 	while (i < HEIGHT)
 	{
@@ -329,37 +317,178 @@ void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
 		while (k != len)
 		{
 			if (i > offset_up && i < offset_down)
-			{
-				if (i > offset_down / 1.2)
-				{
-					color_degrade = ft_mix_color(color_degrade, cub->color_ground, color_ground_mix);
-					color_ground_mix += 0.00001;
-				}
-				ft_put_pixel(cub->game, j, i, color_degrade);
-			}
+				ft_put_pixel(cub->game, j, i, ray.color);
 			k++;
 			j++;
 		}
 		i++;
 	}
-
-	//==============================^^====THIS NEED REWORK====^^=======================================//
-	(void)x;
-	(void)y;
-	(void)ray;
-	(void)n_rays;
-	(void)cub;
 }
 
+t_p	calculate_cam_plane(t_ray ray, t_cub *cub)
+{
+	t_p	result;
+	t_p	multiplier;
+	int	side;
+	float	angle;
+
+	if (ray.angle == cub->player_a || cub->fisheye == 1)
+	{
+		result.x = cub->player_px;
+		result.y = cub->player_py;
+		return (result);
+	}
+
+	//==========================//
+	
+	if (ray.angle > cub->player_a)
+		side = 1;
+	else
+		side = -1;
+
+	angle = 180;
+	angle *= side;
+	angle += cub->player_a;
+	result.x = ray.x;
+	result.y = ray.y;
+	result = make_point_with_dir(ray.x, ray.y, \
+			cos(angle_to_radian(get_angle(angle))), \
+			sin(angle_to_radian(get_angle(angle))));
+	multiplier = make_point_with_dir(cub->player_px, \
+			cub->player_py, \
+			cub->player_d2x * side, \
+			cub->player_d2y * side);
+	result = intersection_btw_points(result, multiplier);
+	if (result.x == result.x && result.y == result.y)
+	{
+		;
+	}
+	else
+	{
+		result.x = cub->player_px;
+		result.y = cub->player_py;
+		return (result);
+	}
+
+	//multiplier.x += multiplier.dx * 10;
+	//multiplier.y += multiplier.dy * 10;
+	//result = multiplier;
 
 	/*
-	int		ray;
-	double	x;
-	double	y;
-	double	ray_dx;
-	double	ray_dy;
-	float	ray_proyection;
-	int		angle;
+	t_point	point1;
+	t_point	point2;
+	int		offset;
+	int		color = 0x000000ff;
+
+	offset = 10;
+	point1.x = ray.x * 10;
+	point1.y = ray.y * 10;
+	point1.z = 0;
+	point1.color = color;
+	point2.x = result.x * offset;
+	point2.y = result.y * offset;
+	point2.z = 0;
+	point2.color = 0x00FFFFFF;
+
+
+
+
+
+	//ray_map_draw_ray(cub, result.x, result.y, 0x00FF0000);
+	ft_put_line(point1, point2, cub->ray_map);
+
+
+
+	//if (ray.angle == cub->player_a)
+	{
+		result.x = cub->player_px;
+		result.y = cub->player_py;
+		return (result);
+	}
+
+	*/
+	return (result);
+}
+
+t_ray	calculate_ray(float x, float y, float angle, t_cub *cub)
+{
+	t_ray	result;
+	t_p		cam_plane;
+
+	result.x =  x;
+	result.y =  y;
+	result.angle = angle;
+	cam_plane = calculate_cam_plane(result, cub);
+	result.distance = sqrt(pow((x - cam_plane.x), 2) + \
+	pow((y - cam_plane.y), 2));
+	result.color = ft_mix_color(0x0000FF00, 0x00000000, result.distance / 50);
+	//result.color = ft_mix_color(result.color, cub->color_sky, 0.25);
+	return (result);
+}
+
+double	calculate_next_wall(float x, float y, float angle)
+{
+	(void)x;
+	(void)y;
+	(void)angle;
+	return (0);
+}
+	/*
+	int			ray;
+	int			angle;
+	double		x;
+	double		y;
+	double		ray_dx;
+	double		ray_dy;
+	double		anglei;
+	double		angle_chunk;
+	double		ray_a;
+	float		multiplier;
+	int			side;
+
+	ray = 0;
+	ray_dx = 0;
+	ray_dy = 0;
+	anglei = 0;
+	angle = 30;
+	angle_chunk = 0.046875 * 2;
+	multiplier = 0;
+	side = 0;
+	while (ray < WIDTH)
+	{
+		ray_a = get_angle((cub->player_a - angle) + anglei);
+		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
+		ray_dy = sin(angle_to_radian(get_angle(ray_a)));
+		x = cub->player_px + ray_dx * multiplier;
+		y = cub->player_py + ray_dy * multiplier;
+		//==============================================================//
+		while (x < cub->map_width && y < cub->map_height && x > 0 && y > 0)
+		{
+			if (cub->map[(int)y][(int)x] == 1)
+				break ;
+			x = cub->player_px + ray_dx * multiplier;
+			y = cub->player_py + ray_dy * multiplier;
+			multiplier += 0.0001;
+		}
+		//==============================================================//
+		draw_walls(cub, calculate_ray(x, y, ray_a, cub), ray, WIDTH);
+		ray_map_draw_ray(cub, x, y);
+		anglei += angle_chunk;
+		ray++;
+	}
+	(void)cub;
+	*/
+
+void	ray_map_draw_rays(t_cub *cub)
+{
+	int			ray;
+	double		x;
+	double		y;
+	double		ray_dx;
+	double		ray_dy;
+	float		ray_a;
+	float		ray_proyection;
+	int			angle;
 	double		angle_chunk;
 	double		anglei;
 
@@ -374,9 +503,10 @@ void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
 	angle_chunk = 0.058;
 	while (ray < WIDTH)
 	{
+		ray_a = /*cub->player_a;*/cub->player_a + anglei - (angle / 2);
 		ray_proyection = 0;
-		ray_dx = cos(angle_to_radian(get_angle(cub->player_a + anglei - (angle / 2))));
-		ray_dy = sin(angle_to_radian(get_angle(cub->player_a + anglei - (angle / 2))));
+		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
+		ray_dy = sin(angle_to_radian(get_angle(ray_a)));
 		x = cub->player_px + ray_dx * 1;
 		y = cub->player_py + ray_dy * 1;
 		while (cub->map[(int)y][(int)x] != 1 && cub->map[(int)y][(int)x] != 6)
@@ -385,79 +515,12 @@ void	draw_walls(t_cub *cub, float x, float y, int ray, int n_rays)
 			y = cub->player_py + ray_dy * ray_proyection;
 			ray_proyection += 0.01;
 		}
-		draw_walls(cub, x, y, ray, WIDTH);
-		ray_map_draw_ray(cub, x, y);
+		draw_walls(cub, calculate_ray(x, y, ray_a, cub), ray, WIDTH);
+		ray_map_draw_ray(cub, x, y, 0x0000FF00);
 		anglei += angle_chunk;
 		ray++;
 	}
-
-
 	(void)cub;
-	//====================================THIS NEED REWORK=============================================//
-	*/
-double	get_next_int(double initial_p, double delt, double last_p)
-{
-	double result;
-	int		sign;
-
-	sign = 0;
-	result = last_p - initial_p;
-	printf("\n\n\n\ninitial_p:%f, delt:%f, last_p:%f\n\n\n", initial_p, delt, last_p);
-	result = result / delt;
-	return (result);
-}
-
-void	ray_map_draw_rays(t_cub *cub)
-{
-	int		ray;
-	double	x;
-	double	y;
-	double	ray_dx;
-	double	ray_dy;
-	float	ray_proyection;
-	int		angle;
-	//double		angle_chunk;
-	double		anglei;
-
-	ray_dx = 0;
-	ray_dy = 0;
-	x = (double)cub->player_px;
-	y = (double)cub->player_py;
-	ray = 0;
-	ray_proyection = 0;
-	anglei = 0;
-	angle = 30;
-	if (ray < WIDTH)
-	{
-
-		ray_dx = cos(angle_to_radian(get_angle(cub->player_a)));
-		ray_dy = sin(angle_to_radian(get_angle(cub->player_a)));
-		//==============================================================//
-		if (ray_dx > 0)
-		{
-			ray_proyection = get_next_int(cub->player_px, ray_dx, cub->player_px + 1);
-			if (ray_proyection < -90 || ray_proyection > 90)
-				ray_proyection = 5;
-			x = cub->player_px + ray_dx * ray_proyection;
-			y = cub->player_py + ray_dy * ray_proyection;
-		}
-		else
-		{
-			ray_proyection = get_next_int(cub->player_px, ray_dx, cub->map_width - (cub->map_width - cub->player_px + 1));
-			if (ray_proyection < -90 || ray_proyection > 90)
-				ray_proyection = 5;
-			x = cub->player_px + ray_dx * ray_proyection;
-			y = cub->player_py + ray_dy * ray_proyection;
-
-			printf("algo parecido a esto:%f\n", (cub->player_px * ray_dx * 20));
-		}
-
-		//==============================================================//
-		ray_map_draw_ray(cub, x, y);
-	}
-
-	(void)cub;
-	//====================================THIS NEED REWORK=============================================//
 }
 
 void	draw_ray_map(t_cub *cub)

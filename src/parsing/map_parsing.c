@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/05 18:16:10 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:09:53 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ t_cub	*map_parsing(char *file)
 	cub->map_4_ray = ft_calloc(sizeof(int), ((cub->map_width * cub->map_height) + 1));
 	cub->camera_speed = 1;
 	cub->door = 1;
+	cub->fisheye = 0;
 	if (!cub->map_4_ray)
 		return (NULL);
 	return (cub);

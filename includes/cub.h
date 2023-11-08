@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/05 21:37:25 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:05:37 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB_H
 # include <mlx.h>
 # include <math.h>
+# include <ft_math.h>
 # include <stdio.h>
 # include <libft.h>
 # include <ft_perror.h>
@@ -91,7 +92,19 @@ typedef struct s_cub{
 	//=========================//
 	//          MINIMAP        //
 	int		minimap_zoom;
+	//=========================//
+	//           CAM           //
+	int		fisheye;
 }				t_cub;
+
+typedef struct s_ray{
+	float	x;
+	float	y;
+	float	angle;
+	float	distance;
+	float	color;
+	int		side;
+}				t_ray;
 
 void	free_split(char **input);
 double	angle_to_radian(double angle);

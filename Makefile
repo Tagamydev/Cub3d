@@ -6,7 +6,7 @@
 #    By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/10/31 21:32:28 by samusanc         ###   ########.fr        #
+#    Updated: 2023/11/08 13:00:48 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,14 @@ LIBFT	= -L./libft/ -lft
 CONTR	= src/controls/
 F_MLX	= src/mlx/
 CUB		= src/cub/
+MAT		= src/math/
 ERR		= src/error/
 PAR		= src/parsing/
 MAIN	= src/main.c
 SRCS	= $(MAIN) \
 		  $(PAR)map_parsing.c \
 		  $(CONTR)start_controls.c \
+		  $(MAT)math.c \
 		  $(CUB)start_cub.c \
 		  $(CUB)/minimap/minimap.c \
 		  $(CUB)/minimap/minimap_utils.c \

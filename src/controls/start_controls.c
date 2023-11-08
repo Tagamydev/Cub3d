@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/05 18:09:07 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:13:14 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,14 @@ void	key_press(int key, void *param)
 		minimap_zoom(cub, key);
 	else if (key == 18 || key == 19 || key == 20)
 		increase_dpi(cub, key);
-	//printf("angle: %d\n", cub->player_a);
+	else if (key == 10)
+	{
+		if (!cub->fisheye)
+			cub->fisheye = 1;
+		else
+			cub->fisheye = 0;
+	}
+	//printf("angle: %d\n", key);
 	start_cub(cub);
 }
 
