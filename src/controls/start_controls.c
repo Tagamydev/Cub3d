@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/05 14:53:21 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/05 18:09:07 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,48 @@ void	close_x(void *param)
 
 void	open_doors(t_cub *cub, char *x)
 {
+	int	i;
+	int	j;
+	
+	i = 0;
+	j = 0;
 	*x = 'O';
-	printf("opening the doors\n");
+	while (i < (int)cub->map_height)
+	{
+		j = 0;
+		while (j < (int)cub->map_width)
+		{
+			if (cub->map[i][j] == 6)
+				cub->map[i][j] = 7;
+			j++;
+		}
+		i++;
+	}
+	cub->door = 1;
+	printf("opening doors\n");
 	(void)cub;
 }
 
 void	close_doors(t_cub *cub, char *x)
 {
+	int	i;
+	int	j;
+
 	*x = 'C';
-	printf("closing the doors\n");
+	i = 0;
+	while (i < (int)cub->map_height)
+	{
+		j = 0;
+		while (j < (int)cub->map_width)
+		{
+			if (cub->map[i][j] == 7)
+				cub->map[i][j] = 6;
+			j++;
+		}
+		i++;
+	}
+	cub->door = 0;
+	printf("closing doors\n");
 	(void)cub;
 }
 
@@ -68,23 +101,25 @@ void	move_down(t_cub *cub)
 	(void)cub;
 }
 
+void	put_deltas(t_cub *cub)
+{
+	cub->player_dx = cos(angle_to_radian(cub->player_a));
+	cub->player_dy = sin(angle_to_radian(cub->player_a));
+	cub->player_d2x = cos(angle_to_radian(get_angle(cub->player_a + 90)));
+	cub->player_d2y = sin(angle_to_radian(get_angle(cub->player_a + 90)));
+}
+
 void	rotate_view_left(t_cub *cub)
 {
-	cub->player_a -= 0.05;
-	if (cub->player_a < 0)
-		cub->player_a += 2 * PI;
-	cub->player_dx = cos(cub->player_a);
-	cub->player_dy = sin(cub->player_a);
+	cub->player_a = get_angle(cub->player_a - cub->camera_speed);
+	put_deltas(cub);
 	(void)cub;
 }
 
 void	rotate_view_rigth(t_cub *cub)
 {
-	cub->player_a += 0.05;
-	if (cub->player_a > 2 * PI)
-		cub->player_a -= 2 * PI;
-	cub->player_dx = cos(cub->player_a);
-	cub->player_dy = sin(cub->player_a);
+	cub->player_a = get_angle(cub->player_a + cub->camera_speed);
+	put_deltas(cub);
 	(void)cub;
 }
 
@@ -100,33 +135,40 @@ void	move_player(int key, t_cub *cub)
 	starty = cub->player_py;
 	if (key == 0)
 	{
-		startx -= SPEED;
+		starty -= cub->player_d2y * SPEED;
+		startx -= cub->player_d2x * SPEED;
 	}
 	else if (key == 2)
 	{
-		startx += SPEED;
+		starty += cub->player_d2y * SPEED;
+		startx += cub->player_d2x * SPEED;
 	}
 	else if (key == 1)
 	{
-		starty -= cub->player_dy;
-		startx -= cub->player_dx;
+		starty -= cub->player_dy * SPEED;
+		startx -= cub->player_dx * SPEED;
 	}
 	else if (key == 13)
 	{
-		starty += cub->player_dy;
-		startx += cub->player_dx;
+		starty += cub->player_dy * SPEED;
+		startx += cub->player_dx * SPEED;
 	}
 	finalx = (int)startx;
 	finaly = (int)starty;
 	if ((finalx >= 0 && finalx < (int)cub->map_width) \
 	&& (finaly >= 0 && finaly < (int)cub->map_width ))//this works
 	{
-		if (cub->map[finaly][finalx] != 1)
+		if (cub->map[finaly][finalx] != 1 && cub->map[finaly][finalx] != 6)
 		{
 			if (cub->map[(int)cub->player_py][(int)cub->player_px] != 8)
 				cub->map[(int)cub->player_py][(int)cub->player_px] = 0;
 			else
-				cub->map[(int)cub->player_py][(int)cub->player_px] = 6;
+			{
+				if (cub->door == 0)
+					cub->map[(int)cub->player_py][(int)cub->player_px] = 6;
+				else
+					cub->map[(int)cub->player_py][(int)cub->player_px] = 7;
+			}
 			if (cub->map[finaly][finalx] != 6 && cub->map[finaly][finalx] != 7)
 				cub->map[finaly][finalx] = 2;
 			else
@@ -135,6 +177,16 @@ void	move_player(int key, t_cub *cub)
 			cub->player_py = starty;
 		}
 	}
+}
+
+void	increase_dpi(t_cub *cub, int key)
+{
+	if (key == 18)
+		cub->camera_speed = 1;
+	else if (key == 19)
+		cub->camera_speed = 5;
+	else
+		cub->camera_speed = 25;
 }
 
 void	key_press(int key, void *param)
@@ -165,7 +217,9 @@ void	key_press(int key, void *param)
 	}
 	else if (key == 69 || key == 78)
 		minimap_zoom(cub, key);
-	printf("player_angle: %f\n", cub->player_a);
+	else if (key == 18 || key == 19 || key == 20)
+		increase_dpi(cub, key);
+	//printf("angle: %d\n", cub->player_a);
 	start_cub(cub);
 }
 

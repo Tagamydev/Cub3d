@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/01 02:17:53 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/05 18:16:10 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ t_cub	*map_parsing(char *file)
 	cub->map[i++] = dup_ui_array((size_t[]){1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
-	cub->map[i++] = dup_ui_array((size_t[]){1,1,0,0,0,0,5,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
+	cub->map[i++] = dup_ui_array((size_t[]){1,1,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
-	cub->map[i++] = dup_ui_array((size_t[]){1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 24);
+	cub->map[i++] = dup_ui_array((size_t[]){1,1,1,1,1,1,1,1,1,0,0,0,0,5,0,0,0,0,0,0,0,0,0,1}, 24);
 	cub->map[i++] = dup_ui_array((size_t[]){1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}, 24);
 	cub->map_width = 24;
 	cub->map_height = 24;
@@ -137,12 +137,13 @@ t_cub	*map_parsing(char *file)
 	cub->color_ground = 0x00FF0000;
 	cub->color_sky = 0x000000FF;
 	cub->minimap_zoom = ZOOM_L;
-	cub->player_px = 6;
-	cub->player_py = 18;
-	cub->player_a = 0;
-	cub->player_dx = cos(cub->player_a) * SPEED;
-	cub->player_dy = sin(cub->player_a) * SPEED;
+	cub->player_px = 13;//6
+	cub->player_py = 22;//18
+	cub->player_a = -90;
+	put_deltas(cub);
 	cub->map_4_ray = ft_calloc(sizeof(int), ((cub->map_width * cub->map_height) + 1));
+	cub->camera_speed = 1;
+	cub->door = 1;
 	if (!cub->map_4_ray)
 		return (NULL);
 	return (cub);

@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/05 14:49:23 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/05 21:37:25 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@
 # define COLOR_E 0x8C000000
 # define COLOR_D 0x8C00FF00
 # define COLOR_P 0x8CFF0000
-# define SPEED 1
 # define PI 3.1415926535
 # define DR 0.0174533
+# define SPEED 0.3
 
 typedef struct s_img{
 	void	*img;
@@ -69,6 +69,7 @@ typedef struct s_cub{
 	t_img	*we_texture;
 	int		color_ground;
 	int		color_sky;
+	int		door;
 	//=========================//
 	//        MLX_UTILS        //
 	void	*mlx;
@@ -79,10 +80,13 @@ typedef struct s_cub{
 	t_img	*ray_map;
 	//=========================//
 	//          PLAYER         //
+	int		camera_speed;
 	float	player_px;
 	float	player_py;
 	float	player_dx;
 	float	player_dy;
+	float	player_d2x;
+	float	player_d2y;
 	float	player_a;
 	//=========================//
 	//          MINIMAP        //
@@ -90,6 +94,9 @@ typedef struct s_cub{
 }				t_cub;
 
 void	free_split(char **input);
+double	angle_to_radian(double angle);
+double	get_angle(double angle);
+void	put_deltas(t_cub *cub);
 //============================================================================//
 //=================================MLX========================================//
 void	ft_put_pixel(t_img *img, int x, int y, int color);
