@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/08 14:09:53 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/08 23:27:51 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_cub	*map_parsing(char *file)
 	cub->minimap_zoom = ZOOM_L;
 	cub->player_px = 13;//6
 	cub->player_py = 22;//18
-	cub->player_a = -90;
+	cub->player_a = 270;
 	put_deltas(cub);
 	cub->map_4_ray = ft_calloc(sizeof(int), ((cub->map_width * cub->map_height) + 1));
 	cub->camera_speed = 1;

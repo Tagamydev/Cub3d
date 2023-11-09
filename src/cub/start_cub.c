@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/08 15:00:45 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/09 04:51:23 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,9 +225,9 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 
 	offset = 10;
 	point1.x = (int)cub->player_px * offset;
-	point1.x += 5;
+	//point1.x += 5;
 	point1.y = (int)cub->player_py * offset;
-	point1.y += 5;
+	//point1.y += 5;
 	point1.z = 0;
 	point1.color = color;
 	point2.x = x * offset;
@@ -311,10 +311,23 @@ t_p	calculate_cam_plane(t_ray ray, t_cub *cub)
 	return (result);
 }
 
-t_ray	calculate_ray(float x, float y, float angle, t_cub *cub)
+t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub)
 {
 	t_ray	result;
 	t_p		cam_plane;
+
+	result = tmp_ray;
+	cam_plane = calculate_cam_plane(result, cub);
+	result.distance = sqrt(pow((result.x - cam_plane.x), 2) + \
+	pow((result.y - cam_plane.y), 2));
+	result.color = ft_mix_color(0x0000FF00, 0x00000000, result.distance / 50);
+	result.color = ft_mix_color(result.color, cub->color_sky, 0.25);
+	return (result);
+}
+
+t_ray	make_tmp_ray(float x, float y, float angle, t_cub *cub)
+{
+	t_ray	result;
 
 	result.x =  x;
 	result.y =  y;
@@ -323,20 +336,96 @@ t_ray	calculate_ray(float x, float y, float angle, t_cub *cub)
 		result.side = 1;
 	else
 		result.side = -1;
-	cam_plane = calculate_cam_plane(result, cub);
-	result.distance = sqrt(pow((x - cam_plane.x), 2) + \
-	pow((y - cam_plane.y), 2));
-	result.color = ft_mix_color(0x0000FF00, 0x00000000, result.distance / 50);
-	result.color = ft_mix_color(result.color, cub->color_sky, 0.25);
 	return (result);
 }
 
-double	calculate_next_wall(float x, float y, float angle)
+void	ft_next_y(t_cub *cub, float ray_a, float next_y)
 {
-	(void)x;
-	(void)y;
-	(void)angle;
-	return (0);
+	double x;
+	double distance_y;
+
+	distance_y = (double)next_y - (double)cub->player_py;
+	x = cos(angle_to_radian(get_angle(ray_a)));
+	x = x / sin(angle_to_radian(get_angle(ray_a)));
+	x = x * distance_y;
+	x = cub->player_px + x;
+	ray_map_draw_ray(cub, x, next_y, 0x000000FF);
+	return ;
+	(void)cub;
+	(void)ray_a;
+}
+
+void	ft_next_x(t_cub *cub, float ray_a, float next_x)
+{
+	;
+	printf("next x:%f\n", next_x);
+	return ;
+	(void)cub;
+	(void)ray_a;
+}
+
+
+double	ft_abs2(double x)
+{
+	if (x < 0)
+		x = -x;
+	return (x);
+}
+
+void	check_side(t_cub *cub, float ray_a)
+{
+	float	x;
+	float	y;
+	int	next_x;
+	int	next_y;
+	int	tmp_next_x;
+	int	tmp_next_y;
+	size_t	i;
+
+	i = 0;
+	x = cub->player_px;
+	y = cub->player_py;
+	if (ray_a < 270 && ray_a > 90)
+		next_x = (int)cub->player_px;
+	else
+		next_x = (int)cub->player_px + 1;
+	if (ray_a > 0 && ray_a < 180)
+		next_y = (int)cub->player_py + 1;
+	else
+		next_y = (int)cub->player_py;
+
+	while (i < cub->map_width && i < cub->map_height)
+	{
+		if (ft_abs(ray_a) == 270 || ft_abs(ray_a) == 90)
+			ft_next_y(cub, ray_a, next_y);
+		else if (ft_abs(ray_a) == 180 || ft_abs(ray_a) == 360 || ft_abs(ray_a) == 0)
+			ft_next_x(cub, ray_a, next_x);
+		else
+		{
+			if (ft_abs2((double)next_x - x) < ft_abs2((double)next_y - y))
+				ft_next_x(cub, ray_a, next_x);
+			else
+				ft_next_y(cub, ray_a, next_y);
+		}
+
+		if (ray_a < 270 && ray_a > 90)
+			tmp_next_x = next_x - 1;
+		else
+			tmp_next_x = next_x + 1;
+		if (ray_a > 0 && ray_a < 180)
+			tmp_next_y = next_y + 1;
+		else
+			tmp_next_y = next_y - 1;
+		if (tmp_next_x < 0 || tmp_next_y < 0 || (size_t)tmp_next_x > cub->map_width || (size_t)tmp_next_y > cub->map_height)
+			break ;
+		next_x = tmp_next_x;
+		next_y = tmp_next_y;
+		i++;
+	}
+	ray_map_draw_ray(cub, next_x, next_y, 0x00ff0000);
+	(void)cub;
+	(void)next_x;
+	(void)next_y;
 }
 
 void	ray_map_draw_rays(t_cub *cub)
@@ -361,22 +450,24 @@ void	ray_map_draw_rays(t_cub *cub)
 	anglei = 0;
 	angle = 30;
 	angle_chunk = 0.058;
-	//while (ray < WIDTH)
+	if (ray < WIDTH)
 	{
-		ray_a = cub->player_a;//cub->player_a + anglei - (angle / 2);
+		ray_a = get_angle(cub->player_a);//cub->player_a + anglei - (angle / 2);
 		ray_proyection = 0;
 		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
 		ray_dy = sin(angle_to_radian(get_angle(ray_a)));
+		check_side(cub, ray_a);
+		ray_proyection = 0;
 		x = cub->player_px + ray_dx * 0;
 		y = cub->player_py + ray_dy * 0;
 		while (cub->map[(int)y][(int)x] != 1 && cub->map[(int)y][(int)x] != 6)
 		{
-			ray_proyection = ray_proyection + 0.01;
-			x = cub->player_px + ray_dx * ray_proyection;
-			y = cub->player_py + ray_dy * ray_proyection;
+			x = x + ray_dx * ray_proyection;
+			y = y + ray_dy * ray_proyection;
+			ray_proyection += 0.001;
 		}
-		draw_walls(cub, calculate_ray(x, y, ray_a, cub), ray, /*WIDTH*/1);
-		ray_map_draw_ray(cub, x, y, 0x0000FF00);
+		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub), ray,/*WIDTH*/ 1);//draw walls
+		ray_map_draw_ray(cub, x, y, 0x0000FF00);//draw rays in minimap
 		anglei += angle_chunk;
 		ray++;
 	}

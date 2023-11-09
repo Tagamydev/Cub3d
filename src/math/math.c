@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:11:50 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/08 12:59:35 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/09 03:22:18 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ t_line	make_line_with_two_points(t_p p1, t_p p2)
 	line.b = p1.y - (line.m * p1.x);
 	return (line);
 }
+
+t_line	make_line_with_one_point(t_p p1)
+{
+	t_p p2;
+
+	p2 = p1;
+	p2.x = p1.x + p1.dx * 5;
+	p2.y = p1.y + p1.dy * 5;
+	return (make_line_with_two_points(p1, p2));
+}
+
 
 t_p	make_point_with_dir(float x, float y, float dx, float dy)
 {
