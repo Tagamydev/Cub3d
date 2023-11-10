@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/08 15:00:51 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/09 06:46:29 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define PI 3.1415926535
 # define DR 0.0174533
 # define SPEED 0.3
+# define COSX cos(angle_to_radian(get_angle(ray_a)))
+# define SINY sin(angle_to_radian(get_angle(ray_a)))
 
 typedef struct s_img{
 	void	*img;
