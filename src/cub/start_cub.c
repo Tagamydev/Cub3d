@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/10 22:26:01 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/13 10:22:34 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,9 +225,9 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 	int		offset;
 
 	offset = 10;
-	point1.x = (int)cub->player_px * offset;
+	point1.x = cub->player_px * offset;
 	//point1.x += 5;
-	point1.y = (int)cub->player_py * offset;
+	point1.y = cub->player_py * offset;
 	//point1.y += 5;
 	point1.z = 0;
 	point1.color = color;
@@ -339,206 +339,63 @@ t_ray	make_tmp_ray(float x, float y, float angle, t_cub *cub)
 		result.side = -1;
 	return (result);
 }
+//quadrant_1();
+//quadrant_2();
+//quadrant_3();
+//quadrant_4();
 
-void	test1(t_cub *cub, float ray_a)
+//upper_vertical_line();
+//lower_vertical_line();
+//lower_horizontal_line();
+//upper_horizontal_line();
+
+t_p	ray_to_point(t_ray ray)
 {
+	t_p	result;
 
-	//ray_map_draw_ray(cub, y, x, 0x0000FF00);//draw rays in minimap
-	(void)ray_a;
-	(void)cub;
-}
-
-t_ray	draw_upper_x(t_cub *cub, size_t i)
-{
-	float	x;
-	float	y;
-	float	distance;
-	t_ray	result;
-
-	distance = (int)cub->player_px + i;
-	distance = (double)distance - (double)cub->player_px;
-	x = cub->player_px + cos(angle_to_radian(get_angle(360))) * distance;
-	y = cub->player_py + sin(angle_to_radian(get_angle(360))) * distance;
-	if (x < cub->map_width && y < cub->map_height)
-	{
-		result.x = x;
-		result.y = y;
-	}
-	else
-	{
-		if (x > cub->map_width && y > cub->map_height)
-		{
-			result.x = cub->map_width - 1;
-			result.y = cub->map_height - 1;
-		}
-		else if (x >= cub->map_width)
-		{
-			result.x = cub->map_width - 1;
-			result.y = y;
-		}
-		else
-		{
-			result.x = x;
-			result.y = cub->map_height - 1;
-		}
-	}
-	ray_map_draw_ray(cub, result.x, result.y, 0x00FF0000);//draw rays in minimap
-	result.angle = 270;
+	result.x = ray.x;
+	result.y = ray.y;
+	result.dx = cos(angle_to_radian(get_angle(ray.angle))) * 3;
+	result.dy = sin(angle_to_radian(get_angle(ray.angle))) * 3;
 	return (result);
+
+	//point1.x += 5;
+	//point1.y += 5;
+
+}
+void	ft_line(float x1, float y1, float x2, float y2, t_cub *cub, int color)
+{
+	t_point	point1;
+	t_point	point2;
+	int		offset;
+
+	offset = 10;
+	point1.x = x1 * offset;
+	point1.y = y1 * offset;
+	point1.z = 0;
+	point1.color = color;
+	point2.x = x2 * offset;
+	point2.y = y2 * offset;
+	point2.z = 0;
+	point2.color = color;
+	ft_put_line(point1, point2, cub->ray_map);
 }
 
-t_ray	draw_lower_x(t_cub *cub, size_t i)
+double	ft_abs2(double x)
 {
-	float	x;
+	if (x < 0)
+		x = -x;
+	return (x);
+}
+
+double	get_decimal(double x)
+{
 	float	y;
-	float	distance;
-	t_ray	result;
+	double	result;
 
-	distance = (int)cub->player_px + (1 - i);
-	distance = (double)distance - (double)cub->player_px;
-	x = cub->player_px + cos(angle_to_radian(get_angle(360))) * distance;
-	y = cub->player_py + sin(angle_to_radian(get_angle(360))) * distance;
-	if (x < cub->map_width && y < cub->map_height)
-	{
-		result.x = x;
-		result.y = y;
-	}
-	else
-	{
-		if (x > cub->map_width && y > cub->map_height)
-		{
-			result.x = 1;
-			result.y = 1;
-		}
-		else if (x > cub->map_width)
-		{
-			result.x = 1;
-			result.y = y;
-		}
-		else
-		{
-			result.x = x;
-			result.y = 1;
-		}
-	}
-	ray_map_draw_ray(cub, result.x, result.y, 0x00FF0000);//draw rays in minimap
-	result.angle = 270;
+	y = (int)x;
+	result = (x * 10) - (y * 10);
 	return (result);
-}
-
-t_ray	draw_upper_y(t_cub *cub, size_t i)
-{
-	float	x;
-	float	y;
-	float	distance;
-	t_ray	result;
-
-	distance = (int)cub->player_py + (i - 1);
-	distance = (double)distance - (double)cub->player_py;
-	x = cub->player_px + cos(angle_to_radian(get_angle(270))) * distance;
-	y = cub->player_py + sin(angle_to_radian(get_angle(270))) * distance;
-	if (x < cub->map_width && y < cub->map_height && x > 0 && y > 0)
-	{
-		result.x = x;
-		result.y = y;
-	}
-	else
-	{
-		if (x > cub->map_width && y > cub->map_height)
-		{
-			result.x = 1;
-			result.y = 1;
-		}
-		else if (x > cub->map_width)
-		{
-			result.x = 1;
-			result.y = y;
-		}
-		else
-		{
-			result.x = x;
-			result.y = 1;
-		}
-	}
-	ray_map_draw_ray(cub, result.x, result.y, 0x00FF0000);//draw rays in minimap
-	result.angle = 180;
-	return (result);
-}
-
-t_ray	draw_lower_y(t_cub *cub, size_t i)
-{
-	float	x;
-	float	y;
-	float	distance;
-	t_ray	result;
-
-	distance = (int)cub->player_py + i;
-	distance = (double)distance - (double)cub->player_py;
-	x = cub->player_px - cos(angle_to_radian(get_angle(270))) * distance;
-	y = cub->player_py - sin(angle_to_radian(get_angle(270))) * distance;
-	if (x < cub->map_width && y < cub->map_height && x > 0 && y > 0)
-	{
-		result.x = x;
-		result.y = y;
-	}
-	else
-	{
-		if (x > cub->map_width && y > cub->map_height)
-		{
-			result.x = cub->map_width - 1;
-			result.y = cub->map_height - 1;
-		}
-		else if (x > cub->map_width)
-		{
-			result.x = cub->map_width - 1;
-			result.y = y;
-		}
-		else
-		{
-			result.x = x;
-			result.y = cub->map_height - 1;
-		}
-	}
-	ray_map_draw_ray(cub, result.x, result.y, 0x00FF0000);//draw rays in minimap
-	result.angle = 180;
-	return (result);
-}
-
-
-void	test(t_cub *cub, float ray_a)
-{
-	t_ray	result;
-	size_t	i;
-	i = 1;
-
-	size_t	multi;
-
-	multi = 5;
-	//result = draw_upper_y(cub, 1);
-	///*
-	result = make_tmp_ray(cub->player_px, cub->player_py, ray_a, cub);
-	while (i < 4)
-	{
-		result = draw_lower_y(cub, i);
-		printf("x:%f, y:%f, px;%f, py:%f\n", result.x, result.y, cub->player_px, cub->player_py);
-		i++;
-	}
-	//draw_upper_x 
-	i  = 1;
-
-	/*
-	result = make_tmp_ray(cub->player_px, cub->player_py, ray_a, cub);
-	while (i < multi)
-	{
-		result = draw_lower_x(cub, i);
-		i++;
-	}
-	result = draw_upper_y(cub, 2);
-	*/
-	//*/
-
-	(void)ray_a;
-	(void)cub;
 }
 
 void	ray_map_draw_rays(t_cub *cub)
@@ -563,12 +420,11 @@ void	ray_map_draw_rays(t_cub *cub)
 	anglei = 0;
 	angle = 30;
 	angle_chunk = 0.058;
-	if (ray < WIDTH)
+	while (ray < WIDTH)
 	{
-		ray_a = get_angle(cub->player_a);//cub->player_a + anglei - (angle / 2);
+		ray_a = /*get_angle(cub->player_a);*/cub->player_a + anglei - (angle / 2);
 		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
 		ray_dy = sin(angle_to_radian(get_angle(ray_a)));
-		test(cub, ray_a);
 		ray_proyection = 0;
 		x = cub->player_px + ray_dx * 0;
 		y = cub->player_py + ray_dy * 0;
@@ -576,9 +432,15 @@ void	ray_map_draw_rays(t_cub *cub)
 		{
 			x = x + ray_dx * ray_proyection;
 			y = y + ray_dy * ray_proyection;
-			ray_proyection += 0.001;
+			ray_proyection += 0.0001;
 		}
-		//draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub), ray, WIDTH);//draw walls
+		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub), ray, WIDTH);//draw walls
+		if (get_decimal(x) < get_decimal(y))
+			ray_map_draw_ray(cub, x, y, 0x0000FF00);//draw rays in minimap
+		else
+			ray_map_draw_ray(cub, x, y, 0x00FF0000);//draw rays in minimap
+		printf("x:%f, y:%f\n", get_decimal(x), get_decimal(y));
+		printf("x:%f, y:%f\n\n", x, y);
 		//ray_map_draw_ray(cub, x, y, 0x0000FF00);//draw rays in minimap
 		anglei += angle_chunk;
 		ray++;
