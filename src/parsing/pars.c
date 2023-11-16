@@ -6,160 +6,11 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:10:14 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/04 22:05:10 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:58:19 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
-
-int	count_char(int fd, int *count)
-{
-	int		read_return;
-	char	character;
-
-	character = 0;
-	while (character != '\n' || character != '\0')
-	{
-		read_return = read(fd, character, 1);
-		if (read_return == 0)
-			break;
-		if (read_return == -1)
-			return (0);
-		*count += 1;
-	}
-	return (1);
-}
-
-int	copy_line(int fd, char *line)
-{
-	int		count;
-	int		read_return;
-	char	character;
-
-	character = 0;
-	while (character != '\n' || character != '\0')
-	{
-		read_return = read(fd, character, 1);
-		if (read_return == 0 || character == '\n')
-			break;
-		if (read_return == -1)
-			return (0);
-		line[count] = character;
-		count++;
-	}
-	line[count] = '\0';
-	return (1);
-}
-
-void	data_addres(char *line, char *data_addr, int *count)
-{
-	int	i;
-
-	i = 0;
-	*count += 2;
-	while (line[*count] == ' ')
-		*count += 1;
-	if (line[*count])
-	{
-		while (line[*count + i] != '\t' || line[*count + i] != ' ')
-			i++;
-		data_addr = malloc(sizeof(char) * (i + 1));
-		if (!data_addr)
-			return (NULL);//exit???
-		ft_strlcpy(data_addr, &line[*count], i);
-	}
-}
-
-void	identifier_color(char *line, int *color, int *count)
-{
-	int		i;
-	int		numb;
-	int		rgb[3];
-	char	*digit;
-
-	numb = 0;
-	*count += 2;
-	while (line[*count] == ' ')
-		*count += 1;
-	if (line[*count])
-	{
-		while (line[*count])
-		{
-			if (!ft_isdigit(line[*count]) || numb >= 3)
-				return (0);
-			i = 0;
-			while (ft_isdigit(line[*count + i]))
-				i++;
-			digit = malloc(sizeof(char) * (i + 1));
-			if (!digit)
-				return (0);
-			ft_strlcpy(digit, &line[*count], i);
-			*count += i;
-			rgb[numb] = ft_atoi(digit);
-			free(digit);
-			if (rgb[numb] < 0 || rgb[numb] > 255)
-				return (0);
-			numb++;
-			while (line[*count] == ' ')
-				*count += 1;
-			if (line[*count] == ',')
-				*count += 1;
-			while (line[*count] == ' ')
-				*count += 1;
-		}
-		color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
-	}
-}
-
-int	fill_struct(t_cub *cub, char *line)
-{
-	int	count;
-
-	count = 0;
-	while (line[count] == ' ')
-		count++;
-	if (!ft_strncmp(&line[count], 'NO ', 3))
-		dat_addres(&line[count], &cub->no_texture->data_addr, &count);
-	else if (!ft_strncmp(&line[count], 'SO ', 3))
-		dat_addres(&line[count], &cub->so_texture->data_addr, &count);
-	else if (!ft_strncmp(&line[count], 'EA ', 3))
-		dat_addres(&line[count], &cub->ea_texture->data_addr, &count);
-	else if (!ft_strncmp(&line[count], 'WE ', 3))
-		dat_addres(&line[count], &cub->we_texture->data_addr, &count);
-	else if (!ft_strncmp(&line[count], 'F ', 2))
-		identifier_color(&line[count], &cub->color_ground, &count);
-	else if (!ft_strncmp(&line[count], 'C ', 2))
-		identifier_color(&line[count], &cub->color_sky, &count);
-	free(line);
-}
-
-int	get_line(int fd, char *file, t_cub *cub)
-{
-	int		fd2;
-	int		count;
-	char	*line;
-
-	count = 0;
-	line = NULL;
-	if (fd >= 0)
-	{
-		while (fd != 0)
-		{
-			fd2 = open(file, fd2, O_RDONLY);
-			if (!count_char(fd, &count))
-				break;
-			line = malloc(sizeof(char) * (count + 1));
-			if (!line)
-				return (0);
-			if (!copy_line(fd2, &line))
-				break;
-			fill_struct(cub, line);
-		}
-		if (fd == 0 || fd2 == 0)
-			return (1);
-	}
-	return (0);
-}
 
 int	fd_cub(char *file)
 {
@@ -171,11 +22,79 @@ int	fd_cub(char *file)
 	{
 		if (!ft_memcmp(&file[len - 4], ".cub", 4))
 		{
-			fd = open(file, fd, O_RDONLY);
+			fd = open(file, O_RDONLY);
 			return (fd);
 		}
 	}
 	return (-1);
+}
+
+int	separate(t_cub *cub, char **archive, int height_archive)
+{
+	int	count_line;
+	int	ret;
+
+	count_line = 0;
+	while (archive[count_line])
+	{
+		ret = fill_struct(cub, archive[count_line]);
+		if (!ret)
+			return (0);
+		if (ret == 2)
+			break;
+		count_line++;
+	}
+	cub->map_height = (height_archive - count_line) + 1;
+	if (!copy_map(cub, &archive[count_line]))
+		return (0);
+	if (!check_maps(cub))
+		return (0);
+	return (1);
+}
+
+int	get_line(int fd, char *file, t_cub *cub)
+{
+	char	**archive;
+	int		height_archive;
+
+	if (fd < 0)
+		return (0);
+	if (!count_height_archive(fd, &height_archive))
+		return (0);
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	archive = malloc(sizeof(char *) * (height_archive + 1));
+	if (!archive)
+		return (0);
+	if (copy_archive(fd, archive, height_archive))
+		return (separate(cub, archive, height_archive));
+	return (0);
+}
+
+void	print_parse(t_cub *cub)
+{
+	size_t i = 0;
+	size_t y = 0;
+	printf("NO %s\n", cub->no_texture->data_addr);
+	printf("SO %s\n", cub->so_texture->data_addr);
+	printf("EA %s\n", cub->ea_texture->data_addr);
+	printf("WE %s\n", cub->we_texture->data_addr);
+	printf("map_width %zu\n", cub->map_width);
+	printf("map_height %zu\n", cub->map_height);
+	printf("color_ground %d\n", cub->color_ground);
+	printf("color_sky %d\n", cub->color_sky);
+	while (i < (cub->map_height - 1))
+	{
+		y = 0;
+		while (y < cub->map_width)
+		{
+			printf("%zu", cub->map[i][y]);
+			y++;
+		}
+		printf("\n");
+		i++;
+	}
 }
 
 t_cub	*map_parsing(char *file)
@@ -185,5 +104,14 @@ t_cub	*map_parsing(char *file)
 	cub = malloc(sizeof(t_cub) * 1);
 	if (!cub)
 		return (NULL);
-	get_line(fd_cub(file), file, cub);
+	if (!init_cub(cub))
+		return (NULL);
+	if (!get_line(fd_cub(file), file, cub))
+	{
+		printf("Error\n");
+		return (NULL);
+	}
+	print_parse(cub);
+	printf("good map\n");
+	return (cub);
 }
