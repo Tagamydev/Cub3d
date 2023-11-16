@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/13 10:22:34 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/16 22:13:26 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ t_p	calculate_cam_plane(t_ray ray, t_cub *cub)
 	return (result);
 }
 
-t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub)
+t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color)
 {
 	t_ray	result;
 	t_p		cam_plane;
@@ -321,7 +321,7 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub)
 	cam_plane = calculate_cam_plane(result, cub);
 	result.distance = sqrt(pow((result.x - cam_plane.x), 2) + \
 	pow((result.y - cam_plane.y), 2));
-	result.color = ft_mix_color(0x0000FF00, 0x00000000, result.distance / 50);
+	result.color = ft_mix_color(color, 0x00000000, result.distance / 50);
 	result.color = ft_mix_color(result.color, cub->color_sky, 0.25);
 	return (result);
 }
@@ -395,9 +395,39 @@ double	get_decimal(double x)
 
 	y = (int)x;
 	result = (x * 10) - (y * 10);
+	result = result / 10;
 	return (result);
 }
 
+double	ft_ds(double xi, double xf, double yi, double yf)
+{
+	double	result;
+
+	result = sqrt(pow((xi - xf), 2) + \
+	pow((yi - yf), 2));
+	return (result);
+}
+
+double	closer_int(double n)
+{
+	double decimal;
+	double result;
+
+	decimal = get_decimal(n);
+	if (decimal == 0.5)
+	{
+		while (decimal == 0.5)
+			decimal = get_decimal(n * 10);
+	}
+	if (decimal > 0.5)
+		result = (int)n + 1;
+	else
+		result = (int)n;
+	return (result);
+}
+
+#define FRONT 1
+#define SIDE 0
 void	ray_map_draw_rays(t_cub *cub)
 {
 	int			ray;
@@ -411,6 +441,11 @@ void	ray_map_draw_rays(t_cub *cub)
 	double		angle_chunk;
 	double		anglei;
 
+	int			status1;
+	int			color1;
+	int			color2;
+	static	int	last_status = SIDE;
+
 	ray_dx = 0;
 	ray_dy = 0;
 	x = (double)cub->player_px;
@@ -422,7 +457,8 @@ void	ray_map_draw_rays(t_cub *cub)
 	angle_chunk = 0.058;
 	while (ray < WIDTH)
 	{
-		ray_a = /*get_angle(cub->player_a);*/cub->player_a + anglei - (angle / 2);
+		//ray_a = get_angle(cub->player_a);//cub->player_a + anglei - (angle / 2);
+		ray_a = cub->player_a + anglei - (angle / 2);
 		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
 		ray_dy = sin(angle_to_radian(get_angle(ray_a)));
 		ray_proyection = 0;
@@ -434,14 +470,58 @@ void	ray_map_draw_rays(t_cub *cub)
 			y = y + ray_dy * ray_proyection;
 			ray_proyection += 0.0001;
 		}
-		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub), ray, WIDTH);//draw walls
-		if (get_decimal(x) < get_decimal(y))
-			ray_map_draw_ray(cub, x, y, 0x0000FF00);//draw rays in minimap
+
+		if (ft_abs2(closer_int(y) - y) > ft_abs2(closer_int(x) - x))
+		{
+			color1 = 0x0000FF00;//draw rays in minimap
+			status1 = SIDE;
+		}
 		else
-			ray_map_draw_ray(cub, x, y, 0x00FF0000);//draw rays in minimap
-		printf("x:%f, y:%f\n", get_decimal(x), get_decimal(y));
-		printf("x:%f, y:%f\n\n", x, y);
-		//ray_map_draw_ray(cub, x, y, 0x0000FF00);//draw rays in minimap
+		{
+			color1 = 0x000000FF;//draw rays in minimap
+			status1 = FRONT;
+		}
+
+		if (ft_abs2(closer_int(y) - y) < 0.09 && ft_abs2(closer_int(x) - x) < 0.09)
+			//here i need to calculate the next ray color and the last ray color
+			status1 = last_status;
+		last_status = status1;
+
+		if (status1 == SIDE)
+		{
+			color2 = 0x0000FF00;//draw rays in minimap
+			/*
+			if (ft_abs2(get_decimal(y)) > 0.94)
+			{
+				color2 = 0x0000FF00;//draw rays in minimap
+				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
+			}
+			else if (ft_abs2(get_decimal(x)) < 0.1)
+			{
+				color2 = 0x000000FF;//draw rays in minimap
+				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
+			}
+			*/
+		}
+		else
+		{
+			color2 = 0x000000FF;//draw rays in minimap
+			/*
+			if (ft_abs2(get_decimal(x)) > 0.94)
+			{
+				color2 = 0x00ffffff;//draw rays in minimap
+				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
+			}
+			else
+			{
+				color2 = 0x00FF0000;//draw rays in minimap
+				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
+			}
+			*/
+		}
+
+		ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
+		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH);//draw walls
 		anglei += angle_chunk;
 		ray++;
 	}
