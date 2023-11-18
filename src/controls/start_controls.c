@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/08 14:13:14 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/18 04:55:18 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void	move_player(int key, t_cub *cub)
 void	increase_dpi(t_cub *cub, int key)
 {
 	if (key == 18)
-		cub->camera_speed = 1;
+		cub->camera_speed = 2;
 	else if (key == 19)
 		cub->camera_speed = 5;
 	else

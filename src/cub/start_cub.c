@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/18 03:07:05 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/18 06:00:44 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,33 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 {
 	int	i;
 	int	j;
+	float	m;
 
 	i = 0;
 	j = 0;
+	m = 0;
 	while (i != (img->height / 2))
 	{
 		j = 0;
 		while (j != img->width)
 		{
-			ft_put_pixel(img, j, i, color1);
+			ft_put_pixel(img, j, i, ft_mix_color(color1, 0, m));
 			++j;
 		}
+		m += 0.003;
 		i++;
 	}
+	m = 0;
 	while (i != img->height)
 	{
 		j = 0;
 		while (j != img->width)
 		{
-			ft_put_pixel(img, j++, i, color2);
+			//ft_put_pixel(img, j++, i, color2);
+			ft_put_pixel(img, j++, i, ft_mix_color(0, color2, m));
 		}
 		i++;
+		m += 0.003;
 	}
 }
 
@@ -89,7 +95,6 @@ void write_map(t_cub *cub)
 
 void	draw_direction(t_cub *cub)
 {
-	//====================================THIS NEED REWORK=============================================//
 	t_point	point1;
 	t_point	point2;
 	int	multiplier;
@@ -319,7 +324,7 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color)
 	cam_plane = calculate_cam_plane(result, cub);
 	result.distance = sqrt(pow((result.x - cam_plane.x), 2) + \
 	pow((result.y - cam_plane.y), 2));
-	result.color = ft_mix_color(color, 0x00000000, result.distance / 50);
+	result.color = ft_mix_color(color, 0x00000000, result.distance / 35);
 	result.color = ft_mix_color(result.color, cub->color_sky, 0.25);
 	return (result);
 }
@@ -415,7 +420,7 @@ double	closer_int(double n)
 #define FRONT 1
 #define SIDE 0
 
-int	get_next_status(t_cub *cub, float ray_a)
+int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distance)
 {
 	double		x;
 	double		y;
@@ -439,6 +444,12 @@ int	get_next_status(t_cub *cub, float ray_a)
 		status1 = SIDE;
 	else
 		status1 = FRONT;
+	*ds = ft_ds(cub->player_px, x, cub->player_py, y);
+	if (ft_abs2(closer_int(y) - y) < 0.09 && ft_abs2(closer_int(x) - x) < 0.09)
+	{
+		if (ft_abs2(last_distance - ft_ds(cub->player_px, x, cub->player_py, y) < 1))
+			status1 = get_next_status(cub, ray_a + (0.046948 * m), ds, m, *ds);
+	}
 	return (status1);
 }
 
@@ -489,21 +500,28 @@ void	ray_map_draw_rays(t_cub *cub)
 			status1 = SIDE;
 		else
 			status1 = FRONT;
-
 		if (ft_abs2(closer_int(y) - y) < 0.09 && ft_abs2(closer_int(x) - x) < 0.09)
 		{
 			if (ft_abs2(last_distance - ft_ds(cub->player_px, x, cub->player_py, y) < 1))
-				status1 = last_status;
-			else
 			{
-				if (status1 == FRONT)
-					status1 = SIDE;
+				float	after_distance;
+				float	before_distance;
+				float	actual_distance;
+				int		after_status;
+				int		before_status;
+
+				actual_distance = ft_ds(cub->player_px, x, cub->player_py, y);
+				after_status = get_next_status(cub, ray_a, &after_distance, 1, last_distance);
+				before_status = get_next_status(cub, ray_a, &before_distance, -1, last_distance);
+				before_distance = ft_abs2(before_distance - actual_distance);
+				after_distance = ft_abs2(after_distance - actual_distance);
+				if (after_distance < before_distance)
+					status1 = after_status;
 				else
-					status1 = FRONT;
-				printf("status:%d\n", status1);
-				//status1 = FRONT;
-				status1 = get_next_status(cub, ray_a + (0.046948 * 10));
+					status1 = before_status;
 			}
+			else
+				status1 = 4;
 		}
 		last_status = status1;
 
@@ -515,13 +533,15 @@ void	ray_map_draw_rays(t_cub *cub)
 				color2 = 0x000000FF;//draw rays in minimap
 			color2 = ft_mix_color(color2, 0x00000000, 0.2);
 		}
-		else
+		else if (status1 == FRONT)
 		{
 			if (get_angle(ray_a) < 180 && get_angle(ray_a) > 0)
 				color2 = 0x00FF0000;//draw rays in minimap
 			else
 				color2 = 0x00ff00ff;//draw rays in minimap
 		}
+		else
+				color2 = 0x00000000;//draw rays in minimap
 		last_distance = ft_ds(cub->player_px, x, cub->player_py, y);
 		ray_map_draw_ray(cub, x, y, 0x00FFFF06);//draw rays in minimap
 		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH);//draw walls
