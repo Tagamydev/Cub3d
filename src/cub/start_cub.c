@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/18 06:00:44 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/18 06:29:56 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,12 +319,16 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color)
 {
 	t_ray	result;
 	t_p		cam_plane;
+	float	shadow;
 
 	result = tmp_ray;
 	cam_plane = calculate_cam_plane(result, cub);
 	result.distance = sqrt(pow((result.x - cam_plane.x), 2) + \
 	pow((result.y - cam_plane.y), 2));
-	result.color = ft_mix_color(color, 0x00000000, result.distance / 35);
+	shadow = result.distance / 35;
+	if (shadow >= 1)
+		shadow = 1;
+	result.color = ft_mix_color(color, 0x00000000, shadow);
 	result.color = ft_mix_color(result.color, cub->color_sky, 0.25);
 	return (result);
 }
