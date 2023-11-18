@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/16 22:13:26 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/18 03:07:05 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,6 @@ void	copy_map_to_ray_map(t_cub *cub)
 				cub->map_4_ray[x] = 2;
 			else
 				cub->map_4_ray[x] = 0;
-			//printf("%d, ", cub->map_4_ray[x]);
 			x++;
 			j++;
 		}
@@ -226,9 +225,7 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 
 	offset = 10;
 	point1.x = cub->player_px * offset;
-	//point1.x += 5;
 	point1.y = cub->player_py * offset;
-	//point1.y += 5;
 	point1.z = 0;
 	point1.color = color;
 	point2.x = x * offset;
@@ -254,9 +251,10 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays)
 	i = 0;
 	len = WIDTH / total_rays;
 	start_x = len * actual_ray;
-	distance = HEIGHT - ray.distance;
-	distance = distance / 2;
-	offset_up = ((HEIGHT / 2) - distance) * 15;
+	distance = (320 * 10) / ray.distance;
+	//distance = HEIGHT - ray.distance;
+	distance = distance / 5;
+	offset_up = ((HEIGHT / 2) - distance);
 	offset_down = (HEIGHT - offset_up);
 	color_ground_mix = 0;
 	while (i < HEIGHT)
@@ -339,15 +337,6 @@ t_ray	make_tmp_ray(float x, float y, float angle, t_cub *cub)
 		result.side = -1;
 	return (result);
 }
-//quadrant_1();
-//quadrant_2();
-//quadrant_3();
-//quadrant_4();
-
-//upper_vertical_line();
-//lower_vertical_line();
-//lower_horizontal_line();
-//upper_horizontal_line();
 
 t_p	ray_to_point(t_ray ray)
 {
@@ -358,11 +347,8 @@ t_p	ray_to_point(t_ray ray)
 	result.dx = cos(angle_to_radian(get_angle(ray.angle))) * 3;
 	result.dy = sin(angle_to_radian(get_angle(ray.angle))) * 3;
 	return (result);
-
-	//point1.x += 5;
-	//point1.y += 5;
-
 }
+
 void	ft_line(float x1, float y1, float x2, float y2, t_cub *cub, int color)
 {
 	t_point	point1;
@@ -428,6 +414,34 @@ double	closer_int(double n)
 
 #define FRONT 1
 #define SIDE 0
+
+int	get_next_status(t_cub *cub, float ray_a)
+{
+	double		x;
+	double		y;
+	double		ray_dx;
+	double		ray_dy;
+	float		ray_proyection;
+	int			status1;
+
+	ray_proyection = 0;
+	ray_dx = cos(angle_to_radian(get_angle(ray_a)));
+	ray_dy = sin(angle_to_radian(get_angle(ray_a)));
+	x = cub->player_px + ray_dx * 0;
+	y = cub->player_py + ray_dy * 0;
+	while (cub->map[(int)y][(int)x] != 1 && cub->map[(int)y][(int)x] != 6)
+	{
+		x = x + ray_dx * ray_proyection;
+		y = y + ray_dy * ray_proyection;
+		ray_proyection += 0.0001;
+	}
+	if (ft_abs2(closer_int(y) - y) > ft_abs2(closer_int(x) - x))
+		status1 = SIDE;
+	else
+		status1 = FRONT;
+	return (status1);
+}
+
 void	ray_map_draw_rays(t_cub *cub)
 {
 	int			ray;
@@ -442,9 +456,9 @@ void	ray_map_draw_rays(t_cub *cub)
 	double		anglei;
 
 	int			status1;
-	int			color1;
 	int			color2;
-	static	int	last_status = SIDE;
+	int			last_status = SIDE;
+	double		last_distance;
 
 	ray_dx = 0;
 	ray_dy = 0;
@@ -454,7 +468,8 @@ void	ray_map_draw_rays(t_cub *cub)
 	ray_proyection = 0;
 	anglei = 0;
 	angle = 30;
-	angle_chunk = 0.058;
+	angle_chunk = 0.046948;
+	last_distance = INT_MAX;
 	while (ray < WIDTH)
 	{
 		//ray_a = get_angle(cub->player_a);//cub->player_a + anglei - (angle / 2);
@@ -470,57 +485,45 @@ void	ray_map_draw_rays(t_cub *cub)
 			y = y + ray_dy * ray_proyection;
 			ray_proyection += 0.0001;
 		}
-
 		if (ft_abs2(closer_int(y) - y) > ft_abs2(closer_int(x) - x))
-		{
-			color1 = 0x0000FF00;//draw rays in minimap
 			status1 = SIDE;
-		}
 		else
-		{
-			color1 = 0x000000FF;//draw rays in minimap
 			status1 = FRONT;
-		}
 
 		if (ft_abs2(closer_int(y) - y) < 0.09 && ft_abs2(closer_int(x) - x) < 0.09)
-			//here i need to calculate the next ray color and the last ray color
-			status1 = last_status;
+		{
+			if (ft_abs2(last_distance - ft_ds(cub->player_px, x, cub->player_py, y) < 1))
+				status1 = last_status;
+			else
+			{
+				if (status1 == FRONT)
+					status1 = SIDE;
+				else
+					status1 = FRONT;
+				printf("status:%d\n", status1);
+				//status1 = FRONT;
+				status1 = get_next_status(cub, ray_a + (0.046948 * 10));
+			}
+		}
 		last_status = status1;
 
 		if (status1 == SIDE)
 		{
-			color2 = 0x0000FF00;//draw rays in minimap
-			/*
-			if (ft_abs2(get_decimal(y)) > 0.94)
-			{
+			if (get_angle(ray_a) < 270 && get_angle(ray_a) > 90)
 				color2 = 0x0000FF00;//draw rays in minimap
-				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
-			}
-			else if (ft_abs2(get_decimal(x)) < 0.1)
-			{
+			else
 				color2 = 0x000000FF;//draw rays in minimap
-				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
-			}
-			*/
+			color2 = ft_mix_color(color2, 0x00000000, 0.2);
 		}
 		else
 		{
-			color2 = 0x000000FF;//draw rays in minimap
-			/*
-			if (ft_abs2(get_decimal(x)) > 0.94)
-			{
-				color2 = 0x00ffffff;//draw rays in minimap
-				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
-			}
-			else
-			{
+			if (get_angle(ray_a) < 180 && get_angle(ray_a) > 0)
 				color2 = 0x00FF0000;//draw rays in minimap
-				ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
-			}
-			*/
+			else
+				color2 = 0x00ff00ff;//draw rays in minimap
 		}
-
-		ray_map_draw_ray(cub, x, y, color2);//draw rays in minimap
+		last_distance = ft_ds(cub->player_px, x, cub->player_py, y);
+		ray_map_draw_ray(cub, x, y, 0x00FFFF06);//draw rays in minimap
 		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH);//draw walls
 		anglei += angle_chunk;
 		ray++;
