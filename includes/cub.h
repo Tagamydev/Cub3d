@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/18 06:01:10 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/18 23:35:25 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@
 # define SPEED 0.6
 # define COSX cos(angle_to_radian(get_angle(ray_a)))
 # define SINY sin(angle_to_radian(get_angle(ray_a)))
+
+typedef struct s_tex{
+	int		tex[16][16];
+	size_t	size;
+}				t_tex;
 
 typedef struct s_img{
 	void	*img;
