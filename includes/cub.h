@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/18 23:35:25 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:18:23 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,9 @@ typedef struct s_cub{
 	void	*win;
 	void	*ray_win;
 	t_img	*game;
+	t_img	*cam;
+	t_img	*hud_o;
+	t_img	*hud_c;
 	t_img	*minimap;
 	t_img	*ray_map;
 	//=========================//
@@ -110,6 +113,7 @@ typedef struct s_ray{
 	float	angle;
 	float	distance;
 	float	color;
+	float	shadow;
 	int		side;
 }				t_ray;
 

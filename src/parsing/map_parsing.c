@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/19 05:27:12 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/20 10:57:00 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,21 @@ t_cub	*map_parsing(char *file)
 	cub->game = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->game)
 		return (NULL);
+	cub->cam = ft_init_img(cub->mlx, WIDTH, HEIGHT);
+	if (!cub->cam)
+		return (NULL);
+	cub->hud_o = ft_open_img(cub->mlx, "./src/img/hud_o.xpm");
+	if (!cub->hud_o)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+	cub->hud_c = ft_open_img(cub->mlx, "./src/img/hud_c.xpm");
+	if (!cub->hud_c)
+	{
+		printf("error\n");
+		return (NULL);
+	}
 	cub->minimap = ft_init_img(cub->mlx, 140, 140);
 	if (!cub->minimap)
 		return (NULL);
@@ -177,11 +192,11 @@ t_cub	*map_parsing(char *file)
 	cub->player_py = 22;//18
 	cub->player_px += 0.5;
 	cub->player_py += 0.5;
-	cub->player_a = 270;
+	cub->player_a = 0;
 	put_deltas(cub);
 	cub->map_4_ray = ft_calloc(sizeof(int), ((cub->map_width * cub->map_height) + 1));
 	cub->camera_speed = 2;
-	cub->door = 1;
+	cub->door = 0;
 	cub->fisheye = 0;
 	if (!cub->map_4_ray)
 		return (NULL);

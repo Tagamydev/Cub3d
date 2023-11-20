@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/19 06:13:37 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:18:25 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ double	get_decimal(double x)
 	result = result / 10;
 	return (result);
 }
+
+double	ft_abs2(double x)
+{
+	if (x < 0)
+		x = -x;
+	return (x);
+}
+
 
 double	closer_int(double n)
 {
@@ -62,19 +70,21 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 	int	i;
 	int	j;
 	float	m;
+	int	color;
 
 	i = 0;
 	j = 0;
 	m = 0;
-	while (i != (img->height / 2))
+	while (i != (img->height / 3))
 	{
 		j = 0;
 		while (j != img->width)
 		{
-			ft_put_pixel(img, j, i, ft_mix_color(color1, 0, m));
+			color = ft_mix_color(color1, 0, m);
+			ft_put_pixel(img, j, i, color);
 			++j;
 		}
-		m += 0.00456;
+		m += 0.00725;
 		//m += 0.00425;
 		i++;
 	}
@@ -84,11 +94,11 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 		j = 0;
 		while (j != img->width)
 		{
-			//ft_put_pixel(img, j++, i, color2);
-			ft_put_pixel(img, j++, i, ft_mix_color(0, color2, m));
+			color = ft_mix_color(0, color2, m);
+			ft_put_pixel(img, j++, i, color);
 		}
 		i++;
-		m += 0.003;
+		m += 0.0020;
 	}
 }
 
@@ -274,6 +284,14 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 }
 
 int	tex[16][16] = {\
+	{0x00FF0000, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0x0000FF00}, \
+	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
+	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
+	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
+	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
+	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
+	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
+	{0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FFFFFF}, \
 	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
 	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
 	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
@@ -281,18 +299,10 @@ int	tex[16][16] = {\
 	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
 	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
 	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
-	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
-	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
-	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
-	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
-	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
-	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
-	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
-	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
-	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}};
+	{0x000000FF, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}};
 
 
-void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays)
+void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int side)
 {
 	int		i;
 	int		j;
@@ -303,17 +313,97 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays)
 	int		offset_down;
 	float	color_ground_mix;
 	double	distance;
+	int		fog;
 	size_t	wall_len;
+	int		actual_chunk;
+	int		size;
+	float	start_point;
 
 	i = 0;
+	fog = 0;
+	start_point = 0;
 	len = WIDTH / total_rays;
 	start_x = len * actual_ray;
-	distance = (320 * 10) / ray.distance;
+	distance = (240 * 15) / ray.distance;
 	distance = distance / 5;
-	offset_up = ((HEIGHT / 2) - distance);
-	offset_down = (HEIGHT - offset_up);
+	offset_up = ((HEIGHT / 3) - distance);
+	offset_down = (HEIGHT / 1.5 - offset_up);
 	color_ground_mix = 0;
 	wall_len = 0;
+	size = 16;
+	if (side == 0x00FF0000)
+	{
+		actual_chunk = size - (get_decimal(ray.x) * size);
+		//printf("south\n");
+	}
+	else if (side == 0x00FF00FF)
+	{
+		actual_chunk = (get_decimal(ray.x) * size);
+		//printf("north\n");
+	}
+	else if (side == 0xcc)
+	{
+		actual_chunk = (get_decimal(ray.y) * size);
+		//printf("east\n");
+	}
+	else if (side == 0xcc00)
+	{
+		actual_chunk = size - (get_decimal(ray.y) * size);
+		//printf("west\n");
+	}
+	else
+	{
+		actual_chunk = 0;
+		fog = 1;
+		//printf("fog\n");
+	}
+	if (actual_chunk < 0)
+		actual_chunk = 0;
+	if (actual_chunk > size -1)
+		actual_chunk = size - 1;
+	while (i < HEIGHT)
+	{
+		j = start_x;
+		k = 0;
+		while (k != len)
+		{
+			if (i > offset_up && i < offset_down)
+				wall_len += 1;
+			k++;
+			j++;
+		}
+		i++;
+	}
+	float pixel;
+	i = 0;
+	j = 0;
+	float	x;
+	float	txt_offu;
+	float	txt_offd;
+	float	end_point;
+	float	second_ds;
+	
+	end_point = size;
+	float up;
+	float down;
+	up = 4.5;
+	down = 2.25;
+	if (ray.distance < up)
+	{
+		txt_offu = up - ray.distance;
+		start_point = txt_offu * size / up;
+		if (ray.distance < down)
+		{
+			second_ds = size - start_point;
+			txt_offd = down - ray.distance;
+			end_point = (txt_offd * second_ds / down);
+			start_point -= end_point;
+			end_point = 20;
+			printf("end point:%f\n", end_point);
+		}
+	}
+	pixel = (float)ft_abs2(start_point - end_point) / (float)wall_len;
+	x = start_point;
 	while (i < HEIGHT)
 	{
 		j = start_x;
@@ -322,15 +412,22 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays)
 		{
 			if (i > offset_up && i < offset_down)
 			{
-			//	ray.color = tex[0][(int)(get_decimal(ray.x) * 16)];
+				if (!fog)
+					ray.color = tex[(int)x][actual_chunk];
+				ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
 				ft_put_pixel(cub->game, j, i, ray.color);
-				wall_len += 1;
+				x += pixel;
+				if (x > size - 1)
+					x = size - 1;
+				if (x < 0)
+					x = 0;
 			}
 			k++;
 			j++;
 		}
 		i++;
 	}
+	(void)cub;
 }
 
 //==============================================================================//
@@ -385,23 +482,16 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color)
 	t_ray	result;
 	t_p		cam_plane;
 	float	shadow;
-	int		color_sky;
-	float	sky;
 
 	result = tmp_ray;
 	cam_plane = calculate_cam_plane(result, cub);
 	result.distance = sqrt(pow((result.x - cam_plane.x), 2) + \
 	pow((result.y - cam_plane.y), 2));
 	shadow = result.distance / 21;
-	sky = result.distance / 47;
 	if (shadow >= 1)
 		shadow = 1;
-	if (sky >= 1)
-		sky = 1;
-	color_sky = ft_mix_color(cub->color_sky, 0x00000000, sky);
-	result.color = ft_mix_color(color, cub->color_sky, 0.25);
-		result.color = ft_mix_color(result.color, 0x00000000, shadow);
-	//result.color = ft_mix_color(result.color, color_sky, shadow);
+	result.color = color;
+	result.shadow = shadow;
 	return (result);
 }
 
@@ -447,14 +537,6 @@ void	ft_line(float x1, float y1, float x2, float y2, t_cub *cub, int color)
 	point2.color = color;
 	ft_put_line(point1, point2, cub->ray_map);
 }
-
-double	ft_abs2(double x)
-{
-	if (x < 0)
-		x = -x;
-	return (x);
-}
-
 double	ft_ds(double xi, double xf, double yi, double yf)
 {
 	double	result;
@@ -485,7 +567,10 @@ int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distan
 	{
 		x = x + ray_dx * ray_proyection;
 		y = y + ray_dy * ray_proyection;
-		ray_proyection += 0.0001;
+		if (last_distance > 1)
+			ray_proyection += 0.0001;
+		else
+			ray_proyection += 0.001;
 	}
 	if (ft_abs2(closer_int(y) - y) > ft_abs2(closer_int(x) - x))
 		status1 = SIDE;
@@ -531,15 +616,16 @@ void	ray_map_draw_rays(t_cub *cub)
 	anglei = 0;
 	angle = 30;
 	angle_chunk = 0.046948;
+	angle_chunk = angle_chunk * 3;
 	last_distance = INT_MAX;
-	while (ray < WIDTH)
+	while (ray < WIDTH / 3)
 	{
 		//ray_a = get_angle(cub->player_a);//cub->player_a + anglei - (angle / 2);
 		ray_a = cub->player_a + anglei - (angle / 2);
 		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
 		ray_dy = sin(angle_to_radian(get_angle(ray_a)));
-		fogxf = cub->player_px + cos(angle_to_radian(get_angle(ray_a))) * 30;
-		fogyf = cub->player_py + sin(angle_to_radian(get_angle(ray_a))) * 30;
+		fogxf = cub->player_px + cos(angle_to_radian(get_angle(ray_a))) * 20;
+		fogyf = cub->player_py + sin(angle_to_radian(get_angle(ray_a))) * 20;
 		fog_ds = ft_ds(cub->player_px, fogxf, cub->player_py, fogyf);
 		//ray_map_draw_ray(cub, fogxf, fogyf, 0x00FFFF06);//draw rays in minimap
 		ray_proyection = 0;
@@ -555,8 +641,10 @@ void	ray_map_draw_rays(t_cub *cub)
 			ray_proyection += 0.0001;
 		}
 		ray_map_draw_ray(cub, x, y, 0x00FFFF06);//draw rays in minimap
+		/*
 		if ((int)(ray_a * 10) == (int)(cub->player_a * 10))
 			printf("distance:%f\n", actual_ds);
+			*/
 		if (actual_ds < fog_ds)
 		{
 			if (ft_abs2(closer_int(y) - y) > ft_abs2(closer_int(x) - x))
@@ -615,7 +703,7 @@ void	ray_map_draw_rays(t_cub *cub)
 				color2 = ft_mix_color(cub->color_sky, 0, 0.10);
 		last_distance = ft_ds(cub->player_px, x, cub->player_py, y);
 		//ray_map_draw_ray(cub, x, y, 0x00FFFF06);//draw rays in minimap
-		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH);//draw walls
+		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH / 3, color2);//draw walls
 		anglei += angle_chunk;
 		ray++;
 	}
@@ -632,20 +720,22 @@ void	draw_cross(t_cub *cub)
 {
 	t_point	point1;
 	t_point	point2;
+	float	h;
 
+	h = HEIGHT / 1.3;
 	point1.z = 0;
 	point2.z = 0;
 	point1.color = 0x00FFFFFF;
 	point2.color = 0x00FFFFFF;
 	point1.x = (WIDTH / 2) - 10;
-	point1.y = HEIGHT / 2;
+	point1.y = h / 2;
 	point2.x = (WIDTH / 2) + 10;
-	point2.y = HEIGHT / 2;
+	point2.y = h / 2;
 	ft_put_line(point1, point2, cub->game);
 	point1.x = (WIDTH / 2);
-	point1.y = (HEIGHT / 2) - 10;
+	point1.y = (h / 2) - 10;
 	point2.x = (WIDTH / 2);
-	point2.y = (HEIGHT / 2) + 10;
+	point2.y = (h / 2) + 10;
 	ft_put_line(point1, point2, cub->game);
 }
 
@@ -654,6 +744,7 @@ void	start_cub(t_cub *cub)
 {
 	fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground);
 	ft_fill_img(cub->minimap, 0x00000000);
+	ft_fill_img(cub->cam, ft_mix_color(0x0000FF00, 0xFF000000, 0.25));
 	draw_minimap(cub);
 	copy_map_to_ray_map(cub);
 	draw_rays(cub);
@@ -662,8 +753,17 @@ void	start_cub(t_cub *cub)
 	draw_ray_map(cub);
 	draw_cross(cub);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
+	if (cub->door == 1)
+	{
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->cam->img, 0, 0);
+	//	mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_o->img, 0, 0);
+	}
+	else
+	{
+		;//mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
+	}
+	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
 	mlx_put_image_to_window(cub->mlx, cub->ray_win, cub->ray_map->img, 0, 0);
-	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 0, 0);
 	return ;
 	(void)cub;
 }
