@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/20 10:57:00 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/21 09:21:38 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ t_cub	*map_parsing(char *file)
 	cub->color_ground = 0x00FF0000;
 	cub->color_sky = 0x000FF0FF;
 	cub->minimap_zoom = ZOOM_L;
-	cub->player_px = 13;//6
+	cub->player_px = 40;//6
 	cub->player_py = 22;//18
 	cub->player_px += 0.5;
 	cub->player_py += 0.5;

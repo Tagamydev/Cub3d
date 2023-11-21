@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/20 15:18:25 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/21 10:14:51 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 	i = 0;
 	j = 0;
 	m = 0;
-	while (i != (img->height / 3))
+	while (i != (img->height / 2 - 83))
 	{
 		j = 0;
 		while (j != img->width)
@@ -84,10 +84,26 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 			ft_put_pixel(img, j, i, color);
 			++j;
 		}
-		m += 0.00725;
-		//m += 0.00425;
+		m += (float)1 / (float)(img->height / 2 - 83);
 		i++;
 	}
+	float x;
+
+	x = 0;
+	while (x != 71)
+	{
+		color = ft_mix_color(color1, 0, m);
+		j = 0;
+		while (j != img->width)
+		{
+			color = ft_mix_color(color1, 0, m);
+			ft_put_pixel(img, j, i, 0x0000FF00);
+			++j;
+		}
+		i++;
+		x++;
+	}
+	x = (float)1 / (float)ft_abs(HEIGHT - i);
 	m = 0;
 	while (i != img->height)
 	{
@@ -98,7 +114,7 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 			ft_put_pixel(img, j++, i, color);
 		}
 		i++;
-		m += 0.0020;
+		m += x;
 	}
 }
 
@@ -317,17 +333,15 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	size_t	wall_len;
 	int		actual_chunk;
 	int		size;
-	float	start_point;
 
 	i = 0;
 	fog = 0;
-	start_point = 0;
 	len = WIDTH / total_rays;
 	start_x = len * actual_ray;
 	distance = (240 * 15) / ray.distance;
 	distance = distance / 5;
-	offset_up = ((HEIGHT / 3) - distance);
-	offset_down = (HEIGHT / 1.5 - offset_up);
+	offset_up = ((HEIGHT / 2.5) - distance);
+	offset_down = (HEIGHT / 1.25 - offset_up);
 	color_ground_mix = 0;
 	wall_len = 0;
 	size = 16;
@@ -375,34 +389,25 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 		i++;
 	}
 	float pixel;
+	float	start_point;
+	float	end_point;
+	int		real_wall_ds;
+	float	x;
+
 	i = 0;
 	j = 0;
-	float	x;
-	float	txt_offu;
-	float	txt_offd;
-	float	end_point;
-	float	second_ds;
-	
+	real_wall_ds = ft_abs(offset_up - offset_down);
+	start_point = 0;
 	end_point = size;
-	float up;
-	float down;
-	up = 4.5;
-	down = 2.25;
-	if (ray.distance < up)
+	if (offset_up < 0)
 	{
-		txt_offu = up - ray.distance;
-		start_point = txt_offu * size / up;
-		if (ray.distance < down)
+		start_point = (float)(ft_abs(offset_up) * 16) / (float)real_wall_ds;
+		if (offset_down > HEIGHT)
 		{
-			second_ds = size - start_point;
-			txt_offd = down - ray.distance;
-			end_point = (txt_offd * second_ds / down);
-			start_point -= end_point;
-			end_point = 20;
-			printf("end point:%f\n", end_point);
+			end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * 16) / (float)real_wall_ds);
 		}
 	}
-	pixel = (float)ft_abs2(start_point - end_point) / (float)wall_len;
+	pixel = ft_abs2(start_point - end_point) / (float)wall_len;
 	x = start_point;
 	while (i < HEIGHT)
 	{
@@ -627,7 +632,6 @@ void	ray_map_draw_rays(t_cub *cub)
 		fogxf = cub->player_px + cos(angle_to_radian(get_angle(ray_a))) * 20;
 		fogyf = cub->player_py + sin(angle_to_radian(get_angle(ray_a))) * 20;
 		fog_ds = ft_ds(cub->player_px, fogxf, cub->player_py, fogyf);
-		//ray_map_draw_ray(cub, fogxf, fogyf, 0x00FFFF06);//draw rays in minimap
 		ray_proyection = 0;
 		x = cub->player_px + ray_dx * 0;
 		y = cub->player_py + ray_dy * 0;
@@ -702,8 +706,8 @@ void	ray_map_draw_rays(t_cub *cub)
 		else
 				color2 = ft_mix_color(cub->color_sky, 0, 0.10);
 		last_distance = ft_ds(cub->player_px, x, cub->player_py, y);
-		//ray_map_draw_ray(cub, x, y, 0x00FFFF06);//draw rays in minimap
 		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH / 3, color2);//draw walls
+		//draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, 1, color2);//draw walls
 		anglei += angle_chunk;
 		ray++;
 	}
@@ -755,12 +759,12 @@ void	start_cub(t_cub *cub)
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
 	if (cub->door == 1)
 	{
-		mlx_put_image_to_window(cub->mlx, cub->win, cub->cam->img, 0, 0);
-	//	mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_o->img, 0, 0);
+		//mlx_put_image_to_window(cub->mlx, cub->win, cub->cam->img, 0, 0);
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_o->img, 0, 0);
 	}
 	else
 	{
-		;//mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
 	}
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
 	mlx_put_image_to_window(cub->mlx, cub->ray_win, cub->ray_map->img, 0, 0);

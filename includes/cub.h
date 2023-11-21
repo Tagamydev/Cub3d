@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/20 15:18:23 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/21 09:49:55 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define COLOR_P 0x8CFF0000
 # define PI 3.1415926535
 # define DR 0.0174533
-# define SPEED 0.6
+# define SPEED 0.5
 # define COSX cos(angle_to_radian(get_angle(ray_a)))
 # define SINY sin(angle_to_radian(get_angle(ray_a)))
 
