@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/21 09:21:38 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:31:14 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ t_img	*ft_open_img(void *mlx, char *path)
 	img->img = mlx_xpm_file_to_image(mlx, path, &img->width, &img->height);
 	if (!img->img)
 		return (NULL);
+	img->data_addr = mlx_get_data_addr(img->img, &(img->bits_per_pixel), \
+	&(img->line_size), &(img->endian));
+	img->pixel_addr = (int *)mlx_get_data_addr(img->img, &(img->bits_per_pixel), \
+	&(img->line_size), &(img->endian));
 	return (img);
 }
 
@@ -167,6 +171,10 @@ t_cub	*map_parsing(char *file)
 	cub->cam = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->cam)
 		return (NULL);
+	cub->atm = ft_init_img(cub->mlx, WIDTH, HEIGHT);
+	if (!cub->atm)
+		return (NULL);
+
 	cub->hud_o = ft_open_img(cub->mlx, "./src/img/hud_o.xpm");
 	if (!cub->hud_o)
 	{
@@ -185,7 +193,9 @@ t_cub	*map_parsing(char *file)
 	cub->ray_map = ft_init_img(cub->mlx, cub->map_width * 10, cub->map_height * 10);
 	if (!cub->ray_map)
 		return (NULL);
-	cub->color_ground = 0x00FF0000;
+	//cub->color_ground = 0x00FF0000;
+	cub->color_ground = 0x00FFFFFF;
+	//cub->color_ground = 0x00FF00FF;
 	cub->color_sky = 0x000FF0FF;
 	cub->minimap_zoom = ZOOM_L;
 	cub->player_px = 40;//6

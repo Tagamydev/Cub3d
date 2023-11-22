@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/21 10:20:21 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 10:15:00 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_tex{
 typedef struct s_img{
 	void	*img;
 	char	*data_addr;
+	int		*pixel_addr;
 	int		bits_per_pixel;
 	int		line_size;
 	int		endian;
@@ -85,8 +86,10 @@ typedef struct s_cub{
 	void	*ray_win;
 	t_img	*game;
 	t_img	*cam;
+	t_img	*atm;
 	t_img	*hud_o;
 	t_img	*hud_c;
+	t_img	*result;
 	t_img	*minimap;
 	t_img	*ray_map;
 	//=========================//
@@ -106,6 +109,12 @@ typedef struct s_cub{
 	//           CAM           //
 	int		fisheye;
 }				t_cub;
+
+typedef struct s_win{
+	void	*mlx;
+	void	*win;
+	t_img	*result;
+}				t_win;
 
 typedef struct s_ray{
 	float	x;

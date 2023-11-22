@@ -6,11 +6,16 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/21 10:20:18 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 10:14:59 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
+
+unsigned int	get_pixel_img(t_img *img, int x, int y)
+{
+	return (*(unsigned int *)((img->data_addr + (y * img->line_size) + (x * img->bits_per_pixel / 8))));
+}
 
 double	angle_to_radian(double angle)
 {
@@ -347,22 +352,22 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	size = 16;
 	if (side == 0x00FF0000)
 	{
-		actual_chunk = size - (get_decimal(ray.x) * size);
+		actual_chunk = size - (get_decimal(ray.x) * (float)size);
 		//printf("south\n");
 	}
 	else if (side == 0x00FF00FF)
 	{
-		actual_chunk = (get_decimal(ray.x) * size);
+		actual_chunk = (get_decimal(ray.x) * (float)size);
 		//printf("north\n");
 	}
 	else if (side == 0xcc)
 	{
-		actual_chunk = (get_decimal(ray.y) * size);
+		actual_chunk = (get_decimal(ray.y) * (float)size);
 		//printf("east\n");
 	}
 	else if (side == 0xcc00)
 	{
-		actual_chunk = size - (get_decimal(ray.y) * size);
+		actual_chunk = size - (get_decimal(ray.y) * (float)size);
 		//printf("west\n");
 	}
 	else
@@ -590,6 +595,39 @@ int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distan
 	return (status1);
 }
 
+float	ft_fit_char(float n, float min, float max)
+{
+	float	range;
+	float	result;
+
+	range = ft_abs2(min - max);
+	result = (float)(n * range) / (float)(255);
+	return (result);
+}
+
+float	ft_random(float n, float min, float max)
+{
+	int				i;
+	size_t			j;
+	int				fd;
+	static int		decimals;
+	static double	result = 7;
+
+	fd = open("/dev/urandom", O_RDONLY);
+	i = 0;
+	j = 0;
+	while (j < (size_t)n)
+	{
+		decimals = i;
+		read(fd, &i, 1);
+		j++;
+	}
+	result = ft_fit_char(decimals, 0, 1);
+	result = ft_fit_char((float)i + result, min, max);
+	close(fd);
+	return (result);
+}
+
 void	ray_map_draw_rays(t_cub *cub)
 {
 	int			ray;
@@ -743,12 +781,30 @@ void	draw_cross(t_cub *cub)
 	ft_put_line(point1, point2, cub->game);
 }
 
+t_win	tmp_win(void *mlx, void *win, t_img *result)
+{
+	t_win	final;
+
+	final.mlx = mlx;
+	final.win = win;
+	final.result = result;
+	return (final);
+}
+
+void	put_img_win(t_img img, t_win win, int x, int y)
+{
+	(void)img;
+	(void)win;
+	(void)x;
+	(void)y;
+}
+
 //write_map(cub);
 void	start_cub(t_cub *cub)
 {
 	fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground);
 	ft_fill_img(cub->minimap, 0x00000000);
-	ft_fill_img(cub->cam, ft_mix_color(0x0000FF00, 0xFF000000, 0.25));
+	ft_fill_img(cub->atm, ft_mix_color(ft_mix_color(cub->color_sky, cub->color_ground, 0.5), 0xFF000000, 0.60));
 	draw_minimap(cub);
 	copy_map_to_ray_map(cub);
 	draw_rays(cub);
@@ -757,9 +813,10 @@ void	start_cub(t_cub *cub)
 	draw_ray_map(cub);
 	draw_cross(cub);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
+	mlx_put_image_to_window(cub->mlx, cub->win, cub->atm->img, 0, 0);
 	if (cub->door == 1)
 	{
-		//mlx_put_image_to_window(cub->mlx, cub->win, cub->cam->img, 0, 0);
+		printf("%f\n", ft_random(1, 0, 1));
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_o->img, 0, 0);
 	}
 	else
