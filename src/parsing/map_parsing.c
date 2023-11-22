@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 13:14:59 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:51:22 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,13 @@ t_cub	*map_parsing(char *file)
 		printf("error\n");
 		return (NULL);
 	}
+	cub->hand = ft_open_img(cub->mlx, "./src/img/hand.xpm");
+	if (!cub->hand)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+
 	cub->noise1 = ft_open_img(cub->mlx, "./src/img/noise1.xpm");
 	if (!cub->noise1)
 	{
@@ -241,6 +248,7 @@ t_cub	*map_parsing(char *file)
 	//cub->color_ground = 0x00FF00FF;
 	cub->color_sky = 0x000FF0FF;
 	cub->minimap_zoom = ZOOM_L;
+	cub->cam_status = OFF;
 	cub->player_px = 40;//6
 	cub->player_py = 22;//18
 	cub->player_px += 0.5;

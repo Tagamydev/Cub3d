@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 13:15:01 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:55:07 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,14 @@ void	key_press(int key, void *param)
 		else
 			cub->fisheye = 0;
 	}
-	//printf("angle: %d\n", key);
+	else if (key == 36)
+	{
+		if (cub->cam_status == OFF)
+			cub->cam_status = ON;
+		else
+			cub->cam_status = OFF;
+	}
+	printf("angle: %d\n", key);
 	start_cub(cub);
 }
 
@@ -238,7 +245,6 @@ void	frame(void *param)
 	static size_t	k = 0;
 
 	cub = (t_cub *)param;
-	//printf("frame:%zu\n", i++);
 	if (i % 7 == 0)
 	{
 		if (j % 7 == 0)

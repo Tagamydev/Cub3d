@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 13:05:18 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:21:18 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,17 +150,30 @@ double	get_angle(double angle)
 	return (angle);
 }
 
-void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
+void	fill_img_sky_n_ground(t_img *img, int color1, int color2, int status)
 {
 	int	i;
 	int	j;
 	float	m;
 	int	color;
+	float x;
 
 	i = 0;
 	j = 0;
 	m = 0;
-	while (i != (img->height / 2 - 83))
+	int cam;
+	int ground;
+	if (status == OFF)
+	{
+		cam = 83;
+		ground = 12;
+	}
+	else
+	{
+		cam = 71;
+		ground = 24;
+	}
+	while (i != (img->height / 2 - cam))
 	{
 		j = 0;
 		while (j != img->width)
@@ -169,13 +182,11 @@ void	fill_img_sky_n_ground(t_img *img, int color1, int color2)
 			ft_put_pixel(img, j, i, color);
 			++j;
 		}
-		m += (float)1 / (float)(img->height / 2 - 83);
+		m += (float)1 / (float)(img->height / 2 - cam);
 		i++;
 	}
-	float x;
-
 	x = 0;
-	while (x != 71)
+	while (x != cam - ground)
 	{
 		color = ft_mix_color(color1, 0, m);
 		j = 0;
@@ -291,11 +302,6 @@ void	draw_minimark(t_cub *cub)
 		}
 		i++;
 	}
-}
-
-void	draw_rays(t_cub	*cub)
-{
-	(void)cub;
 }
 
 void	copy_map_to_ray_map(t_cub *cub)
@@ -419,6 +425,12 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	int		actual_chunk;
 	int		size;
 
+	float pixel;
+	float	start_point;
+	float	end_point;
+	int		real_wall_ds;
+	float	x;
+
 	i = 0;
 	fog = 0;
 	len = WIDTH / total_rays;
@@ -467,55 +479,63 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 		while (k != len)
 		{
 			if (i > offset_up && i < offset_down)
-				wall_len += 1;
-			k++;
-			j++;
-		}
-		i++;
-	}
-	float pixel;
-	float	start_point;
-	float	end_point;
-	int		real_wall_ds;
-	float	x;
-
-	i = 0;
-	j = 0;
-	real_wall_ds = ft_abs(offset_up - offset_down);
-	start_point = 0;
-	end_point = size;
-	if (offset_up < 0)
-	{
-		start_point = (float)(ft_abs(offset_up) * 16) / (float)real_wall_ds;
-		if (offset_down > HEIGHT)
-		{
-			end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * 16) / (float)real_wall_ds);
-		}
-	}
-	pixel = ft_abs2(start_point - end_point) / (float)wall_len;
-	x = start_point;
-	while (i < HEIGHT)
-	{
-		j = start_x;
-		k = 0;
-		while (k != len)
-		{
-			if (i > offset_up && i < offset_down)
 			{
-				if (!fog)
-					ray.color = tex[(int)x][actual_chunk];
-				ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
-				ft_put_pixel(cub->game, j, i, ray.color);
-				x += pixel;
-				if (x > size - 1)
-					x = size - 1;
-				if (x < 0)
-					x = 0;
+				if (cub->cam_status == ON)
+				{
+					ray.color = 0x0011f752;
+					if (side == 0xcc || side == 0xcc00)
+						ray.color = ft_mix_color(ray.color, 0x00000000, 0.5);
+					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
+					ft_put_pixel(cub->game, j, i, ray.color);
+				}
+				wall_len += 1;
 			}
 			k++;
 			j++;
 		}
 		i++;
+	}
+	if (cub->cam_status == OFF)
+	{
+	
+		i = 0;
+		j = 0;
+		real_wall_ds = ft_abs(offset_up - offset_down);
+		start_point = 0;
+		end_point = size;
+		if (offset_up < 0)
+		{
+			start_point = (float)(ft_abs(offset_up) * 16) / (float)real_wall_ds;
+			if (offset_down > HEIGHT)
+			{
+				end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * 16) / (float)real_wall_ds);
+			}
+		}
+		pixel = ft_abs2(start_point - end_point) / (float)wall_len;
+		x = start_point;
+		while (i < HEIGHT)
+		{
+			j = start_x;
+			k = 0;
+			while (k != len)
+			{
+				if (i > offset_up && i < offset_down)
+				{
+					if (!fog)
+						ray.color = tex[(int)x][actual_chunk];
+					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
+					ft_put_pixel(cub->game, j, i, ray.color);
+					x += pixel;
+					if (x > size - 1)
+						x = size - 1;
+					if (x < 0)
+						x = 0;
+				}
+				k++;
+				j++;
+			}
+			i++;
+		}
 	}
 	(void)cub;
 }
@@ -577,7 +597,11 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color)
 	cam_plane = calculate_cam_plane(result, cub);
 	result.distance = sqrt(pow((result.x - cam_plane.x), 2) + \
 	pow((result.y - cam_plane.y), 2));
-	shadow = result.distance / 17;
+	if (cub->cam_status == OFF)
+		shadow = 17;
+	else
+		shadow = 27;
+	shadow = result.distance / shadow;
 	if (shadow >= 1)
 		shadow = 1;
 	result.color = color;
@@ -707,14 +731,19 @@ void	ray_map_draw_rays(t_cub *cub)
 	angle_chunk = 0.046948;
 	angle_chunk = angle_chunk * 3;
 	last_distance = INT_MAX;
+	int	chunks;
+	if (cub->cam_status == OFF)
+		chunks = 20;
+	else
+		chunks = 30;
 	while (ray < WIDTH / 3)
 	{
 		//ray_a = get_angle(cub->player_a);//cub->player_a + anglei - (angle / 2);
 		ray_a = cub->player_a + anglei - (angle / 2);
 		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
 		ray_dy = sin(angle_to_radian(get_angle(ray_a)));
-		fogxf = cub->player_px + cos(angle_to_radian(get_angle(ray_a))) * 20;
-		fogyf = cub->player_py + sin(angle_to_radian(get_angle(ray_a))) * 20;
+		fogxf = cub->player_px + cos(angle_to_radian(get_angle(ray_a))) * chunks;
+		fogyf = cub->player_py + sin(angle_to_radian(get_angle(ray_a))) * chunks;
 		fog_ds = ft_ds(cub->player_px, fogxf, cub->player_py, fogyf);
 		ray_proyection = 0;
 		x = cub->player_px + ray_dx * 0;
@@ -837,39 +866,15 @@ t_win	tmp_win(void *mlx, void *win, t_img *result)
 	return (final);
 }
 
-//write_map(cub);
-void	start_cub(t_cub *cub)
+void	put_noise(t_cub *cub)
 {
 	static int last_noise = 0;
-
 	int	noise;
+
 	noise = ft_random(1, 1, 7);
 	while (noise == last_noise)
 		noise = ft_random(1, 1, 7);
 	last_noise = noise;
-	printf("noise:%d\n", noise);
-
-	fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground);
-	ft_fill_img(cub->minimap, 0x00000000);
-	ft_fill_img(cub->atm, ft_mix_color(ft_mix_color(cub->color_sky, cub->color_ground, 0.5), 0xFF000000, 0.60));
-	draw_minimap(cub);
-	copy_map_to_ray_map(cub);
-	draw_rays(cub);
-	draw_direction(cub);
-	draw_minimark(cub);
-	draw_ray_map(cub);
-	draw_cross(cub);
-	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
-	mlx_put_image_to_window(cub->mlx, cub->win, cub->atm->img, 0, 0);
-	if (cub->door == 1)
-	{
-		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_o->img, 0, 0);
-	}
-	else
-	{
-		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
-	}
-	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
 	if (noise == 1)
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise1->img, 0, 0);
 	else if (noise == 2)
@@ -882,6 +887,44 @@ void	start_cub(t_cub *cub)
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise5->img, 0, 0);
 	else
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise6->img, 0, 0);
+}
+
+void	ray_caster(t_cub *cub)
+{
+	draw_minimap(cub);
+	copy_map_to_ray_map(cub);
+	draw_direction(cub);
+	draw_minimark(cub);
+	draw_ray_map(cub);
+	draw_cross(cub);
+}
+
+//write_map(cub);
+void	start_cub(t_cub *cub)
+{
+	if (cub->cam_status == OFF)
+		fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground, 0);
+	else
+		fill_img_sky_n_ground(cub->game, 0x00FF0000, 0x000000FF, 1);
+	ft_fill_img(cub->minimap, 0x00000000);
+	ray_caster(cub);
+	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
+	if (cub->cam_status == OFF)
+	{
+		ft_fill_img(cub->atm, \
+		ft_mix_color(ft_mix_color(cub->color_sky, \
+		cub->color_ground, 0.5), 0xFF000000, 0.60));
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->hand->img, 300, 200);
+	}
+	else
+		ft_fill_img(cub->atm, ft_mix_color(0x0000FF00, 0xFF000000, 0.4));
+	mlx_put_image_to_window(cub->mlx, cub->win, cub->atm->img, 0, 0);
+	if (cub->door == 1)
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_o->img, 0, 0);
+	else
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
+	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
+	put_noise(cub);
 	mlx_put_image_to_window(cub->mlx, cub->ray_win, cub->ray_map->img, 0, 0);
 	return ;
 	(void)cub;
