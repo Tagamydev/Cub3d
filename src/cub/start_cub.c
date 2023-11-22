@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 14:21:18 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:07:13 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -600,7 +600,7 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color)
 	if (cub->cam_status == OFF)
 		shadow = 17;
 	else
-		shadow = 27;
+		shadow = 30;
 	shadow = result.distance / shadow;
 	if (shadow >= 1)
 		shadow = 1;
@@ -914,7 +914,7 @@ void	start_cub(t_cub *cub)
 		ft_fill_img(cub->atm, \
 		ft_mix_color(ft_mix_color(cub->color_sky, \
 		cub->color_ground, 0.5), 0xFF000000, 0.60));
-		mlx_put_image_to_window(cub->mlx, cub->win, cub->hand->img, 300, 200);
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->hand->img, 300 + cub->handx, 200 - cub->handy);
 	}
 	else
 		ft_fill_img(cub->atm, ft_mix_color(0x0000FF00, 0xFF000000, 0.4));

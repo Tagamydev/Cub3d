@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 13:51:22 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:54:22 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,9 +244,9 @@ t_cub	*map_parsing(char *file)
 	make_img_translucent(cub->noise5, 0.6);
 	make_img_translucent(cub->noise6, 0.6);
 	//cub->color_ground = 0x00FF0000;
-	cub->color_ground = 0x00FFFFFF;
+	cub->color_ground = 0x00FF0000;
 	//cub->color_ground = 0x00FF00FF;
-	cub->color_sky = 0x000FF0FF;
+	cub->color_sky = 0x00FF00FF;
 	cub->minimap_zoom = ZOOM_L;
 	cub->cam_status = OFF;
 	cub->player_px = 40;//6
@@ -259,6 +259,8 @@ t_cub	*map_parsing(char *file)
 	cub->camera_speed = 2;
 	cub->door = 0;
 	cub->fisheye = 0;
+	cub->handx = 0;
+	cub->handy = 0;
 	if (!cub->map_4_ray)
 		return (NULL);
 	return (cub);

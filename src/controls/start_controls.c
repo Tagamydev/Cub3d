@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 13:55:07 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:07:11 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,46 @@ void	rotate_view_rigth(t_cub *cub)
 	(void)cub;
 }
 
+void	hand_loop(t_cub *cub)
+{
+	static int x = 0;
+	static int sign = 1;
+
+	if (x >= 5 || x < 0)
+		sign *= -1;
+	if (x == 0)
+	{
+		cub->handx = 0;
+		cub->handy = -10;
+	}
+	else if (x == 1)
+	{
+		cub->handx = 2;
+		cub->handy = 2;
+	}
+	else if (x == 2)
+	{
+		cub->handx = 4;
+		cub->handy = 2;
+	}
+	else if (x == 3)
+	{
+		cub->handx = 6;
+		cub->handy = 2;
+	}
+	else if (x == 4)
+	{
+		cub->handx = 8;
+		cub->handy = 0;
+	}
+	else if (x == 5)
+	{
+		cub->handx = 10;
+		cub->handy = -10;
+	}
+	x += sign;
+}
+
 void	move_player(int key, t_cub *cub)
 {
 	int	finalx;
@@ -135,21 +175,25 @@ void	move_player(int key, t_cub *cub)
 	starty = cub->player_py;
 	if (key == 0)
 	{
+		hand_loop(cub);
 		starty -= cub->player_d2y * SPEED;
 		startx -= cub->player_d2x * SPEED;
 	}
 	else if (key == 2)
 	{
+		hand_loop(cub);
 		starty += cub->player_d2y * SPEED;
 		startx += cub->player_d2x * SPEED;
 	}
 	else if (key == 1)
 	{
+		hand_loop(cub);
 		starty -= cub->player_dy * SPEED;
 		startx -= cub->player_dx * SPEED;
 	}
 	else if (key == 13)
 	{
+		hand_loop(cub);
 		starty += cub->player_dy * SPEED;
 		startx += cub->player_dx * SPEED;
 	}
@@ -233,7 +277,7 @@ void	key_press(int key, void *param)
 		else
 			cub->cam_status = OFF;
 	}
-	printf("angle: %d\n", key);
+	//printf("angle: %d\n", key);
 	start_cub(cub);
 }
 

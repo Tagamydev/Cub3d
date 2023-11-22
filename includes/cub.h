@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 14:21:20 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:53:33 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ typedef struct s_cub{
 	float	player_d2x;
 	float	player_d2y;
 	float	player_a;
+	int		handx;
+	int		handy;
 	//=========================//
 	//          MINIMAP        //
 	int		minimap_zoom;
