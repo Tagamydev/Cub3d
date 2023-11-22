@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 10:15:00 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:58:15 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,12 @@ typedef struct s_cub{
 	t_img	*atm;
 	t_img	*hud_o;
 	t_img	*hud_c;
-	t_img	*result;
+	t_img	*noise1;
+	t_img	*noise2;
+	t_img	*noise3;
+	t_img	*noise4;
+	t_img	*noise5;
+	t_img	*noise6;
 	t_img	*minimap;
 	t_img	*ray_map;
 	//=========================//
@@ -137,6 +142,7 @@ void	ft_fill_img(t_img *img, int color);
 t_img	*ft_init_img(void *mlx, int width, int height);
 void	draw_square(t_img *img, t_square sq);
 void	fill_img_sky_n_ground(t_img *img, int color1, int color2);
+void	make_img_translucent(t_img *img, double o);
 //============================================================================//
 //================================ERROR=======================================//
 void	*ft_perror(char *error);

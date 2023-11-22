@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/18 04:55:18 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:15:01 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,10 +230,33 @@ void	key_press(int key, void *param)
 	start_cub(cub);
 }
 
+void	frame(void *param)
+{
+	t_cub		*cub;
+	static size_t	i = 0;
+	static size_t	j = 0;
+	static size_t	k = 0;
+
+	cub = (t_cub *)param;
+	//printf("frame:%zu\n", i++);
+	if (i % 7 == 0)
+	{
+		if (j % 7 == 0)
+		{
+			if (k % 7 == 0)
+				start_cub(cub);
+			k++;
+		}
+		j++;
+	}
+	i++;
+}
+
 void	start_controls(t_cub *cub)
 {
 	mlx_hook(cub->win, 17, 0, (int (*)())close_x, cub);
 	mlx_hook(cub->win, 2, 0, (int (*)())key_press, cub);
+	mlx_loop_hook(cub->mlx, (int (*)())frame, cub);
 	return ;
 	(void)cub;
 }

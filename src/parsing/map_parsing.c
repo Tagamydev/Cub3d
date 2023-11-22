@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/21 11:31:14 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:14:59 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,12 +187,55 @@ t_cub	*map_parsing(char *file)
 		printf("error\n");
 		return (NULL);
 	}
+	cub->noise1 = ft_open_img(cub->mlx, "./src/img/noise1.xpm");
+	if (!cub->noise1)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+	cub->noise2 = ft_open_img(cub->mlx, "./src/img/noise2.xpm");
+	if (!cub->noise2)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+	cub->noise3 = ft_open_img(cub->mlx, "./src/img/noise3.xpm");
+	if (!cub->noise3)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+	cub->noise4 = ft_open_img(cub->mlx, "./src/img/noise4.xpm");
+	if (!cub->noise4)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+	cub->noise5 = ft_open_img(cub->mlx, "./src/img/noise5.xpm");
+	if (!cub->noise5)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+	cub->noise6 = ft_open_img(cub->mlx, "./src/img/noise6.xpm");
+	if (!cub->noise6)
+	{
+		printf("error\n");
+		return (NULL);
+	}
+
 	cub->minimap = ft_init_img(cub->mlx, 140, 140);
 	if (!cub->minimap)
 		return (NULL);
 	cub->ray_map = ft_init_img(cub->mlx, cub->map_width * 10, cub->map_height * 10);
 	if (!cub->ray_map)
 		return (NULL);
+	make_img_translucent(cub->noise1, 0.6);
+	make_img_translucent(cub->noise2, 0.6);
+	make_img_translucent(cub->noise3, 0.6);
+	make_img_translucent(cub->noise4, 0.6);
+	make_img_translucent(cub->noise5, 0.6);
+	make_img_translucent(cub->noise6, 0.6);
 	//cub->color_ground = 0x00FF0000;
 	cub->color_ground = 0x00FFFFFF;
 	//cub->color_ground = 0x00FF00FF;

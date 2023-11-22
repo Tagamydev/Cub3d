@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 10:14:59 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:05:18 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,42 @@ double	ft_abs2(double x)
 }
 
 
+float	ft_fit_char(float n, float min, float max)
+{
+	float	range;
+	float	result;
+
+	range = ft_abs2(min - max);
+	result = (float)(n * range) / (float)(255);
+	result += min;
+	return (result);
+}
+
+float	ft_random(float n, float min, float max)
+{
+	int				i;
+	size_t			j;
+	int				fd;
+	static int		decimals;
+	static double	result = 7;
+
+	fd = open("/dev/urandom", O_RDONLY);
+	i = 0;
+	j = 0;
+	while (j < 3)
+	{
+		decimals = i;
+		read(fd, &i, 1);
+		j++;
+	}
+	result = ft_fit_char(decimals, 0, 1);
+	result = ft_fit_char((float)i + result, min, max);
+	close(fd);
+	(void)n;
+	return (result);
+}
+
+
 double	closer_int(double n)
 {
 	double decimal;
@@ -59,7 +95,51 @@ double	closer_int(double n)
 	return (result);
 }
 
+double	get_opacity(int color)
+{
+	int		bite;
+	double	result;
 
+	bite = ((color >> 24) & 0xFF);
+	result = ft_fit_char(bite, 0, 1);
+	return (result);
+}
+
+int		get_flat_color(int color)
+{
+	int r;
+	int g;
+	int b;
+	int t;
+
+	t = 0;
+	r = ((color >> 16) & 0xFF);
+	g = ((color >> 8) & 0xFF);
+	b = ((color) & 0xFF);
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+void	make_img_translucent(t_img *img, double o)
+{
+	int	x;
+	int	y;
+	int	color;
+
+	x = 0;
+	y = 0;
+	while (y < img->height)
+	{
+		x = 0;
+		while (x < img->width)
+		{
+			color = get_pixel_img(img, x, y);
+			color = ft_mix_color(color, 0xFF000000, o);
+			ft_put_pixel(img, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
 
 double	get_angle(double angle)
 {
@@ -497,7 +577,7 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color)
 	cam_plane = calculate_cam_plane(result, cub);
 	result.distance = sqrt(pow((result.x - cam_plane.x), 2) + \
 	pow((result.y - cam_plane.y), 2));
-	shadow = result.distance / 21;
+	shadow = result.distance / 17;
 	if (shadow >= 1)
 		shadow = 1;
 	result.color = color;
@@ -594,40 +674,6 @@ int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distan
 	}
 	return (status1);
 }
-
-float	ft_fit_char(float n, float min, float max)
-{
-	float	range;
-	float	result;
-
-	range = ft_abs2(min - max);
-	result = (float)(n * range) / (float)(255);
-	return (result);
-}
-
-float	ft_random(float n, float min, float max)
-{
-	int				i;
-	size_t			j;
-	int				fd;
-	static int		decimals;
-	static double	result = 7;
-
-	fd = open("/dev/urandom", O_RDONLY);
-	i = 0;
-	j = 0;
-	while (j < (size_t)n)
-	{
-		decimals = i;
-		read(fd, &i, 1);
-		j++;
-	}
-	result = ft_fit_char(decimals, 0, 1);
-	result = ft_fit_char((float)i + result, min, max);
-	close(fd);
-	return (result);
-}
-
 void	ray_map_draw_rays(t_cub *cub)
 {
 	int			ray;
@@ -791,17 +837,18 @@ t_win	tmp_win(void *mlx, void *win, t_img *result)
 	return (final);
 }
 
-void	put_img_win(t_img img, t_win win, int x, int y)
-{
-	(void)img;
-	(void)win;
-	(void)x;
-	(void)y;
-}
-
 //write_map(cub);
 void	start_cub(t_cub *cub)
 {
+	static int last_noise = 0;
+
+	int	noise;
+	noise = ft_random(1, 1, 7);
+	while (noise == last_noise)
+		noise = ft_random(1, 1, 7);
+	last_noise = noise;
+	printf("noise:%d\n", noise);
+
 	fill_img_sky_n_ground(cub->game, cub->color_sky, cub->color_ground);
 	ft_fill_img(cub->minimap, 0x00000000);
 	ft_fill_img(cub->atm, ft_mix_color(ft_mix_color(cub->color_sky, cub->color_ground, 0.5), 0xFF000000, 0.60));
@@ -816,7 +863,6 @@ void	start_cub(t_cub *cub)
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->atm->img, 0, 0);
 	if (cub->door == 1)
 	{
-		printf("%f\n", ft_random(1, 0, 1));
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_o->img, 0, 0);
 	}
 	else
@@ -824,6 +870,18 @@ void	start_cub(t_cub *cub)
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
 	}
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
+	if (noise == 1)
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise1->img, 0, 0);
+	else if (noise == 2)
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise2->img, 0, 0);
+	else if (noise == 3)
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise3->img, 0, 0);
+	else if (noise == 4)
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise4->img, 0, 0);
+	else if (noise == 5)
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise5->img, 0, 0);
+	else
+		mlx_put_image_to_window(cub->mlx, cub->win, cub->noise6->img, 0, 0);
 	mlx_put_image_to_window(cub->mlx, cub->ray_win, cub->ray_map->img, 0, 0);
 	return ;
 	(void)cub;
