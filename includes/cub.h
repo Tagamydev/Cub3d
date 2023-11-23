@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 20:01:56 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:06:58 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_tex{
 	int		**tex;
 	size_t	size;
 }				t_tex;
-
 typedef struct s_img{
 	void	*img;
 	char	*data_addr;
@@ -67,12 +66,14 @@ typedef struct s_img{
  *		6 door close
  *		7 door open
  *		8 player in door
+ *		9 space in map
  */
 
 typedef struct s_cub{
 	//=========================//
 	//        MAP_UTILS        //
 	size_t	**map;
+	int		*map_4_ray;
 	size_t	map_width;
 	size_t	map_height;
 	t_img	*no_texture;
@@ -167,6 +168,27 @@ void	*ft_perror(char *error);
 //============================================================================//
 //===============================PARSING======================================//
 t_cub	*map_parsing(char *file);
+int		check_space(char *archive);
+int		check_char_of_str(t_cub *cub, char **archive, int *count);
+int		fill_struct(t_cub *cub, char *line);
+int		copy_map(t_cub *cub, char **archive);
+int		check_maps(t_cub *cub);
+int		copy_archive(int fd, char **archive, int height_archive);
+int		count_height_archive(int fd, int *height_archive);
+int		init_cub(t_cub	*cub);
+int		ft_free_struct(t_cub *cub);
+void	free_archive(char **archive);
+//============================================================================//
+//===============================MINIMAP======================================//
+void	set_zero_minimap(char **minimap, int size);
+void	write_minimap(char **minimap, int size);
+char	**alloc_minimap(int size);
+void	put_chunks_minimap(char **minimap, int i, int j, char c);
+void	put_walls_minimap(char **minimap, int x, int y, t_cub *cub);
+int		get_color_minimap(char c);
+void	put_pixels_minimap(char **minimap, t_cub *cub);
+void	draw_minimap(t_cub *cub);
+void	free_map(int tam_line, char **map, int fd);
 //============================================================================//
 //===============================MINIMAP======================================//
 void	set_zero_minimap(char **minimap, int size);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 14:44:08 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:33:27 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,13 +210,14 @@ t_cub	*map_parsing(char *file)
 	cub->map[i++] = dup_ui_array((size_t[]){1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}, 47);
 	cub->map_width = 47;
 	cub->map_height = 47;
+
 	cub->mlx = mlx_init();
 	if (!cub->mlx)
 		return (NULL);
 	cub->win = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "cub3d");
 	if (!cub->win)
 		return (NULL);
-	cub->ray_win = mlx_new_window(cub->mlx, cub->map_width * 10, cub->map_height * 10, "ray-casting");
+	cub->ray_win = mlx_new_window(cub->mlx, cub->map_widths * 10, cub->map_height * 10, "ray-casting");
 	if (!cub->ray_win)
 		return (NULL);
 	cub->game = ft_init_img(cub->mlx, WIDTH, HEIGHT);
