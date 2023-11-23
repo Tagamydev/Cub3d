@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 15:07:11 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:57:50 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ void	close_x(void *param)
 	return ;
 }
 
-void	open_doors(t_cub *cub, char *x)
+void	open_doors(t_cub *cub)
 {
 	int	i;
 	int	j;
 	
 	i = 0;
 	j = 0;
-	*x = 'O';
 	while (i < (int)cub->map_height)
 	{
 		j = 0;
@@ -43,12 +42,11 @@ void	open_doors(t_cub *cub, char *x)
 	(void)cub;
 }
 
-void	close_doors(t_cub *cub, char *x)
+void	close_doors(t_cub *cub)
 {
 	int	i;
 	int	j;
 
-	*x = 'C';
 	i = 0;
 	while (i < (int)cub->map_height)
 	{
@@ -233,9 +231,13 @@ void	increase_dpi(t_cub *cub, int key)
 		cub->camera_speed = 25;
 }
 
+void	turn_camera(t_cub *cub)
+{
+	cub->cam_animation = 1;
+}
+
 void	key_press(int key, void *param)
 {
-	static char	door = 'C';
 	t_cub		*cub;
 
 	cub = (t_cub *)param;
@@ -247,10 +249,10 @@ void	key_press(int key, void *param)
 	}
 	else if (key == 49)
 	{
-		if (door == 'C')
-			open_doors(cub, &door);
+		if (cub->door == 0)
+			open_doors(cub);
 		else
-			close_doors(cub, &door);
+			close_doors(cub);
 	}
 	else if (key == 123 || key == 124)
 	{
@@ -272,10 +274,7 @@ void	key_press(int key, void *param)
 	}
 	else if (key == 36)
 	{
-		if (cub->cam_status == OFF)
-			cub->cam_status = ON;
-		else
-			cub->cam_status = OFF;
+		turn_camera(cub);
 	}
 	//printf("angle: %d\n", key);
 	start_cub(cub);
@@ -293,8 +292,35 @@ void	frame(void *param)
 	{
 		if (j % 7 == 0)
 		{
-			if (k % 7 == 0)
+
+			if (cub->cam_animation == 1)
+				cub->cam_animation = 2;
+			else if (cub->cam_animation == 2)
+			{
+				cub->cam_animation = 1;
+				if (cub->cam_status == OFF)
+					cub->cam_status = ON;
+				else
+					cub->cam_status = OFF;
 				start_cub(cub);
+				cub->cam_animation = 0;
+			}
+
+			if (k % 7 == 0)
+			{
+				if ((cub->mousex >= 15 && cub->mousey <= 624) && (cub->mousey >= 11 && cub->mousey <= 375))
+				{
+					if (cub->mouse_press == 1)
+					{
+						if (cub->mousex < 320)
+							rotate_view_left(cub);
+						else
+							rotate_view_rigth(cub);
+					}
+				}
+				cub->frame += 1;
+				start_cub(cub);
+			}
 			k++;
 		}
 		j++;
@@ -302,10 +328,64 @@ void	frame(void *param)
 	i++;
 }
 
+void	mouse_location(int x, int y, void *param)
+{
+	t_cub		*cub;
+	int			v;
+
+	cub = (t_cub *)param;
+	v = cub->camera_speed;
+	cub->camera_speed = 1;
+	if ((cub->mousex >= 15 && cub->mousey <= 624) && (cub->mousey >= 11 && cub->mousey <= 375))
+	{
+		if (cub->mouse_press == 1)
+		{
+			if (cub->mousex < 320)
+				rotate_view_left(cub);
+			else
+				rotate_view_rigth(cub);
+		}
+	}
+	cub->camera_speed = v;
+	cub->mousex = x;
+	cub->mousey = y;
+}
+
+void	mouse_press(int key, int x, int y, void *param)
+{
+	t_cub		*cub;
+
+	cub = (t_cub *)param;
+	if ((x >= 529 && x <= 589) && (y >= 396 && y <= 456))
+	{
+		if (cub->door == 0)
+			open_doors(cub);
+		else
+			close_doors(cub);
+	}
+	cub->mouse_press = 1;
+	(void)key;
+}
+
+void	mouse_release(int key, int x, int y, void *param)
+{
+	t_cub		*cub;
+
+	cub = (t_cub *)param;
+	cub->mouse_press = 0;
+	(void)key;
+	(void)x;
+	(void)y;
+}
+
+
 void	start_controls(t_cub *cub)
 {
 	mlx_hook(cub->win, 17, 0, (int (*)())close_x, cub);
 	mlx_hook(cub->win, 2, 0, (int (*)())key_press, cub);
+	mlx_hook(cub->win, 6, 0, (int (*)())mouse_location, cub);
+	mlx_hook(cub->win, 4, 0, (int (*)())mouse_press, cub);
+	mlx_hook(cub->win, 5, 0, (int (*)())mouse_release, cub);
 	mlx_loop_hook(cub->mlx, (int (*)())frame, cub);
 	return ;
 	(void)cub;

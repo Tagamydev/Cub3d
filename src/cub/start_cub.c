@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 15:07:13 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/23 15:00:56 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,36 +304,6 @@ void	draw_minimark(t_cub *cub)
 	}
 }
 
-void	copy_map_to_ray_map(t_cub *cub)
-{
-	size_t	i;
-	size_t	j;
-	size_t	x;
-	size_t	y;
-
-	i = 0;
-	j = 0;
-	x = 0;
-	y = 0;
-	while (i != cub->map_height)
-	{
-		j = 0;
-		while (j != cub->map_width)
-		{
-			if (cub->map[i][j] == 1 || cub->map[i][j] == 6)
-				cub->map_4_ray[x] = 1;
-			else if ((cub->map[i][j] >= 2 && cub->map[i][j] <= 5) || cub->map[i][j] == 8)
-				cub->map_4_ray[x] = 2;
-			else
-				cub->map_4_ray[x] = 0;
-			x++;
-			j++;
-		}
-		y++;
-		i++;
-	}
-}
-
 void	ray_map_draw_map(t_cub *cub)
 {
 	size_t		i;
@@ -430,6 +400,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	float	end_point;
 	int		real_wall_ds;
 	float	x;
+	
 
 	i = 0;
 	fog = 0;
@@ -497,7 +468,6 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	}
 	if (cub->cam_status == OFF)
 	{
-	
 		i = 0;
 		j = 0;
 		real_wall_ds = ft_abs(offset_up - offset_down);
@@ -660,9 +630,6 @@ double	ft_ds(double xi, double xf, double yi, double yf)
 	return (result);
 }
 
-#define FRONT 1
-#define SIDE 0
-
 int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distance)
 {
 	double		x;
@@ -793,9 +760,7 @@ void	ray_map_draw_rays(t_cub *cub)
 			}
 		}
 		else
-		{
 			status1 = 5;
-		}
 
 		last_status = status1;
 
@@ -892,7 +857,6 @@ void	put_noise(t_cub *cub)
 void	ray_caster(t_cub *cub)
 {
 	draw_minimap(cub);
-	copy_map_to_ray_map(cub);
 	draw_direction(cub);
 	draw_minimark(cub);
 	draw_ray_map(cub);
@@ -914,7 +878,10 @@ void	start_cub(t_cub *cub)
 		ft_fill_img(cub->atm, \
 		ft_mix_color(ft_mix_color(cub->color_sky, \
 		cub->color_ground, 0.5), 0xFF000000, 0.60));
-		mlx_put_image_to_window(cub->mlx, cub->win, cub->hand->img, 300 + cub->handx, 200 - cub->handy);
+		if (cub->cam_animation == 0)
+			mlx_put_image_to_window(cub->mlx, cub->win, cub->hand->img, 300 + cub->handx, 200 - cub->handy);
+		else
+			mlx_put_image_to_window(cub->mlx, cub->win, cub->hand_m->img, 270, 100);
 	}
 	else
 		ft_fill_img(cub->atm, ft_mix_color(0x0000FF00, 0xFF000000, 0.4));

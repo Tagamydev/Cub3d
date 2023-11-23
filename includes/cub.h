@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/22 14:53:33 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/23 15:00:59 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@
 # define SINY sin(angle_to_radian(get_angle(ray_a)))
 # define OFF 0
 # define ON 1
+# define FRONT 1
+# define SIDE 1
 
 typedef struct s_tex{
-	int		tex[16][16];
+	int		**tex;
 	size_t	size;
 }				t_tex;
 
@@ -71,13 +73,16 @@ typedef struct s_cub{
 	//=========================//
 	//        MAP_UTILS        //
 	size_t	**map;
-	int		*map_4_ray;
 	size_t	map_width;
 	size_t	map_height;
 	t_img	*no_texture;
 	t_img	*so_texture;
 	t_img	*ea_texture;
 	t_img	*we_texture;
+	t_tex	*no_t;
+	t_tex	*so_t;
+	t_tex	*ea_t;
+	t_tex	*we_t;
 	int		color_ground;
 	int		color_sky;
 	int		door;
@@ -92,6 +97,8 @@ typedef struct s_cub{
 	t_img	*hud_o;
 	t_img	*hud_c;
 	t_img	*hand;
+	t_img	*hand_m;
+	t_img	*hand_l;
 	t_img	*noise1;
 	t_img	*noise2;
 	t_img	*noise3;
@@ -112,6 +119,9 @@ typedef struct s_cub{
 	float	player_a;
 	int		handx;
 	int		handy;
+	int		mousex;
+	int		mousey;
+	int		mouse_press;
 	//=========================//
 	//          MINIMAP        //
 	int		minimap_zoom;
@@ -119,6 +129,8 @@ typedef struct s_cub{
 	//           CAM           //
 	int		fisheye;
 	int		cam_status;
+	size_t	frame;
+	int		cam_animation;
 }				t_cub;
 
 typedef struct s_win{
