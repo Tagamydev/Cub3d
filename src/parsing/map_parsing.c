@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 20:33:27 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:36:08 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ t_cub	*map_parsing(char *file)
 	cub->win = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "cub3d");
 	if (!cub->win)
 		return (NULL);
-	cub->ray_win = mlx_new_window(cub->mlx, cub->map_widths * 10, cub->map_height * 10, "ray-casting");
+	cub->ray_win = mlx_new_window(cub->mlx, cub->map_width * 10, cub->map_height * 10, "ray-casting");
 	if (!cub->ray_win)
 		return (NULL);
 	cub->game = ft_init_img(cub->mlx, WIDTH, HEIGHT);

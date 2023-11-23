@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:58:04 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 19:53:04 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:38:09 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	main(int argc, char **argv)
 		cub = map_parsing(argv[1]);
 		if (!cub)
 			exit(-1);
-		/*start_cub(cub);
+		start_cub(cub);
 		start_controls(cub);
-		start_loop(cub);*/
+		start_loop(cub);
 	}
 	exit(0);
 }

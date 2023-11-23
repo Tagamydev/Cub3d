@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/23 20:33:11 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/11/23 20:37:21 by lyandriy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,6 @@ PAR		= src/parsing/
 MAIN	= src/main.c
 SRCS	= $(MAIN) \
 		  $(PAR)utils_parsing.c \
-		  $(PAR)pars.c \
 		  $(PAR)free.c \
 		  $(PAR)fill_map.c \
 		  $(PAR)copy_map.c \
@@ -36,8 +35,9 @@ SRCS	= $(MAIN) \
 		  $(CUB)/minimap/minimap_utils.c \
 		  $(CUB)/bresenham/bresenham.c \
 		  $(ERR)ft_perror.c \
+		  $(PAR)map_parsing.c \
 
-#		  $(PAR)map_parsing.c
+#		  $(PAR)pars.c
 
 O_DIR	= ./objects/
 OBJS	= $(addprefix $(O_DIR)/, $(SRCS:.c=.o))
