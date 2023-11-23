@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 20:36:08 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:46:12 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_img	*ft_init_img(void *mlx, int width, int height)
 	ft_fill_img(img, 0xFF000000);
 	return (img);
 }
-
+//para abrir img a partir de un path
 t_img	*ft_open_img(void *mlx, char *path)
 {
 	t_img	*img;
@@ -149,7 +149,7 @@ int	cub_open_utils(t_cub *cub)
 		return (0);
 	return (1);
 }
-
+/*
 t_cub	*map_parsing(char *file)
 {
 	t_cub	*cub;
@@ -241,6 +241,11 @@ t_cub	*map_parsing(char *file)
 	if (!cub->ray_map)
 		return (NULL);
 
+
+
+
+
+	// esto tienes que iniciar
 	//=============================================//
 	cub->color_ground = 0x00FF0000;
 	cub->color_sky = 0x00FF00FF;
@@ -248,6 +253,13 @@ t_cub	*map_parsing(char *file)
 	cub->player_py = 22;//18
 	cub->player_a = 0;
 	//=============================================//
+
+
+
+
+
+
+
 	cub->minimap_zoom = ZOOM_L;
 	cub->cam_status = OFF;
 	cub->camera_speed = 2;
@@ -264,3 +276,4 @@ t_cub	*map_parsing(char *file)
 	return (cub);
 	(void)file;
 }
+*/
