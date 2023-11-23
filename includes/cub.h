@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 20:06:58 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 21:16:49 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define OFF 0
 # define ON 1
 # define FRONT 1
-# define SIDE 1
+# define SIDE 0
 
 typedef struct s_tex{
 	int		**tex;
