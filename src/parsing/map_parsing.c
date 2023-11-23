@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 21:13:21 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/23 22:36:51 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,79 @@ int	cub_open_utils(t_cub *cub)
 	cub->hand_m = ft_open_img(cub->mlx, "./src/img/hand_m.xpm");
 	if (!cub->hand_m)
 		return (0);
-
 	if (!cub_open_utils_noise(cub))
 		return (0);
 	return (1);
+}
+
+int	get_min_2(int a, int b)
+{
+	if (a < b)
+		return (a);
+	else
+		return (b);
+}
+
+int	**alloc_tex(size_t size)
+{
+	int		**result;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!size || size < 0)
+		return (NULL);
+	result = malloc(sizeof(int *) * (size + 1));
+	if (!result)
+		return (NULL);
+	while (i < size)
+	{
+		result[i] = malloc(sizeof(int) * (size + 1));
+		if (!result[i])
+		{
+			j = 0;
+			while (j < i)
+				free(result[j++]);
+			free(result);
+			return (NULL);
+		}
+		i++;
+	}
+	return (result);
+}
+
+t_tex	*img_to_tex(t_img *img)
+{
+	int		**result;
+	t_tex	*all;
+	size_t	x;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	x = get_min_2(img->width, img->height);
+	result = alloc_tex(x);
+	if (!result)
+		return (NULL);
+	all = malloc(sizeof(t_tex));
+	if (!all)
+	{
+		free(result);
+		return (NULL);
+	}
+	while (i < x)
+	{
+		j = 0;
+		while (j < x)
+		{
+			result[i][j] = get_pixel_img(img, j, i);
+			j++;
+		}
+		i++;
+	}
+	all->tex = result;
+	all->size = x;
+	return (all);
 }
 
 t_cub	*map_parsing(char *file)
@@ -239,6 +308,38 @@ t_cub	*map_parsing(char *file)
 		return (NULL);
 	cub->ray_map = ft_init_img(cub->mlx, cub->map_width * 10, cub->map_height * 10);
 	if (!cub->ray_map)
+		return (NULL);
+
+	cub->ea_texture = ft_open_img(cub->mlx, "./side.xpm");
+	if (!cub->ea_texture)
+		return (NULL);
+	cub->we_texture = ft_open_img(cub->mlx, "./side.xpm");
+	if (!cub->we_texture)
+		return (NULL);
+	cub->so_texture = ft_open_img(cub->mlx, "./so.xpm");
+	if (!cub->so_texture)
+		return (NULL);
+	cub->no_texture = ft_open_img(cub->mlx, "./front.xpm");
+	if (!cub->no_texture)
+		return (NULL);
+	cub->black = ft_open_img(cub->mlx, "./src/img/black.xpm");
+	if (!cub->no_texture)
+		return (NULL);
+
+	cub->no_t = img_to_tex(cub->no_texture);
+	if (!cub->no_t)
+		return (NULL);
+	cub->so_t = img_to_tex(cub->so_texture);
+	if (!cub->so_t)
+		return (NULL);
+	cub->we_t = img_to_tex(cub->we_texture);
+	if (!cub->we_t)
+		return (NULL);
+	cub->ea_t = img_to_tex(cub->ea_texture);
+	if (!cub->ea_t)
+		return (NULL);
+	cub->black_t = img_to_tex(cub->black);
+	if (!cub->black_t)
 		return (NULL);
 
 	//=============================================//

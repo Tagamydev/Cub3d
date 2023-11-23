@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 21:16:49 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/23 22:27:56 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,12 @@ typedef struct s_cub{
 	t_img	*so_texture;
 	t_img	*ea_texture;
 	t_img	*we_texture;
+	t_img	*black;
 	t_tex	*no_t;
 	t_tex	*so_t;
 	t_tex	*ea_t;
 	t_tex	*we_t;
+	t_tex	*black_t;
 	int		color_ground;
 	int		color_sky;
 	int		door;
@@ -154,6 +156,7 @@ void	free_split(char **input);
 double	angle_to_radian(double angle);
 double	get_angle(double angle);
 void	put_deltas(t_cub *cub);
+int	get_pixel_img(t_img *img, int x, int y);
 //============================================================================//
 //=================================MLX========================================//
 void	ft_put_pixel(t_img *img, int x, int y, int color);

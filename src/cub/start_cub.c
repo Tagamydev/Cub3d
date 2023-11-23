@@ -6,13 +6,13 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 15:07:40 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/23 23:33:07 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
 
-unsigned int	get_pixel_img(t_img *img, int x, int y)
+int	get_pixel_img(t_img *img, int x, int y)
 {
 	return (*(unsigned int *)((img->data_addr + (y * img->line_size) + (x * img->bits_per_pixel / 8))));
 }
@@ -360,6 +360,7 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 	ft_put_pixel(cub->ray_map, point1.x, point1.y, color);
 }
 
+/*
 int	tex[16][16] = {\
 	{0x00FF0000, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0x0000FF00}, \
 	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
@@ -377,6 +378,7 @@ int	tex[16][16] = {\
 	{0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}, \
 	{0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0}, \
 	{0x000000FF, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF, 0, 0x00FFFFFF}};
+*/
 
 
 void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int side)
@@ -400,6 +402,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	float	end_point;
 	int		real_wall_ds;
 	float	x;
+	int		**tex;
 	
 
 	i = 0;
@@ -412,29 +415,41 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	offset_down = (HEIGHT / 1.25 - offset_up);
 	color_ground_mix = 0;
 	wall_len = 0;
-	size = 16;
 	if (side == 0x00FF0000)
 	{
+		size = cub->so_t->size;
+		tex = cub->so_t->tex;
 		actual_chunk = size - (get_decimal(ray.x) * (float)size);
 		//printf("south\n");
 	}
 	else if (side == 0x00FF00FF)
 	{
+		size = cub->no_t->size;
+		tex = cub->no_t->tex;
+
 		actual_chunk = (get_decimal(ray.x) * (float)size);
 		//printf("north\n");
 	}
 	else if (side == 0xcc)
 	{
+		size = cub->ea_t->size;
+		tex = cub->ea_t->tex;
+
 		actual_chunk = (get_decimal(ray.y) * (float)size);
 		//printf("east\n");
 	}
 	else if (side == 0xcc00)
 	{
+		size = cub->we_t->size;
+		tex = cub->we_t->tex;
+
 		actual_chunk = size - (get_decimal(ray.y) * (float)size);
 		//printf("west\n");
 	}
 	else
 	{
+		size = cub->black_t->size;
+		tex = cub->black_t->tex;
 		actual_chunk = 0;
 		fog = 1;
 		//printf("fog\n");
@@ -457,6 +472,11 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 					if (side == 0xcc || side == 0xcc00)
 						ray.color = ft_mix_color(ray.color, 0x00000000, 0.5);
 					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
+					if (fog == 1)
+					{
+						printf("fog!!\n");
+						ray.color = 0;
+					}
 					ft_put_pixel(cub->game, j, i, ray.color);
 				}
 				wall_len += 1;
@@ -475,10 +495,10 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 		end_point = size;
 		if (offset_up < 0)
 		{
-			start_point = (float)(ft_abs(offset_up) * 16) / (float)real_wall_ds;
+			start_point = (float)(ft_abs(offset_up) * size) / (float)real_wall_ds;
 			if (offset_down > HEIGHT)
 			{
-				end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * 16) / (float)real_wall_ds);
+				end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * size) / (float)real_wall_ds);
 			}
 		}
 		pixel = ft_abs2(start_point - end_point) / (float)wall_len;
