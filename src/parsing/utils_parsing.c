@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:50:41 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/12 18:41:54 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:08:18 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	init_cub(t_cub	*cub)
 	if (!cub->we_texture)
 		return (0);
 	cub->we_texture->data_addr = NULL;
+	cub->map = NULL;
 	cub->color_ground = -1;
 	cub->color_sky = -1;
 	cub->map_width = 0;
@@ -37,16 +38,15 @@ int	init_cub(t_cub	*cub)
 	return (1);
 }
 
-void	free_map(int tam_line, char **map, int fd)
+void	free_archive(char **archive)
 {
 	int	row;
 
 	row = 0;
-	close(fd);
-	while (row != tam_line - 1)
+	while (archive[row])
 	{
-		free(map[row]);
+		free(archive[row]);
 		row++;
 	}
-	free(map);
+	free(archive);
 }

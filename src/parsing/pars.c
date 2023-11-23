@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:10:14 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/16 18:58:19 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:08:41 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,55 @@ int	separate(t_cub *cub, char **archive, int height_archive)
 			break;
 		count_line++;
 	}
-	cub->map_height = (height_archive - count_line) + 1;
+	int count = 0;
+	while (archive[count_line + count])
+	{
+		int i = 0;
+		if (archive[count_line + count][i] == ' ')
+		{
+			while(archive[count_line + count][i] == ' ')
+				i++;
+			if (!archive[count_line + count][i] || archive[count_line + count][i] == '\n')
+			{
+		printf("Error 3\n");
+		return (0);
+	}
+			count++;
+		}
+		if (archive[count_line + count][0] == '\n')
+		{
+			while (archive[count_line + count])
+			{
+				if (archive[count_line + count][0] != '\n')
+				{
+		printf("Error 4\n");
+		return (0);
+	}
+				count++;
+			}
+		}
+		else
+			count++;
+	}
+	count = 0;
+	while (archive[count_line + count])
+	{
+		if (archive[count_line + count][0] == '\n')
+			break;
+		count++;
+	}
+		height_archive = 0;
+	cub->map_height = count;
 	if (!copy_map(cub, &archive[count_line]))
+	{
+		printf("Error 5\n");
 		return (0);
+	}
 	if (!check_maps(cub))
+	{
+		printf("Error 6\n");
 		return (0);
+	}
 	return (1);
 }
 
@@ -58,9 +102,15 @@ int	get_line(int fd, char *file, t_cub *cub)
 	int		height_archive;
 
 	if (fd < 0)
+	{
+		printf("Error 1\n");
 		return (0);
+	}
 	if (!count_height_archive(fd, &height_archive))
+	{
+		printf("Error 2\n");
 		return (0);
+	}
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (0);
@@ -68,7 +118,11 @@ int	get_line(int fd, char *file, t_cub *cub)
 	if (!archive)
 		return (0);
 	if (copy_archive(fd, archive, height_archive))
-		return (separate(cub, archive, height_archive));
+	{
+		height_archive = separate(cub, archive, height_archive);
+		free_archive(archive);
+		return (height_archive);
+	}
 	return (0);
 }
 
@@ -84,7 +138,7 @@ void	print_parse(t_cub *cub)
 	printf("map_height %zu\n", cub->map_height);
 	printf("color_ground %d\n", cub->color_ground);
 	printf("color_sky %d\n", cub->color_sky);
-	while (i < (cub->map_height - 1))
+	while (i < (cub->map_height))
 	{
 		y = 0;
 		while (y < cub->map_width)
@@ -109,6 +163,7 @@ t_cub	*map_parsing(char *file)
 	if (!get_line(fd_cub(file), file, cub))
 	{
 		printf("Error\n");
+		ft_free_struct(cub);
 		return (NULL);
 	}
 	print_parse(cub);

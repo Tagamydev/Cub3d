@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samusanc <samusanc@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 18:26:37 by samusanc          #+#    #+#             */
-/*   Updated: 2023/03/09 13:36:51 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:00:55 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static char	*ft_put_str(char *s1, char *s2)
 	{
 		str[l1++] = s2[l2];
 	}
+	free(s1);
+	free(s2);
 	return (str);
 }
 

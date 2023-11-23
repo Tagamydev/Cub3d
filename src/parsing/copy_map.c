@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:50:53 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/16 20:05:33 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:37:58 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,19 @@ int	check_char_of_str(t_cub *cub, char **archive, int *count)
 {
 	size_t	len_str;
 
-	len_str = 0;
+	/*len_str = 0;
 	while (archive[*count][len_str])
 	{
 		if (archive[*count][len_str] == '1')
 			break;
 		len_str++;
 		if (archive[*count][len_str] == '\0')
+		{
+			printf("hola2\n");
 			return (0);
-	}
+		}
+	}*/
+	len_str = 0;
 	while (archive[*count][len_str] || archive[*count][len_str] == '\n')
 	{
 		if (archive[*count][len_str] == '0')
@@ -100,13 +104,13 @@ int	copy_map(t_cub *cub, char **archive)
 	if (!cub->map)
 		return (0);
 	check_map_widths(cub, archive);
-	while (archive[count])
+	while ((size_t)count < (cub->map_height))
 	{
 		cub->map[count] = malloc(sizeof(size_t) * (cub->map_width));
 		if (!cub->map[count])
 			return (0);
 		if (!check_char_of_str(cub, archive, &count))
-			return (0);//return(ft_free); ft_free libera toda la memoria y retorna un 0;
+			return (0);
 		count++;
 	}
 	return (1);
@@ -115,19 +119,19 @@ int	copy_map(t_cub *cub, char **archive)
 int	count_height_archive(int fd, int *height_archive)
 {
 	int		pos;
-	char	chars;
+	char	*ret;
 
 	pos = 1;
 	*height_archive = 0;
-	while (pos != 0)
+	ret = get_next_line(fd);
+	if (!ret)
+		return (0);
+	while (ret)
 	{
-		pos = read(fd, &chars, 1);
-		if (pos == -1)
-			return (0);
-		if (chars == '\n')
-			*height_archive += 1;
+		free(ret);
+		*height_archive += 1;
+		ret = get_next_line(fd);
 	}
-	*height_archive += 1;
 	close(fd);
 	return (1);
 }
@@ -149,11 +153,7 @@ int	copy_archive(int fd, char **archive, int height_archive)
 		count++;
 		archive[count] = get_next_line(fd);
 		if (archive[count] == NULL)
-		{
-			close(fd);
-			free_map(count, archive, fd);
-			return (0);
-		}
+			break;
 	}
 	archive[count + 1] = NULL;
 	close(fd);
