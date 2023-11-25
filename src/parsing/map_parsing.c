@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/25 21:33:58 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:36:27 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	*dup_ui_array(size_t *array, size_t len)
 	while (i != len)
 	{
 		result[i] = array[i];
-		i++; 	
+		i++;
 	}
 	return (result);
 }
@@ -82,17 +82,17 @@ t_img	*ft_init_img(void *mlx, int width, int height)
 t_img	*ft_open_img(void *mlx, char *path)
 {
 	t_img	*img;
-	
+
 	img = malloc(sizeof(t_img) * 1);
 	if (!img)
 		return (NULL);
 	img->img = mlx_xpm_file_to_image(mlx, path, &img->width, &img->height);
 	if (!img->img)
 		return (NULL);
-	img->data_addr = mlx_get_data_addr(img->img, &(img->bits_per_pixel), \
-	&(img->line_size), &(img->endian));
-	img->pixel_addr = (int *)mlx_get_data_addr(img->img, &(img->bits_per_pixel), \
-	&(img->line_size), &(img->endian));
+	img->data_addr = mlx_get_data_addr(img->img, &(img->bits_per_pixel),
+			&(img->line_size), &(img->endian));
+	img->pixel_addr = (int *)mlx_get_data_addr(img->img, &(img->bits_per_pixel),
+			&(img->line_size), &(img->endian));
 	return (img);
 }
 

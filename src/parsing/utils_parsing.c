@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:50:41 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/23 19:08:18 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:41:31 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,12 @@
 
 int	init_cub(t_cub	*cub)
 {
-	cub->no_texture = malloc(sizeof(t_img) * 1);
-	if (!cub->no_texture)
-		return (0);
-	cub->no_texture->data_addr = NULL;
-	cub->so_texture = malloc(sizeof(t_img) * 1);
-	if (!cub->so_texture)
-		return (0);
-	cub->so_texture->data_addr = NULL;
-	cub->ea_texture = malloc(sizeof(t_img) * 1);
-	if (!cub->ea_texture)
-		return (0);
-	cub->ea_texture->data_addr = NULL;
-	cub->we_texture = malloc(sizeof(t_img) * 1);
-	if (!cub->we_texture)
-		return (0);
-	cub->we_texture->data_addr = NULL;
+	cub->no_texture = NULL;
+	cub->so_texture = NULL;
+	cub->ea_texture = NULL;
+	cub->we_texture = NULL;
 	cub->map = NULL;
+	cub->mlx = mlx_init();
 	cub->color_ground = -1;
 	cub->color_sky = -1;
 	cub->map_width = 0;
@@ -49,4 +38,20 @@ void	free_archive(char **archive)
 		row++;
 	}
 	free(archive);
+}
+
+size_t	ft_strlcpys(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+
+	i = 0;
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	while (src[i] != '\0' && i < dstsize - 1)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (ft_strlen(src));
 }
