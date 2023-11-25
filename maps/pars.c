@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:10:14 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/24 20:28:56 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:01:25 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	separate(t_cub *cub, char **archive, int height_archive)
 			break;
 		count++;
 	}
-		height_archive = 0;
+	height_archive = 0;
 	cub->map_height = count;
 	if (!copy_map(cub, &archive[count_line]))
 		return (0);

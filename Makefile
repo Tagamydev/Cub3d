@@ -6,12 +6,12 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/23 20:37:21 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/11/25 18:46:16 by lyandriy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= cub3d
-CFLAGS	= -Wall -Wextra -Werror  -I ./includes -I ./libft/ -I /usr/local/include 
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
 CC		= gcc $(CFLAGS)
 MLX		= -L /usr/local/lib -lmlx -lm -framework OpenGL -framework AppKit
 LIBFT	= -L./libft/ -lft
@@ -36,8 +36,12 @@ SRCS	= $(MAIN) \
 		  $(CUB)/bresenham/bresenham.c \
 		  $(ERR)ft_perror.c \
 		  $(PAR)map_parsing.c \
+		  $(PAR)parsing.c \
+		  $(PAR)check_map.c \
+		  $(PAR)check_walls.c \
+		  $(PAR)get_color.c \
+		  $(PAR)separate.c \
 
-#		  $(PAR)pars.c
 
 O_DIR	= ./objects/
 OBJS	= $(addprefix $(O_DIR)/, $(SRCS:.c=.o))

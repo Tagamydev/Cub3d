@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:29:48 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/24 20:31:56 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:46:00 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ int	fd_cub(char *file)
 	return (-1);
 }
 
-int	separate(t_cub *cub, char **archive, int height_archive)
-{
-
-}
-
 int	get_line(int fd, char *file, t_cub *cub)
 {
 	char	**archive;
@@ -51,11 +46,32 @@ int	get_line(int fd, char *file, t_cub *cub)
 		return (0);
 	if (copy_archive(fd, archive, height_archive))
 	{
-		height_archive = separate(cub, archive, height_archive);
+		height_archive = separate(cub, archive);
 		free_archive(archive);
 		return (height_archive);
 	}
 	return (0);
+}
+
+void	print_parse(t_cub *cub)
+{
+	size_t i = 0;
+	size_t y = 0;
+	printf("map_width %zu\n", cub->map_width);
+	printf("map_height %zu\n", cub->map_height);
+	printf("color_ground %d\n", cub->color_ground);
+	printf("color_sky %d\n", cub->color_sky);
+	while (i < (cub->map_height))
+	{
+		y = 0;
+		while (y < cub->map_width)
+		{
+			printf("%zu", cub->map[i][y]);
+			y++;
+		}
+		printf("\n");
+		i++;
+	}
 }
 
 t_cub	*map_parsing(char *file)
@@ -69,9 +85,11 @@ t_cub	*map_parsing(char *file)
 		return (NULL);
 	if (!get_line(fd_cub(file), file, cub))
 	{
+		printf("Error\n");
 		ft_free_struct(cub);
 		return (NULL);
 	}
 	print_parse(cub);
+	printf("good map\n");
 	return (cub);
 }

@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 20:06:58 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:45:46 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,6 @@ void	*ft_perror(char *error);
 //============================================================================//
 //===============================PARSING======================================//
 t_cub	*map_parsing(char *file);
-int		check_space(char *archive);
 int		check_char_of_str(t_cub *cub, char **archive, int *count);
 int		fill_struct(t_cub *cub, char *line);
 int		copy_map(t_cub *cub, char **archive);
@@ -178,6 +177,11 @@ int		count_height_archive(int fd, int *height_archive);
 int		init_cub(t_cub	*cub);
 int		ft_free_struct(t_cub *cub);
 void	free_archive(char **archive);
+t_img	*ft_open_img(void *mlx, char *path);
+int		separate(t_cub *cub, char **archive);
+size_t	ft_strlcpys(char *dst, const char *src, size_t dstsize);
+int		identifier_color(char *line, int *color, int *count);
+int		check_wall(t_cub *cub, size_t *count_line, size_t *count_int);
 //============================================================================//
 //===============================MINIMAP======================================//
 void	set_zero_minimap(char **minimap, int size);
