@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 23:33:07 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:34:10 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,7 +381,7 @@ int	tex[16][16] = {\
 */
 
 
-void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int side)
+void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int side, int win)
 {
 	int		i;
 	int		j;
@@ -511,9 +511,15 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 			{
 				if (i > offset_up && i < offset_down)
 				{
+					//=============================================================//
 					if (!fog)
 						ray.color = tex[(int)x][actual_chunk];
 					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
+					if (win)
+					{
+						ray.color = ft_mix_color(0x000000FF, get_pixel_img(cub->game, j, i), 0.5);
+					}
+
 					ft_put_pixel(cub->game, j, i, ray.color);
 					x += pixel;
 					if (x > size - 1)
@@ -706,6 +712,9 @@ void	ray_map_draw_rays(t_cub *cub)
 	float		fogyf;
 	float		fog_ds;
 	float		actual_ds;
+	float		winx;
+	float		winy;
+	int			win;
 
 	ray_dx = 0;
 	ray_dy = 0;
@@ -725,6 +734,9 @@ void	ray_map_draw_rays(t_cub *cub)
 		chunks = 30;
 	while (ray < WIDTH / 3)
 	{
+		win = 0;
+		winx = cub->player_px;
+		winy = cub->player_py;
 		//ray_a = get_angle(cub->player_a);//cub->player_a + anglei - (angle / 2);
 		ray_a = cub->player_a + anglei - (angle / 2);
 		ray_dx = cos(angle_to_radian(get_angle(ray_a)));
@@ -735,8 +747,14 @@ void	ray_map_draw_rays(t_cub *cub)
 		ray_proyection = 0;
 		x = cub->player_px + ray_dx * 0;
 		y = cub->player_py + ray_dy * 0;
-		while (cub->map[(int)y][(int)x] != 1 && cub->map[(int)y][(int)x] != 6)
+		while (cub->map[(int)y][(int)x] != 1)// && cub->map[(int)y][(int)x] != 6)
 		{
+			if (cub->map[(int)y][(int)x] == 6 && winx == cub->player_px && winy == cub->player_py)
+			{
+				win = 1;
+				winx = x;
+				winy = y;
+			}
 			x = x + ray_dx * ray_proyection;
 			y = y + ray_dy * ray_proyection;
 			actual_ds = ft_ds(cub->player_px, x, cub->player_py, y);
@@ -806,8 +824,9 @@ void	ray_map_draw_rays(t_cub *cub)
 		else
 				color2 = ft_mix_color(cub->color_sky, 0, 0.10);
 		last_distance = ft_ds(cub->player_px, x, cub->player_py, y);
-		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH / 3, color2);//draw walls
-		//draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, 1, color2);//draw walls
+		draw_walls(cub, calculate_ray(make_tmp_ray(x, y, ray_a, cub), cub, color2), ray, WIDTH / 3, color2, 0);
+		if (win == 1)
+			draw_walls(cub, calculate_ray(make_tmp_ray(winx, winy, ray_a, cub), cub, color2), ray, WIDTH / 3, color2, 1);
 		anglei += angle_chunk;
 		ray++;
 	}

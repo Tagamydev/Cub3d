@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/23 21:45:06 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/24 20:10:23 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	hand_loop(t_cub *cub)
 	static int x = 0;
 	static int sign = 1;
 
-	if (x >= 10 || x < 0)
+	if (x >= 5 || x < 0)
 		sign *= -1;
 	if (x == 0)
 	{
@@ -140,45 +140,20 @@ void	hand_loop(t_cub *cub)
 	}
 	else if (x == 2)
 	{
-		cub->handx = 2;
+		cub->handx = 4;
 		cub->handy = 2;
 	}
 	else if (x == 3)
 	{
-		cub->handx = 4;
+		cub->handx = 6;
 		cub->handy = 2;
 	}
 	else if (x == 4)
 	{
-		cub->handx = 4;
-		cub->handy = 2;
+		cub->handx = 8;
+		cub->handy = 0;
 	}
 	else if (x == 5)
-	{
-		cub->handx = 6;
-		cub->handy = 2;
-	}
-	else if (x == 6)
-	{
-		cub->handx = 6;
-		cub->handy = 2;
-	}
-	else if (x == 7)
-	{
-		cub->handx = 8;
-		cub->handy = 0;
-	}
-	else if (x == 8)
-	{
-		cub->handx = 8;
-		cub->handy = 0;
-	}
-	else if (x == 9)
-	{
-		cub->handx = 10;
-		cub->handy = -10;
-	}
-	else if (x == 10)
 	{
 		cub->handx = 10;
 		cub->handy = -10;
