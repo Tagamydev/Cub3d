@@ -6,13 +6,28 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:50:41 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/23 19:08:18 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/24 20:00:20 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
 
 int	init_cub(t_cub	*cub)
+{
+	cub->no_texture = NULL;
+	cub->so_texture = NULL;
+	cub->ea_texture = NULL;
+	cub->we_texture = NULL;
+	cub->map = NULL;
+	cub->mlx = mlx_init();
+	cub->color_ground = -1;
+	cub->color_sky = -1;
+	cub->map_width = 0;
+	cub->map_height = 0;
+	return (1);
+}
+
+/*int	init_cub(t_cub	*cub)
 {
 	cub->no_texture = malloc(sizeof(t_img) * 1);
 	if (!cub->no_texture)
@@ -36,7 +51,7 @@ int	init_cub(t_cub	*cub)
 	cub->map_width = 0;
 	cub->map_height = 0;
 	return (1);
-}
+}*/
 
 void	free_archive(char **archive)
 {

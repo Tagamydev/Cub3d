@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:50:53 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/23 18:37:58 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:49:15 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,6 @@ int	check_char_of_str(t_cub *cub, char **archive, int *count)
 {
 	size_t	len_str;
 
-	/*len_str = 0;
-	while (archive[*count][len_str])
-	{
-		if (archive[*count][len_str] == '1')
-			break;
-		len_str++;
-		if (archive[*count][len_str] == '\0')
-		{
-			printf("hola2\n");
-			return (0);
-		}
-	}*/
 	len_str = 0;
 	while (archive[*count][len_str] || archive[*count][len_str] == '\n')
 	{
