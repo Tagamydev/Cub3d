@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:40:47 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/25 18:41:01 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:09:41 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	char_of_str(t_cub *cub, int *count, size_t *len_str, char **archive)
 		cub->map[*count][*len_str] = 5;
 	else if (archive[*count][*len_str] == ' ')
 		cub->map[*count][*len_str] = 9;
+	else if (archive[*count][*len_str] == 'D')
+		cub->map[*count][*len_str] = 6;
 }
 
 int	check_char_of_str(t_cub *cub, char **arr, int *c)
@@ -57,7 +59,7 @@ int	check_char_of_str(t_cub *cub, char **arr, int *c)
 	{
 		if (arr[*c][len] == '0' || arr[*c][len] == '1' || arr[*c][len] == 'N'
 			|| arr[*c][len] == 'S' || arr[*c][len] == 'E'
-			|| arr[*c][len] == 'W' || arr[*c][len] == ' ')
+			|| arr[*c][len] == 'W' || arr[*c][len] == ' ' || arr[*c][len] == 'D')
 			char_of_str(cub, c, &len, arr);
 		else if (arr[*c][len] == '\n')
 		{

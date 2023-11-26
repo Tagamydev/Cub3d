@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/25 21:34:10 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 11:52:07 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,6 +304,7 @@ void	draw_minimark(t_cub *cub)
 	}
 }
 
+/*
 void	ray_map_draw_map(t_cub *cub)
 {
 	size_t		i;
@@ -341,6 +342,8 @@ void	ray_map_draw_map(t_cub *cub)
 	}
 }
 
+*/
+/*
 void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 {
 	t_point	point1;
@@ -359,6 +362,7 @@ void	ray_map_draw_ray(t_cub *cub, float x, float y, int color)
 	ft_put_line(point1, point2, cub->ray_map);
 	ft_put_pixel(cub->ray_map, point1.x, point1.y, color);
 }
+*/
 
 /*
 int	tex[16][16] = {\
@@ -473,10 +477,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 						ray.color = ft_mix_color(ray.color, 0x00000000, 0.5);
 					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
 					if (fog == 1)
-					{
-						printf("fog!!\n");
 						ray.color = 0;
-					}
 					ft_put_pixel(cub->game, j, i, ray.color);
 				}
 				wall_len += 1;
@@ -630,6 +631,7 @@ t_p	ray_to_point(t_ray ray)
 	return (result);
 }
 
+/*
 void	ft_line(float x1, float y1, float x2, float y2, t_cub *cub, int color)
 {
 	t_point	point1;
@@ -645,8 +647,9 @@ void	ft_line(float x1, float y1, float x2, float y2, t_cub *cub, int color)
 	point2.y = y2 * offset;
 	point2.z = 0;
 	point2.color = color;
-	ft_put_line(point1, point2, cub->ray_map);
+	//ft_put_line(point1, point2, cub->ray_map);
 }
+*/
 double	ft_ds(double xi, double xf, double yi, double yf)
 {
 	double	result;
@@ -670,14 +673,11 @@ int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distan
 	ray_dy = sin(angle_to_radian(get_angle(ray_a)));
 	x = cub->player_px + ray_dx * 0;
 	y = cub->player_py + ray_dy * 0;
-	while (cub->map[(int)y][(int)x] != 1 && cub->map[(int)y][(int)x] != 6)
+	while (cub->map[(int)y][(int)x] != 1)
 	{
 		x = x + ray_dx * ray_proyection;
 		y = y + ray_dy * ray_proyection;
-		if (last_distance > 1)
-			ray_proyection += 0.0001;
-		else
-			ray_proyection += 0.001;
+		ray_proyection += 0.0001;
 	}
 	if (ft_abs2(closer_int(y) - y) > ft_abs2(closer_int(x) - x))
 		status1 = SIDE;
@@ -691,6 +691,7 @@ int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distan
 	}
 	return (status1);
 }
+
 void	ray_map_draw_rays(t_cub *cub)
 {
 	int			ray;
@@ -762,7 +763,7 @@ void	ray_map_draw_rays(t_cub *cub)
 				break;
 			ray_proyection += 0.0001;
 		}
-		ray_map_draw_ray(cub, x, y, 0x00FFFF06);//draw rays in minimap
+		//ray_map_draw_ray(cub, x, y, 0x00FFFF06);//draw rays in minimap
 		/*
 		if ((int)(ray_a * 10) == (int)(cub->player_a * 10))
 			printf("distance:%f\n", actual_ds);
@@ -835,7 +836,7 @@ void	ray_map_draw_rays(t_cub *cub)
 
 void	draw_ray_map(t_cub *cub)
 {
-	ray_map_draw_map(cub);
+	//ray_map_draw_map(cub);
 	ray_map_draw_rays(cub);
 }
 
@@ -933,7 +934,7 @@ void	start_cub(t_cub *cub)
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
 	put_noise(cub);
-	mlx_put_image_to_window(cub->mlx, cub->ray_win, cub->ray_map->img, 0, 0);
+	//ft_fill_img(cub->ray_map, 0x000000ff);
 	return ;
 	(void)cub;
 }

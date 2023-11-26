@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:07:46 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/25 18:42:47 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:08:59 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	do_check(t_cub *cub, size_t *count_line, size_t *count_int, int *flag)
 	}
 	else if (cub->map[*count_line][*count_int] == 1)
 		*count_int += 1;
-	else if (cub->map[*count_line][*count_int] == 0)
+	else if (cub->map[*count_line][*count_int] == 0 || cub->map[*count_line][*count_int] == 6)
 	{
 		if (!check_wall(cub, count_line, count_int))
 			return (0);

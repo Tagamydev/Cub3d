@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:15:25 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/25 21:36:27 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/25 22:27:48 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ t_tex	*img_to_tex(t_img *img)
 	return (all);
 }
 
+/*
 t_cub	*map_parsing(char *file)
 {
 	t_cub	*cub;
@@ -365,3 +366,4 @@ t_cub	*map_parsing(char *file)
 	return (cub);
 	(void)file;
 }
+*/

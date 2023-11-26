@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/25 21:37:15 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 11:47:56 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_cub{
 	//=========================//
 	//        MAP_UTILS        //
 	size_t	**map;
-	int		*map_4_ray;
+	//int		*map_4_ray;
 	size_t	map_width;
 	size_t	map_height;
 	t_img	*no_texture;
@@ -93,7 +93,7 @@ typedef struct s_cub{
 	//        MLX_UTILS        //
 	void	*mlx;
 	void	*win;
-	void	*ray_win;
+//	void	*ray_win;
 	t_img	*game;
 	t_img	*cam;
 	t_img	*atm;
@@ -109,7 +109,7 @@ typedef struct s_cub{
 	t_img	*noise5;
 	t_img	*noise6;
 	t_img	*minimap;
-	t_img	*ray_map;
+//	t_img	*ray_map;
 	//=========================//
 	//          PLAYER         //
 	int		camera_speed;
@@ -157,6 +157,7 @@ double	angle_to_radian(double angle);
 double	get_angle(double angle);
 void	put_deltas(t_cub *cub);
 int	get_pixel_img(t_img *img, int x, int y);
+int	cub_open_utils(t_cub *cub);
 //============================================================================//
 //=================================MLX========================================//
 void	ft_put_pixel(t_img *img, int x, int y, int color);
@@ -165,6 +166,7 @@ t_img	*ft_init_img(void *mlx, int width, int height);
 void	draw_square(t_img *img, t_square sq);
 void	fill_img_sky_n_ground(t_img *img, int color1, int color2, int status);
 void	make_img_translucent(t_img *img, double o);
+t_tex	*img_to_tex(t_img *img);
 //============================================================================//
 //================================ERROR=======================================//
 void	*ft_perror(char *error);
