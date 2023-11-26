@@ -6,11 +6,11 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:19:52 by samusanc          #+#    #+#             */
-/*   Updated: 2023/03/02 16:09:07 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:24:52 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include<stdio.h>
+#include <stdio.h>
 
 int	ft_atoi(const char *nptr)
 {

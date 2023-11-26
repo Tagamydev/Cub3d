@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/26 11:52:07 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 13:38:18 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -517,9 +517,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 						ray.color = tex[(int)x][actual_chunk];
 					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
 					if (win)
-					{
 						ray.color = ft_mix_color(0x000000FF, get_pixel_img(cub->game, j, i), 0.5);
-					}
 
 					ft_put_pixel(cub->game, j, i, ray.color);
 					x += pixel;

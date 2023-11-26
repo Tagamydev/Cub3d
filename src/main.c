@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:58:04 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/25 21:47:25 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:36:40 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,18 @@ void	start_loop(t_cub *cub)
 	(void)cub;
 }
 
-/*void seeleaks()
+/*
+void	leaks()
 {
-
 	system("leaks -q cub3d");
-}*/
+}
+*/
 
 int	main(int argc, char **argv)
 {
 	t_cub	*cub;
 
-	//atexit(&seeleaks);
+	//atexit(leaks);
 	cub = NULL;
 	if (argc != 2)
 	{

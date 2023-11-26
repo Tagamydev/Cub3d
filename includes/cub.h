@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/26 11:47:56 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:39:19 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define ON 1
 # define FRONT 1
 # define SIDE 0
+# ifndef BONUS
+#  define BONUS 0
+# endif
 
 typedef struct s_tex{
 	int		**tex;
@@ -69,11 +72,11 @@ typedef struct s_img{
  *		9 space in map
  */
 
+
 typedef struct s_cub{
 	//=========================//
 	//        MAP_UTILS        //
 	size_t	**map;
-	//int		*map_4_ray;
 	size_t	map_width;
 	size_t	map_height;
 	t_img	*no_texture;
@@ -93,7 +96,6 @@ typedef struct s_cub{
 	//        MLX_UTILS        //
 	void	*mlx;
 	void	*win;
-//	void	*ray_win;
 	t_img	*game;
 	t_img	*cam;
 	t_img	*atm;
@@ -109,7 +111,6 @@ typedef struct s_cub{
 	t_img	*noise5;
 	t_img	*noise6;
 	t_img	*minimap;
-//	t_img	*ray_map;
 	//=========================//
 	//          PLAYER         //
 	int		camera_speed;

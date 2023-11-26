@@ -6,7 +6,7 @@
 /*   By: samusanc <samusanc@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 14:23:09 by samusanc          #+#    #+#             */
-/*   Updated: 2023/03/09 13:39:27 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:23:29 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	i = 0;
 	sc = (unsigned char *)s;
 	if (n != 0)
-	{		
+	{
 		while (i < (int)n)
 		{
 			if (*sc == (unsigned char)c)

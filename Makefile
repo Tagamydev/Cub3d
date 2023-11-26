@@ -6,12 +6,13 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/25 18:46:16 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/11/26 13:31:15 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+.mandatory:	CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
+.bonus:		CFLAGS	= -Wall -Wextra -Werror -g3 -D BONUS=1 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
 NAME	= cub3d
-CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
 CC		= gcc $(CFLAGS)
 MLX		= -L /usr/local/lib -lmlx -lm -framework OpenGL -framework AppKit
 LIBFT	= -L./libft/ -lft
@@ -50,21 +51,46 @@ $(O_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	@$(CC) -c $< -o $(O_DIR)/$(<:.c=.o)
 
-all: $(NAME) includes/cub.h
+all: .mandatory
+	@echo "mandatory done!!!"
 
-$(NAME): $(OBJS)
+bonus: .bonus
+	@echo "Bonus done!!!"
+
+.bonus: clean $(OBJS) includes/cub.h
+	@echo "cleaning mandatory..."
+	@rm -rf .mandatory
+	@echo "compiling libft..."
 	@make -sC ./libft/
+	@echo "compiling objects..."
 	@$(CC) $(OBJS) $(MLX) $(LIBFT) $(GNL) -o $(NAME)
+	@touch .bonus
+
+.mandatory: $(OBJS) includes/cub.h
+	@echo "compiling libft..."
+	@make -sC ./libft/
+	@echo "compiling objects..."
+	@$(CC) $(OBJS) $(MLX) $(LIBFT) $(GNL) -o $(NAME)
+	@touch .mandatory
 
 re: fclean all
 
 fclean: clean
+	@echo "cleaning binaries..."
 	@make -sC ./libft/ fclean
 	@rm -f $(NAME)
+	@rm -rf .bonus
+	@rm -rf .mandatory
+	@rm -rf .clean
 
-clean:
+clean: .clean
+	@echo "objects removed!"
+
+.clean:
+	@echo "cleaning objects..."
 	@make -sC ./libft/ clean
 	@rm -f $(OBJS)
 	@rm -rf $(O_DIR)
+	@touch .clean
 
-.PHONY: all
+.PHONY: all bonus clean fclean re

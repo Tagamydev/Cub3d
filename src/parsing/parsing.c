@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:29:48 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/26 12:07:27 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 13:05:07 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ int	resize_map(t_cub *cub)
 	else
 		x = cub->map_height;
 	new_map = alloc_new_map(x + 40);
+	if (!new_map)
+		return (0);
 	i = 0;
 	j = 0;
 	while (i < cub->map_height)
@@ -124,6 +126,11 @@ int	resize_map(t_cub *cub)
 			tmp = cub->map[i][j];
 			if (tmp == 9)
 				tmp = 1;
+			if (!BONUS)
+			{
+				if (tmp == 6)
+					return (0);
+			}
 			new_map[i + 20][j + 20] = tmp;
 			j++;
 		}
@@ -156,7 +163,8 @@ t_cub	*map_parsing(char *file)
 
 
 	//============================================================================//
-	resize_map(cub);
+	if (!resize_map(cub))
+		return (NULL);
 	//print_parse(cub);
 	cub->win = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "cub3d");
 	if (!cub->win)
