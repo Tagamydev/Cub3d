@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/26 13:38:18 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/26 20:52:29 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -514,11 +514,15 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 				{
 					//=============================================================//
 					if (!fog)
-						ray.color = tex[(int)x][actual_chunk];
-					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
+					{
+						if (x < 0 || x >= size)
+							x = size - 1;
+						//printf("x:%f, %d\n", x, actual_chunk);
+						ray.color = tex[(int)x][actual_chunk]; //here segfault
+					}
 					if (win)
 						ray.color = ft_mix_color(0x000000FF, get_pixel_img(cub->game, j, i), 0.5);
-
+					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
 					ft_put_pixel(cub->game, j, i, ray.color);
 					x += pixel;
 					if (x > size - 1)
@@ -903,6 +907,76 @@ void	ray_caster(t_cub *cub)
 	draw_cross(cub);
 }
 
+void	sprites(t_cub *cub)
+{
+	float	sx;
+	float	sy;
+	float	x;
+	float	y;
+	float	angle;
+	float	angle2;
+	float	up;
+	float	down;
+	float		screenx;
+	float	ds;
+	int		side;
+
+	sx = 24 + 0.5;
+	sy = 27 + 0.5;
+	printf("%f\n", (cub->player_px - sx) * (cub->player_py - sy));
+	
+	up = sx - cub->player_px;
+	ds = ft_ds(cub->player_px, sx, cub->player_py, sy);
+	angle = acos(up / ds);
+	angle = angle * 180.0 / PI;
+	printf("angle:%f\n", angle);
+	//sx = sx - cub->player_px;
+	//sy = sy - cub->player_py;
+	/*
+	//==============================================================//
+	x = cub->player_px + cos(angle_to_radian(get_angle(0))) * 5;
+	x -= cub->player_px;
+	y = cub->player_py + sin(angle_to_radian(get_angle(0))) * 5;
+	y -= cub->player_py;
+
+	up = (x * sx) + (y * sy);
+	down = sqrt(pow(sx, 2) + pow(sy, 2)) * sqrt(pow(x, 2) + pow(y, 2));
+	angle2 = (double)up / (double)down;
+	angle2 = acos(angle2) * 180.0 / PI;
+	angle2 = get_angle(angle2 - 180);
+	if (angle2 - cub->player_a < 0)
+		side = -1;
+	else
+		side = 1;
+
+	//==============================================================//
+	x = cub->player_px + cub->player_dx * 10;
+	x -= cub->player_px;
+	y = cub->player_py + cub->player_dy * 10;
+	y -= cub->player_py;
+	up = (x * sx) + (y * sy);
+	down = sqrt(pow(sx, 2) + pow(sy, 2)) * sqrt(pow(x, 2) + pow(y, 2));
+	angle = (double)up / (double)down;
+	angle = acos(angle) * 180.0 / PI;
+//	printf("angle1:%f\n", angle);
+	printf("dsx:%f, dsy:%f, angle of sprite:%f, angle to player%f, %f\n", cub->player_px - sx, \
+	cub->player_py - sy, angle2, angle, cub->player_a);
+	if (angle > 15)
+		return ;
+	angle += 15;
+	screenx = (angle * WIDTH) / (float)30;
+	*/
+	//ft_put_pixel(cub->game, screenx, 100, 0x00ff00ff);
+	(void)x;
+	(void)y;
+	(void)angle;
+	(void)angle2;
+	(void)up;
+	(void)down;
+	(void)screenx;
+	(void)side;
+}
+
 //write_map(cub);
 void	start_cub(t_cub *cub)
 {
@@ -912,6 +986,7 @@ void	start_cub(t_cub *cub)
 		fill_img_sky_n_ground(cub->game, 0x00FF0000, 0x000000FF, 1);
 	ft_fill_img(cub->minimap, 0x00000000);
 	ray_caster(cub);
+	sprites(cub);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
 	if (cub->cam_status == OFF)
 	{
