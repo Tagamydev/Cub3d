@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/26 20:52:29 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:59:39 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -874,6 +874,7 @@ t_win	tmp_win(void *mlx, void *win, t_img *result)
 	final.result = result;
 	return (final);
 }
+//==========
 
 void	put_noise(t_cub *cub)
 {
@@ -923,50 +924,28 @@ void	sprites(t_cub *cub)
 
 	sx = 24 + 0.5;
 	sy = 27 + 0.5;
-	printf("%f\n", (cub->player_px - sx) * (cub->player_py - sy));
-	
-	up = sx - cub->player_px;
-	ds = ft_ds(cub->player_px, sx, cub->player_py, sy);
-	angle = acos(up / ds);
-	angle = angle * 180.0 / PI;
-	printf("angle:%f\n", angle);
-	//sx = sx - cub->player_px;
-	//sy = sy - cub->player_py;
-	/*
-	//==============================================================//
-	x = cub->player_px + cos(angle_to_radian(get_angle(0))) * 5;
-	x -= cub->player_px;
-	y = cub->player_py + sin(angle_to_radian(get_angle(0))) * 5;
-	y -= cub->player_py;
-
-	up = (x * sx) + (y * sy);
-	down = sqrt(pow(sx, 2) + pow(sy, 2)) * sqrt(pow(x, 2) + pow(y, 2));
-	angle2 = (double)up / (double)down;
-	angle2 = acos(angle2) * 180.0 / PI;
-	angle2 = get_angle(angle2 - 180);
-	if (angle2 - cub->player_a < 0)
+	if (cub->player_py - sy < 0)
 		side = -1;
 	else
 		side = 1;
 
-	//==============================================================//
-	x = cub->player_px + cub->player_dx * 10;
-	x -= cub->player_px;
-	y = cub->player_py + cub->player_dy * 10;
-	y -= cub->player_py;
-	up = (x * sx) + (y * sy);
-	down = sqrt(pow(sx, 2) + pow(sy, 2)) * sqrt(pow(x, 2) + pow(y, 2));
-	angle = (double)up / (double)down;
-	angle = acos(angle) * 180.0 / PI;
-//	printf("angle1:%f\n", angle);
-	printf("dsx:%f, dsy:%f, angle of sprite:%f, angle to player%f, %f\n", cub->player_px - sx, \
-	cub->player_py - sy, angle2, angle, cub->player_a);
+	ds = ft_ds(sx, cub->player_px, sy, cub->player_py);
+	up = sx - cub->player_px;
+	down = ds;
+	angle = acos(up / down) * 180.0 / PI;
+	angle *= side;
+	if (cub->player_a > 180)
+		angle2 = cub->player_a - 360;
+	else
+		angle2 = cub->player_a;
+	angle = angle2 + angle;
+
+	angle *= -1;
 	if (angle > 15)
 		return ;
 	angle += 15;
 	screenx = (angle * WIDTH) / (float)30;
-	*/
-	//ft_put_pixel(cub->game, screenx, 100, 0x00ff00ff);
+	ft_put_pixel(cub->game, screenx, 100, 0x00ff00ff);
 	(void)x;
 	(void)y;
 	(void)angle;
@@ -988,6 +967,7 @@ void	start_cub(t_cub *cub)
 	ray_caster(cub);
 	sprites(cub);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
+	/*
 	if (cub->cam_status == OFF)
 	{
 		ft_fill_img(cub->atm, \
@@ -1008,6 +988,7 @@ void	start_cub(t_cub *cub)
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
 	put_noise(cub);
 	//ft_fill_img(cub->ray_map, 0x000000ff);
+	*/
 	return ;
 	(void)cub;
 }
