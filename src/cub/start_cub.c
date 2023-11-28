@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/27 20:59:39 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/28 14:55:50 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -411,7 +411,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 
 	i = 0;
 	fog = 0;
-	len = WIDTH / total_rays;
+	len = (float)WIDTH / total_rays;
 	start_x = len * actual_ray;
 	distance = (240 * 15) / ray.distance;
 	distance = distance / 5;
@@ -923,7 +923,8 @@ void	sprites(t_cub *cub)
 	int		side;
 
 	sx = 24 + 0.5;
-	sy = 27 + 0.5;
+	sy = 28;
+	//sy = 27 + 0.5;
 	if (cub->player_py - sy < 0)
 		side = -1;
 	else
@@ -941,11 +942,161 @@ void	sprites(t_cub *cub)
 	angle = angle2 + angle;
 
 	angle *= -1;
+	/*
 	if (angle > 15)
 		return ;
+		*/
 	angle += 15;
 	screenx = (angle * WIDTH) / (float)30;
-	ft_put_pixel(cub->game, screenx, 100, 0x00ff00ff);
+	//===================================================================//
+	//===================================================================//
+	float	distance;
+	float	offset_up;
+	float	offset_down;
+	size_t	wall_len;
+
+	wall_len = 0;
+	distance = (240 * 15) / ds;
+	distance = distance / 5;
+	offset_up = ((HEIGHT / 2.5) - distance);
+	offset_down = (HEIGHT / 1.25 - offset_up);
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < HEIGHT)
+	{
+		j = screenx;
+		if (i > offset_up && i < offset_down)
+			wall_len += 1;
+		i++;
+	}
+	//===================================================================//
+	float	offset_left;
+	float	offset_right;
+
+	offset_left = 0;
+	offset_right = 0;
+	if (screenx < 0)
+		offset_left = screenx * (-1);
+	if (screenx > WIDTH)
+		offset_right = screenx - WIDTH;
+	int		r_wall_len;
+
+	r_wall_len = ft_abs(offset_up - offset_down);
+	if (offset_left > r_wall_len || offset_right > r_wall_len)
+		return ;
+	//===================================================================//
+	i = 0;
+	int	k;
+	float	offup;
+	float	offdo;
+	float	offset;
+	int		initial;
+	int		final;
+	float	chunk;
+	float	offl;
+	float	offr;
+	float	txt_i;
+	float	txt_f;
+	int		size;
+	int		color;
+	size = cub->we_t->size;
+	if (offset_up < 0)
+		offup = (float)ft_abs(offset_up) / (float)HEIGHT;
+	else
+		offup = 0;
+
+	if (offset_down > HEIGHT)
+		offdo = (float)ft_abs(offset_down - HEIGHT) / (float)HEIGHT;
+	else
+		offdo = 0;
+
+	offset = (offup) * ((float)r_wall_len);
+	initial = screenx - ((float)(r_wall_len) / (float)2.35);
+	chunk = (r_wall_len * 0.85);
+	final = initial + chunk;
+	if (initial < 0)
+		offl = ft_abs(initial);
+	else
+		offl = 0;
+	if (final > 640)
+		offr = final - WIDTH;
+	else
+		offr = 0;
+	txt_i = (float)(ft_abs(offl) * size) / chunk;
+	if (txt_i < 0)
+		txt_i = 0;
+	if (txt_i > size - 1)
+		txt_i = size - 1;
+	txt_f = size - (float)(ft_abs(offr) * size) / chunk;
+	if (txt_f < 0)
+		txt_f = 0;
+	if (txt_f > size - 1)
+		txt_f = size - 1;
+
+	//printf("chunk:%f, %f\n", (float)txt_i, txt_f);
+	float	z;
+	float	chunk2;
+
+	z = 0;
+	x = 0;
+	y = 0;
+	chunk = (float)(ft_abs2(txt_i - txt_f)) / (float)(r_wall_len * 0.85);
+	//=========================================//
+	/*
+	float	start_point;
+	float	end_point;
+
+	start_point = 0;
+	end_point = size;
+	chunk2 = ft_abs2(start_point - end_point) / ((float)wall_len);
+	y = start_point;
+	printf("%f\n", chunk2);
+	*/
+	y = 0;
+	chunk2 = 1;
+
+	float y2;
+
+	//=========================================//
+	while (i < HEIGHT)
+	{
+		x = txt_i;
+		j = initial;
+		k = 0;
+		if (i > offset_up && i < offset_down)
+			y++;
+		while (k < (r_wall_len * 0.85))
+		{
+			if (i > offset_up && i < offset_down)
+			{
+				if (x < 0)
+					x = 0;
+				if (x > size - 1)
+					x = size - 1;
+				y2 = (y * size) / wall_len;
+				if (y2 < 0)
+					y2 = 0;
+				if (y2 > size - 1)
+					y2 = size - 1;
+				color = cub->we_t->tex[(int)y2][(int)x];
+
+				ft_put_pixel(cub->game, j + k, i, color);
+			}
+			x += chunk;
+			k++;
+		}
+		i++;
+	}
+	printf("y:%f\n", y);
+
+	//===================================================================//
+
+	//printf("wall_len:%zu\n", wall_len);
+
+	//===================================================================//
+	//ft_put_pixel(cub->game, screenx, 100, 0x00ff00ff);
 	(void)x;
 	(void)y;
 	(void)angle;
