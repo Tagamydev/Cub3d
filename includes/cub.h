@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/28 14:46:21 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:31:59 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,10 @@ typedef struct s_cub{
 	t_img	*so_texture;
 	t_img	*ea_texture;
 	t_img	*we_texture;
+	t_img	*nina_texture;
 	t_img	*black;
 	t_tex	*no_t;
+	t_tex	*nina_t;
 	t_tex	*so_t;
 	t_tex	*ea_t;
 	t_tex	*we_t;

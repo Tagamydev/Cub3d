@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/28 14:55:50 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:35:42 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1001,7 +1001,7 @@ void	sprites(t_cub *cub)
 	float	txt_f;
 	int		size;
 	int		color;
-	size = cub->we_t->size;
+	size = cub->nina_t->size;
 	if (offset_up < 0)
 		offup = (float)ft_abs(offset_up) / (float)HEIGHT;
 	else
@@ -1016,6 +1016,31 @@ void	sprites(t_cub *cub)
 	initial = screenx - ((float)(r_wall_len) / (float)2.35);
 	chunk = (r_wall_len * 0.85);
 	final = initial + chunk;
+//========================================================//
+	y = 0;
+
+	float y2;
+	float	new_size;
+	float	start_point;
+	float	end_point;
+	float	real_wall_ds;
+
+	start_point = 0;
+	end_point = size;
+	start_point = 0;
+	end_point = size;
+	real_wall_ds = ft_abs(offset_up - offset_down);
+	if (offset_up < 0)
+	{
+		start_point = (float)(ft_abs(offset_up) * size) / (float)real_wall_ds;
+		if (offset_down > HEIGHT)
+			end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * size) / (float)real_wall_ds);
+	}
+
+	new_size = ft_abs2(start_point - end_point);
+
+//========================================================//
+
 	if (initial < 0)
 		offl = ft_abs(initial);
 	else
@@ -1024,12 +1049,12 @@ void	sprites(t_cub *cub)
 		offr = final - WIDTH;
 	else
 		offr = 0;
-	txt_i = (float)(ft_abs(offl) * size) / chunk;
+	txt_i = (float)(ft_abs(offl) * new_size) / chunk;
 	if (txt_i < 0)
 		txt_i = 0;
 	if (txt_i > size - 1)
 		txt_i = size - 1;
-	txt_f = size - (float)(ft_abs(offr) * size) / chunk;
+	txt_f = size - (float)(ft_abs(offr) * new_size) / chunk;
 	if (txt_f < 0)
 		txt_f = 0;
 	if (txt_f > size - 1)
@@ -1045,20 +1070,11 @@ void	sprites(t_cub *cub)
 	chunk = (float)(ft_abs2(txt_i - txt_f)) / (float)(r_wall_len * 0.85);
 	//=========================================//
 	/*
-	float	start_point;
-	float	end_point;
-
-	start_point = 0;
-	end_point = size;
 	chunk2 = ft_abs2(start_point - end_point) / ((float)wall_len);
 	y = start_point;
 	printf("%f\n", chunk2);
 	*/
-	y = 0;
 	chunk2 = 1;
-
-	float y2;
-
 	//=========================================//
 	while (i < HEIGHT)
 	{
@@ -1075,13 +1091,15 @@ void	sprites(t_cub *cub)
 					x = 0;
 				if (x > size - 1)
 					x = size - 1;
-				y2 = (y * size) / wall_len;
+				y2 = (y * new_size) / wall_len;
+				y2 += start_point;
 				if (y2 < 0)
 					y2 = 0;
 				if (y2 > size - 1)
 					y2 = size - 1;
-				color = cub->we_t->tex[(int)y2][(int)x];
-
+				color = cub->nina_t->tex[(int)y2][(int)x];
+				if (color == 0x00FF00FF)
+					color = get_pixel_img(cub->game, j + k, i);
 				ft_put_pixel(cub->game, j + k, i, color);
 			}
 			x += chunk;
@@ -1118,7 +1136,6 @@ void	start_cub(t_cub *cub)
 	ray_caster(cub);
 	sprites(cub);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
-	/*
 	if (cub->cam_status == OFF)
 	{
 		ft_fill_img(cub->atm, \
@@ -1139,7 +1156,6 @@ void	start_cub(t_cub *cub)
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
 	put_noise(cub);
 	//ft_fill_img(cub->ray_map, 0x000000ff);
-	*/
 	return ;
 	(void)cub;
 }

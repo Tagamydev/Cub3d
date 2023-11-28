@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:29:48 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/26 13:05:07 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:32:24 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,13 @@ t_cub	*map_parsing(char *file)
 	cub->black = ft_open_img(cub->mlx, "./src/img/black.xpm");
 	if (!cub->no_texture)
 		return (NULL);
+	cub->nina_texture = ft_open_img(cub->mlx, "./src/img/nina.xpm");
+	if (!cub->nina_texture)
+		return (NULL);
+	cub->nina_t = img_to_tex(cub->nina_texture);
+	if (!cub->nina_t)
+		return (NULL);
+
 	cub->no_t = img_to_tex(cub->no_texture);
 	if (!cub->no_t)
 		return (NULL);
