@@ -6,11 +6,11 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/26 13:31:15 by samusanc         ###   ########.fr        #
+#    Updated: 2023/11/29 13:59:33 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.mandatory:	CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
+.mandatory:	CFLAGS	= -Wall -Wextra -Werror -g3 -D BONUS=1 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
 .bonus:		CFLAGS	= -Wall -Wextra -Werror -g3 -D BONUS=1 -fsanitize=address -I ./includes -I ./libft/ -I /usr/local/include 
 NAME	= cub3d
 CC		= gcc $(CFLAGS)

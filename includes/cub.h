@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/28 20:31:59 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:54:00 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,15 @@ typedef struct s_img{
  *		7 door open
  *		8 player in door
  *		9 space in map
+ *		10 ghost
  */
-
-
 typedef struct s_cub{
 	//=========================//
 	//        MAP_UTILS        //
 	size_t	**map;
 	size_t	map_width;
 	size_t	map_height;
+	float	**screen;
 	t_img	*no_texture;
 	t_img	*so_texture;
 	t_img	*ea_texture;

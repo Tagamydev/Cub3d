@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:29:48 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/28 20:32:24 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:59:08 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,36 @@ int	resize_map(t_cub *cub)
 	return (1);
 }
 
+float	**alloc_screen(void)
+{
+	size_t	i;
+	size_t	j;
+	size_t	k;
+	float	**result;
+
+	i = 0;
+	j = 0;
+	result = ft_calloc(sizeof(float *), HEIGHT);
+	if (!result)
+		return (NULL);
+	while (i < HEIGHT)
+	{
+		k = 0;
+		result[i] = ft_calloc(sizeof(float), WIDTH);
+		if (!result[i])
+		{
+			while (j < i)
+				free(result[j++]);
+			free(result);
+			return (NULL);
+		}
+		while (k < WIDTH)
+			result[i][k++] = 30;
+		i++;
+	}
+	return (result);
+}
+
 t_cub	*map_parsing(char *file)
 {
 	t_cub	*cub;
@@ -155,25 +185,19 @@ t_cub	*map_parsing(char *file)
 		return (NULL);
 	if (!init_cub(cub))
 		return (NULL);
+	//============================================================================//
 	if (!get_line(fd_cub(file), file, cub))
 	{
 		printf("Error\n");
 		return (NULL);
 	}
-
-
 	//============================================================================//
 	if (!resize_map(cub))
 		return (NULL);
-	//print_parse(cub);
 	cub->win = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "cub3d");
 	if (!cub->win)
 		return (NULL);
-	/*
-	cub->ray_win = mlx_new_window(cub->mlx, cub->map_width * 10, cub->map_height * 10, "ray-casting");
-	if (!cub->ray_win)
-		return (NULL);
-		*/
+	//============================================================================//
 	cub->game = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->game)
 		return (NULL);
@@ -191,11 +215,7 @@ t_cub	*map_parsing(char *file)
 	cub->minimap = ft_init_img(cub->mlx, 140, 140);
 	if (!cub->minimap)
 		return (NULL);
-	/*
-	cub->ray_map = ft_init_img(cub->mlx, cub->map_width * 10, cub->map_height * 10);
-	if (!cub->ray_map)
-		return (NULL);
-		*/
+	//============================================================================//
 	cub->black = ft_open_img(cub->mlx, "./src/img/black.xpm");
 	if (!cub->no_texture)
 		return (NULL);
@@ -205,7 +225,7 @@ t_cub	*map_parsing(char *file)
 	cub->nina_t = img_to_tex(cub->nina_texture);
 	if (!cub->nina_t)
 		return (NULL);
-
+	//============================================================================//
 	cub->no_t = img_to_tex(cub->no_texture);
 	if (!cub->no_t)
 		return (NULL);
@@ -242,6 +262,8 @@ t_cub	*map_parsing(char *file)
 	cub->handy = 0;
 	cub->frame = 0;
 	cub->cam_animation = 0;
+	//============================================================================//
+	cub->screen = alloc_screen();
 	//============================================================================//
 	return (cub);
 }
