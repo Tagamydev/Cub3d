@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/29 13:52:32 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:11:13 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,21 +311,20 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	int		len;
 	int		offset_up;
 	int		offset_down;
-	float	color_ground_mix;
-	double	distance;
 	int		fog;
-	size_t	wall_len;
 	int		actual_chunk;
 	int		size;
-
-	float pixel;
+	int		real_wall_ds;
+	int		**tex;
+	float	pixel;
 	float	start_point;
 	float	end_point;
-	int		real_wall_ds;
 	float	x;
-	int		**tex;
-	
+	float	color_ground_mix;
+	double	distance;
+	size_t	wall_len;
 
+	//======================================================================================//
 	i = 0;
 	fog = 0;
 	len = (float)WIDTH / total_rays;
@@ -336,6 +335,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 	offset_down = (HEIGHT / 1.25 - offset_up);
 	color_ground_mix = 0;
 	wall_len = 0;
+	//======================================================================================//
 	if (side == 0x00FF0000)
 	{
 		size = cub->so_t->size;
@@ -375,10 +375,12 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 		fog = 1;
 		//printf("fog\n");
 	}
+	//======================================================================================//
 	if (actual_chunk < 0)
 		actual_chunk = 0;
 	if (actual_chunk > size -1)
 		actual_chunk = size - 1;
+	//======================================================================================//
 	while (i < HEIGHT)
 	{
 		j = start_x;
@@ -395,15 +397,21 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
 					if (fog == 1)
 						ray.color = 0;
+					//======================================================================//
+					//======================================================================//
 					ft_put_pixel(cub->game, j, i, ray.color);
 				}
+				cub->screen[i][j] = ray.distance;
 				wall_len += 1;
 			}
+			else
+				cub->screen[i][j] = 30;
 			k++;
 			j++;
 		}
 		i++;
 	}
+	//======================================================================================//
 	if (cub->cam_status == OFF)
 	{
 		i = 0;
@@ -415,9 +423,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 		{
 			start_point = (float)(ft_abs(offset_up) * size) / (float)real_wall_ds;
 			if (offset_down > HEIGHT)
-			{
 				end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * size) / (float)real_wall_ds);
-			}
 		}
 		pixel = ft_abs2(start_point - end_point) / (float)wall_len;
 		x = start_point;
@@ -429,18 +435,18 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 			{
 				if (i > offset_up && i < offset_down)
 				{
-					//=============================================================//
 					if (!fog)
 					{
 						if (x < 0 || x >= size)
 							x = size - 1;
-						//printf("x:%f, %d\n", x, actual_chunk);
-						ray.color = tex[(int)x][actual_chunk]; //here segfault
+						ray.color = tex[(int)x][actual_chunk];//here segfault
 					}
 					if (win)
 						ray.color = ft_mix_color(0x000000FF, get_pixel_img(cub->game, j, i), 0.5);
 					ray.color = ft_mix_color(ray.color, 0x00000000, ray.shadow);
+					//======================================================================================//
 					ft_put_pixel(cub->game, j, i, ray.color);
+					//======================================================================================//
 					x += pixel;
 					if (x > size - 1)
 						x = size - 1;
@@ -453,7 +459,7 @@ void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int
 			i++;
 		}
 	}
-	(void)cub;
+	//======================================================================================//
 }
 
 t_tex	new_text()
@@ -800,7 +806,7 @@ void	ray_caster(t_cub *cub)
 	draw_cross(cub);
 }
 
-void	sprites(t_cub *cub, float sx, float sy)
+void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 {
 	float	x;
 	float	y;
@@ -840,6 +846,7 @@ void	sprites(t_cub *cub, float sx, float sy)
 	int		size;
 	int		color;
 	int		tmp;
+	float		tmp1;
 	size_t	wall_len;
 
 	//=========================================================//
@@ -888,7 +895,7 @@ void	sprites(t_cub *cub, float sx, float sy)
 		return ;
 	//===================================================================//
 	i = 0;
-	size = cub->nina_t->size;
+	size = tex->size;
 	if (offset_up < 0)
 		offup = (float)ft_abs(offset_up) / (float)HEIGHT;
 	else
@@ -939,6 +946,7 @@ void	sprites(t_cub *cub, float sx, float sy)
 	y = 0;
 	chunk = (float)(ft_abs2(txt_i - txt_f)) / (float)(r_wall_len * 0.85);
 	chunk2 = 1;
+	int	translucid;
 	//===================================================================//
 	while (i < HEIGHT)
 	{
@@ -949,6 +957,7 @@ void	sprites(t_cub *cub, float sx, float sy)
 			y++;
 		while (k < (r_wall_len * 0.85)  && (k < WIDTH * 4))
 		{
+			translucid = 0;
 			//===================================================================//
 			if (i > offset_up && i < offset_down)
 			{
@@ -962,21 +971,43 @@ void	sprites(t_cub *cub, float sx, float sy)
 					y2 = 0;
 				if (y2 > size - 1)
 					y2 = size - 1;
-				color = cub->nina_t->tex[(int)y2][(int)x];
+				color = tex->tex[(int)y2][(int)x];
 				if (color == 0x00FF00FF)
 				{
+					translucid = 1;
 					tmp = j + k;
 					if (tmp < 0)
 						tmp = 0;
-					if (tmp > size - 1)
-						tmp = size - 1;
-					if (i < 0)
-						i = 0;
-					if (i > size - 1)
-						i = size - 1;
+					if (tmp > WIDTH - 1)
+						tmp = 0;
 					color = get_pixel_img(cub->game, tmp, i);
 				}
-				ft_put_pixel(cub->game, j + k, i, color);
+				int	u;
+
+				u = j + k;
+				if (u > WIDTH - 1)
+					u = WIDTH - 1;
+				if (u < 0)
+					u = 0;
+				tmp1 = cub->screen[i][u];
+				if (!translucid)
+				{
+					float shadow;
+					if (cub->cam_status == OFF)
+						shadow = 17;
+					else
+						shadow = 30;
+					shadow = ds / shadow;
+					if (shadow >= 1)
+						shadow = 1;
+					color = ft_mix_color(color, 0x00000000, shadow);
+				}
+				if (tmp1 > ds)
+				{
+					ft_put_pixel(cub->game, j + k, i, color);
+					if (!translucid)
+						cub->screen[i][u] = ds;
+				}
 			}
 			//===================================================================//
 			x += chunk;
@@ -985,6 +1016,7 @@ void	sprites(t_cub *cub, float sx, float sy)
 		i++;
 	}
 	//===================================================================//
+	(void)tmp1;
 }
 
 //write_map(cub);
@@ -996,7 +1028,8 @@ void	start_cub(t_cub *cub)
 		fill_img_sky_n_ground(cub->game, 0x00FF0000, 0x000000FF, 1);
 	ft_fill_img(cub->minimap, 0x00000000);
 	ray_caster(cub);
-	sprites(cub, 24, 27);
+	sprites(cub, 24, 25, cub->nina_t);
+	sprites(cub, 24, 27, cub->nina_t);
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->game->img, 0, 0);
 	if (cub->cam_status == OFF)
 	{
@@ -1019,6 +1052,7 @@ void	start_cub(t_cub *cub)
 		mlx_put_image_to_window(cub->mlx, cub->win, cub->hud_c->img, 0, 0);
 
 	mlx_put_image_to_window(cub->mlx, cub->win, cub->minimap->img, 13, 8);
+
 
 	put_noise(cub);
 	return ;
