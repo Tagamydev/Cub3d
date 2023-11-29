@@ -1,10 +1,10 @@
-NO ./front.xpm
-SO ./side.xpm
-WE ./so.xpm
-EA ./front.xpm
+NO ./wall.xpm
+SO ./wall.xpm
+WE ./wall.xpm
+EA ./wall.xpm
 
-C 0, 0, 255
-F 255, 86, 2
+C 171, 154, 58
+F 127, 90, 22
 
 11111111111111111111111111111
 10111111011111011101101111111

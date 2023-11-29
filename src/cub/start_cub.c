@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/29 22:04:30 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/29 22:20:44 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -897,7 +897,7 @@ void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 	if (screenx > WIDTH)
 		offset_right = screenx - WIDTH;
 	r_wall_len = ft_abs(offset_up - offset_down);
-	if (offset_left > r_wall_len || offset_right > r_wall_len)
+	if (offset_left > r_wall_len || offset_right > wall_len)
 		return ;
 	//===================================================================//
 	i = 0;
