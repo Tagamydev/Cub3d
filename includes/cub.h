@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/29 15:11:15 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/29 22:00:10 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ typedef struct s_tex{
 	int		**tex;
 	size_t	size;
 }				t_tex;
+
+typedef	struct s_spr{
+	size_t	x;
+	size_t	y;
+	int		blink;
+	int		frame;
+	size_t	next_frame;
+	size_t	next_blink;
+}				t_spr;
+
 typedef struct s_img{
 	void	*img;
 	char	*data_addr;
@@ -84,10 +94,8 @@ typedef struct s_cub{
 	t_img	*so_texture;
 	t_img	*ea_texture;
 	t_img	*we_texture;
-	t_img	*nina_texture;
 	t_img	*black;
 	t_tex	*no_t;
-	t_tex	*nina_t;
 	t_tex	*so_t;
 	t_tex	*ea_t;
 	t_tex	*we_t;
@@ -138,6 +146,13 @@ typedef struct s_cub{
 	int		cam_status;
 	size_t	frame;
 	int		cam_animation;
+	//=========================//
+	//          NINA           //
+	t_img	*nina_cam[3][5];
+	t_img	*nina_ncam[5];
+	t_tex	*t_nina_cam[3][5];
+	t_tex	*t_nina_ncam[5];
+	t_spr	**sprites;
 }				t_cub;
 
 typedef struct s_win{
@@ -156,6 +171,7 @@ typedef struct s_ray{
 	int		side;
 }				t_ray;
 
+float	ft_random(float n, float min, float max);
 void	free_split(char **input);
 double	angle_to_radian(double angle);
 double	get_angle(double angle);

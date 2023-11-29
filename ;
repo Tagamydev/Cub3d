@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:16:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/29 22:04:30 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:46:04 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1022,46 +1022,7 @@ void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 	(void)tmp1;
 }
 
-t_tex	*get_tex(t_cub *cub, t_spr *tmp)
-{
-	float	slow;
-	t_tex	*result;
-
-	slow = 0.6;
-	if (cub->frame >= tmp->next_frame)
-	{
-		if (tmp->frame < 4)
-		{
-			tmp->frame += 1;
-			tmp->next_frame = cub->frame + (10 * slow);
-		}
-		else
-		{
-			tmp->frame = 0;
-			tmp->next_frame = cub->frame + (10 * slow);
-		}
-	}
-	if (cub->cam_status == OFF)
-	{
-		if (cub->frame >= tmp->next_blink)
-		{
-			if (tmp->blink != 2)
-			{
-				tmp->blink += 1;
-				tmp->next_blink = cub->frame + 1 * slow;
-			}
-			else
-			{
-				tmp->blink = 0;
-				tmp->next_blink = cub->frame + ft_random(1, 10 * slow, 100 * slow);
-			}
-		}
-		result = cub->t_nina_cam[tmp->blink][tmp->frame];
-	}
-	else
-		result = cub->t_nina_ncam[tmp->frame];
-	return (result);
-}
+t_tex	*tex(t_cub *cub, t_spr *tmp)
 
 void	ft_put_sprites(t_cub *cub)
 {
@@ -1073,8 +1034,7 @@ void	ft_put_sprites(t_cub *cub)
 	while (cub->sprites[i])
 	{
 		tmp = (cub->sprites[i]);
-		tex = get_tex(cub, tmp); 
-		sprites(cub, tmp->x, tmp->y, tex);
+		sprites(cub, tmp->x, tmp->y, cub->t_nina_ncam[0]);
 		i++;
 	}
 	tex = NULL;
