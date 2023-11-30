@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 20:27:41 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/11/30 21:04:21 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ SRCS	= $(MAIN) \
 		./src/cub/walls/draw_walls.c \
 		./src/cub/walls/draw_walls_utils_1.c \
 		./src/cub/walls/draw_walls_utils_2.c \
+		./src/cub/walls/draw_walls_utils_3.c \
 		 \
 		./src/error/free_split.c \
 		./src/error/ft_perror.c \
@@ -117,6 +118,7 @@ SRCS	= $(MAIN) \
 		./src/parsing/parsing_aux.c \
 		./src/parsing/cub_open_noise.c \
 		./src/parsing/init_img.c \
+		./src/parsing/ft_last_parse.c \
 
 O_DIR	= ./objects/
 OBJS	= $(addprefix $(O_DIR)/, $(SRCS:.c=.o))

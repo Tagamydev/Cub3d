@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 20:37:49 by samusanc          #+#    #+#             */
-/*   Updated: 2023/10/31 21:32:10 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:52:18 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,3 @@ void	ft_draw_pixel(t_point point, struct s_img *img);
 void	ft_put_line(t_point f, t_point s, struct s_img *map_display);
 
 #endif
-

@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:58:04 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 20:05:12 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:47:44 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,10 @@ void	leaks()
 	system("leaks -q cub3d");
 }
 */
-
 int	main(int argc, char **argv)
 {
 	t_cub	*cub;
 
-	//atexit(leaks);
 	cub = NULL;
 	if (argc != 2)
 	{

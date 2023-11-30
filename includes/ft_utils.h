@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:20:28 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 19:39:41 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:03:27 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_put_walls{
 typedef struct s_square{
 	int	x;
 	int	y;
-	int len;
-	int color;
+	int	len;
+	int	color;
 }				t_square;
 
 typedef struct s_sg{
@@ -160,5 +160,12 @@ typedef struct s_dwu{
 	size_t	total_rays;
 }				t_dwu;
 
-#endif
+typedef struct s_cii{
+	size_t	ii;
+	size_t	jj;
+	double	multix;
+	double	multiy;
+	int		color2;
+}				t_cii;
 
+#endif

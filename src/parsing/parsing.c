@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:29:48 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/30 20:15:51 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:59:11 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	do_img_to_tex(t_cub *cub)
 		return (0);
 	cub->ea_t = img_to_tex(cub->ea_texture);
 	if (!cub->ea_t)
+		return (0);
+	if (!ft_last_parse(cub))
 		return (0);
 	return (1);
 }

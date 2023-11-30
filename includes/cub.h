@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 20:25:56 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:03:49 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@
 # define PI 3.1415926535
 # define DR 0.0174533
 # define SPEED 0.5
-# define COSX cos(angle_to_radian(get_angle(ray_a)))
-# define SINY sin(angle_to_radian(get_angle(ray_a)))
 # define OFF 0
 # define ON 1
 # define FRONT 1
@@ -47,7 +45,7 @@ typedef struct s_tex{
 	size_t	size;
 }				t_tex;
 
-typedef	struct s_spr{
+typedef struct s_spr{
 	size_t	x;
 	size_t	y;
 	int		blink;
@@ -83,8 +81,6 @@ typedef struct s_img{
  *		10 ghost
  */
 typedef struct s_cub{
-	//=========================//
-	//        MAP_UTILS        //
 	size_t	**map;
 	size_t	map_width;
 	size_t	map_height;
@@ -102,8 +98,6 @@ typedef struct s_cub{
 	int		color_ground;
 	int		color_sky;
 	int		door;
-	//=========================//
-	//        MLX_UTILS        //
 	void	*mlx;
 	void	*win;
 	t_img	*game;
@@ -121,8 +115,6 @@ typedef struct s_cub{
 	t_img	*noise5;
 	t_img	*noise6;
 	t_img	*minimap;
-	//=========================//
-	//          PLAYER         //
 	int		camera_speed;
 	float	player_px;
 	float	player_py;
@@ -136,17 +128,13 @@ typedef struct s_cub{
 	int		mousex;
 	int		mousey;
 	int		mouse_press;
-	//=========================//
-	//          MINIMAP        //
 	int		minimap_zoom;
-	//=========================//
-	//           CAM           //
 	int		fisheye;
 	int		cam_status;
 	size_t	frame;
 	int		cam_animation;
-	//=========================//
-	//          NINA           //
+	t_img	*miniscreen_s;
+	t_img	*miniscreen_m;
 	t_img	*nina_cam[3][5];
 	t_img	*nina_ncam[5];
 	t_tex	*t_nina_cam[3][5];
@@ -172,6 +160,7 @@ typedef struct s_ray{
 
 //============================================================================//
 //================================MATH========================================//
+int		ft_last_parse(t_cub *cub);
 float	ft_random(float n, float min, float max);
 void	free_split(char **input);
 double	ft_ds(double xi, double xf, double yi, double yf);
