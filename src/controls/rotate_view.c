@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_controls.c                                   :+:      :+:    :+:   */
+/*   rotate_view.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 12:58:52 by samusanc         ###   ########.fr       */
+/*   Created: 2023/11/30 12:52:38 by samusanc          #+#    #+#             */
+/*   Updated: 2023/11/30 12:52:49 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
 
-void	start_controls(t_cub *cub)
+void	rotate_view_left(t_cub *cub)
 {
-	mlx_hook(cub->win, 17, 0, (int (*)())close_x, cub);
-	mlx_hook(cub->win, 2, 0, (int (*)())key_press, cub);
-	mlx_hook(cub->win, 6, 0, (int (*)())mouse_location, cub);
-	mlx_hook(cub->win, 4, 0, (int (*)())mouse_press, cub);
-	mlx_hook(cub->win, 5, 0, (int (*)())mouse_release, cub);
-	mlx_loop_hook(cub->mlx, (int (*)())frame, cub);
-	return ;
+	cub->player_a = get_angle(cub->player_a - cub->camera_speed);
+	put_deltas(cub);
+	(void)cub;
+}
+
+void	rotate_view_rigth(t_cub *cub)
+{
+	cub->player_a = get_angle(cub->player_a + cub->camera_speed);
+	put_deltas(cub);
+	(void)cub;
 }

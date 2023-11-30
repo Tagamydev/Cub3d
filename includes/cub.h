@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 11:53:37 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:48:17 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,6 +264,26 @@ void	ft_put_sprites(t_cub *cub);
 void	start_cub(t_cub *cub);
 //============================================================================//
 //===============================CONTROLS=====================================//
+void	close_x(void *param);
+void	open_doors(t_cub *cub);
+void	close_doors(t_cub *cub);
+void	minimap_zoom(t_cub *cub, int key);
+void	hand_loop(t_cub *cub);
+void	move_left(t_cub *cub, float *starty, float *startx);
+void	move_right(t_cub *cub, float *starty, float *startx);
+void	move_up(t_cub *cub, float *starty, float *startx);
+void	move_down(t_cub *cub, float *starty, float *startx);
+void	put_deltas(t_cub *cub);
+void	rotate_view_left(t_cub *cub);
+void	rotate_view_rigth(t_cub *cub);
+void	move_player(int key, t_cub *cub);
+void	increase_dpi(t_cub *cub, int key);
+void	turn_camera(t_cub *cub);
+void	key_press(int key, void *param);
+void	frame(void *param);
+void	mouse_location(int x, int y, void *param);
+void	mouse_press(int key, int x, int y, void *param);
+void	mouse_release(int key, int x, int y, void *param);
 void	start_controls(t_cub *cub);
 //============================================================================//
 //=================================MAIN=======================================//

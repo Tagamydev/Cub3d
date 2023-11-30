@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_controls.c                                   :+:      :+:    :+:   */
+/*   minimap_zoom.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/29 17:16:45 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 12:58:52 by samusanc         ###   ########.fr       */
+/*   Created: 2023/11/30 13:00:38 by samusanc          #+#    #+#             */
+/*   Updated: 2023/11/30 13:00:39 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
 
-void	start_controls(t_cub *cub)
+void	minimap_zoom(t_cub *cub, int key)
 {
-	mlx_hook(cub->win, 17, 0, (int (*)())close_x, cub);
-	mlx_hook(cub->win, 2, 0, (int (*)())key_press, cub);
-	mlx_hook(cub->win, 6, 0, (int (*)())mouse_location, cub);
-	mlx_hook(cub->win, 4, 0, (int (*)())mouse_press, cub);
-	mlx_hook(cub->win, 5, 0, (int (*)())mouse_release, cub);
-	mlx_loop_hook(cub->mlx, (int (*)())frame, cub);
-	return ;
+	if (key == 69)
+	{
+		if (cub->minimap_zoom == ZOOM_M)
+			cub->minimap_zoom = ZOOM_L;
+		else if (cub->minimap_zoom == ZOOM_S)
+			cub->minimap_zoom = ZOOM_M;
+	}
+	else
+	{
+		if (cub->minimap_zoom == ZOOM_M)
+			cub->minimap_zoom = ZOOM_S;
+		else if (cub->minimap_zoom == ZOOM_L)
+			cub->minimap_zoom = ZOOM_M;
+	}
 }

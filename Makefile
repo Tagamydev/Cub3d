@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 12:26:36 by samusanc         ###   ########.fr        #
+#    Updated: 2023/11/30 13:00:20 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,23 @@ PAR		= src/parsing/
 MAIN	= src/main.c
 SRCS	= $(MAIN) \
 		 \
+		./src/controls/close_doors.c \
+		./src/controls/close_x.c \
+		./src/controls/frame.c \
+		./src/controls/hand_loop.c \
+		./src/controls/increase_dpi.c \
+		./src/controls/key_press.c \
+		./src/controls/minimap_zoom.c \
+		./src/controls/mouse_location.c \
+		./src/controls/mouse_press.c \
+		./src/controls/mouse_release.c \
+		./src/controls/move.c \
+		./src/controls/move_player.c \
+		./src/controls/open_doors.c \
+		./src/controls/put_deltas.c \
+		./src/controls/rotate_view.c \
 		./src/controls/start_controls.c \
+		./src/controls/turn_camera.c \
 		 \
 		./src/cub/bresenham/bresenham.c \
 		 \
