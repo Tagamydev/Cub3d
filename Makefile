@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 20:25:11 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/11/30 20:27:41 by lyandriy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,6 +82,8 @@ SRCS	= $(MAIN) \
 		./src/cub/start_cub.c \
 		 \
 		./src/cub/walls/draw_walls.c \
+		./src/cub/walls/draw_walls_utils_1.c \
+		./src/cub/walls/draw_walls_utils_2.c \
 		 \
 		./src/error/free_split.c \
 		./src/error/ft_perror.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_walls_utils_2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 20:20:18 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 20:22:41 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:29:41 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ void	draw_walls_utlis_3(t_cub *cub, t_ray ray, t_dw *dw)
 	(void)ray;
 }
 
-static void	dw_util_2(t_cub *cub, t_ray ray, t_dw *dw)
+void	dw_util_2(t_cub *cub, t_ray ray, t_dw *dw)
 {
-
+	(void)cub;
+	(void)ray;
+	(void)dw;
 }
 
 static void	dw_util_1(t_cub *cub, t_ray ray, t_dw *dw)
@@ -37,8 +39,7 @@ static void	dw_util_1(t_cub *cub, t_ray ray, t_dw *dw)
 void	draw_walls_utlis_2(t_cub *cub, t_ray ray, t_dw *dw)
 {
 	if (dw->side == 0x00FF0000)
-	{
-	}
+		dw_util_1(cub, ray, dw);
 	else if (dw->side == 0x00FF00FF)
 	{
 		dw->size = cub->no_t->size;
@@ -64,6 +65,9 @@ void	draw_walls_utlis_2(t_cub *cub, t_ray ray, t_dw *dw)
 		dw->actual_chunk = 0;
 		dw->fog = 1;
 	}
+	(void)cub;
+	(void)ray;
+	(void)dw;
 }
 
 void	draw_walls_utlis_1(t_cub *cub, t_ray ray, t_dw *dw, size_t actual_ray)
