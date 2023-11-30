@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 15:11:11 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:56:30 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,19 @@ void	draw_cross(t_cub *cub);
 t_win	tmp_win(void *mlx, void *win, t_img *result);
 void	put_noise(t_cub *cub);
 void	ray_caster(t_cub *cub);
+void	sprites_utils_16(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_15(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_14(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_13(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_12(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_11(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_10(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_9(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_8(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_7(t_cub *cub, t_sp *sp);
+void	sprites_utils_6(t_cub *cub, t_sp *sp);
+void	sprites_utils_5(t_cub *cub, t_sp *sp);
+void	sprites_utils_4(t_cub *cub, t_sp *sp, t_tex *tex);
 void	sprites(t_cub *cub, float sx, float sy, t_tex *tex);
 t_tex	*get_tex(t_cub *cub, t_spr *tmp);
 void	ft_put_sprites(t_cub *cub);
