@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:10:05 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 15:15:03 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:02:18 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,7 @@
 
 void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 {
-	float	x;
-	float	y;
-	float	angle;
-	float	angle2;
-	float	up;
-	float	down;
-	float	screenx;
-	float	ds;
-	float	distance;
-	float	offset_up;
-	float	offset_down;
-	float	offset_left;
-	float	offset_right;
-	float	offup;
-	float	offdo;
-	float	offset;
-	float	chunk;
-	float	offl;
-	float	offr;
-	float	txt_i;
-	float	txt_f;
-	float	y2;
-	float	new_size;
-	float	start_point;
-	float	end_point;
-	float	real_wall_ds;
-	float	z;
-	float	chunk2;
-	float	shadow;
-	float	tmp1;
-	int		side;
-	int		i;
-	int		j;
-	int		r_wall_len;
-	int		k;
-	int		initial;
-	int		final;
-	int		size;
-	int		color;
-	int		tmp;
-	int		u;
-	int		zz;
-	int		zx;
-	int		translucid;
-	size_t	wall_len;
+	t_sp	sp;
 
 	//=========================================================//
 	if (!tex)
@@ -66,178 +22,178 @@ void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 	sx += 0.5;
 	sy += 0.5;
 	if (cub->player_py - sy < 0)
-		side = -1;
+		sp.side = -1;
 	else
-		side = 1;
-	ds = ft_ds(sx, cub->player_px, sy, cub->player_py);
-	if (ds > 35)
+		sp.side = 1;
+	sp.ds = ft_ds(sx, cub->player_px, sy, cub->player_py);
+	if (sp.ds > 35)
 		return ;
-	up = sx - cub->player_px;
-	down = ds;
-	angle = acos(up / down) * 180.0 / PI;
-	angle *= side;
+	sp.up = sx - cub->player_px;
+	sp.down = sp.ds;
+	sp.angle = acos(sp.up / sp.down) * 180.0 / PI;
+	sp.angle *= sp.side;
 	if (cub->player_a > 180)
-		angle2 = cub->player_a - 360;
+		sp.angle2 = cub->player_a - 360;
 	else
-		angle2 = cub->player_a;
-	angle = angle2 + angle;
-	angle *= -1;
-	angle += 15;
-	screenx = (angle * WIDTH) / (float)30;
+		sp.angle2 = cub->player_a;
+	sp.angle = sp.angle2 + sp.angle;
+	sp.angle *= -1;
+	sp.angle += 15;
+	sp.screenx = (sp.angle * WIDTH) / (float)30;
 	//===================================================================//
-	wall_len = 0;
-	distance = (240 * 15) / ds;
-	distance = distance / 5;
-	offset_up = ((HEIGHT / 2.5) - distance);
-	offset_down = (HEIGHT / 1.25 - offset_up);
-	i = 0;
-	while (i < HEIGHT)
+	sp.wall_len = 0;
+	sp.distance = (240 * 15) / sp.ds;
+	sp.distance = sp.distance / 5;
+	sp.offset_up = ((HEIGHT / 2.5) - sp.distance);
+	sp.offset_down = (HEIGHT / 1.25 - sp.offset_up);
+	sp.i = 0;
+	while (sp.i < HEIGHT)
 	{
-		j = screenx;
-		if (i > offset_up && i < offset_down)
-			wall_len += 1;
-		i++;
+		sp.j = sp.screenx;
+		if (sp.i > sp.offset_up && sp.i < sp.offset_down)
+			sp.wall_len += 1;
+		sp.i++;
 	}
 	//===================================================================//
-	offset_left = 0;
-	offset_right = 0;
-	if (screenx < 0)
-		offset_left = screenx * (-1);
-	if (screenx > WIDTH)
-		offset_right = screenx - WIDTH;
-	r_wall_len = ft_abs(offset_up - offset_down);
-	if (offset_left > r_wall_len || offset_right > wall_len)
+	sp.offset_left = 0;
+	sp.offset_right = 0;
+	if (sp.screenx < 0)
+		sp.offset_left = sp.screenx * (-1);
+	if (sp.screenx > WIDTH)
+		sp.offset_right = sp.screenx - WIDTH;
+	sp.r_wall_len = ft_abs(sp.offset_up - sp.offset_down);
+	if (sp.offset_left > sp.r_wall_len || sp.offset_right > sp.wall_len)
 		return ;
 	//===================================================================//
-	i = 0;
-	size = tex->size;
-	if (offset_up < 0)
-		offup = (float)ft_abs(offset_up) / (float)HEIGHT;
+	sp.i = 0;
+	sp.size = tex->size;
+	if (sp.offset_up < 0)
+		sp.offup = (float)ft_abs(sp.offset_up) / (float)HEIGHT;
 	else
-		offup = 0;
-	if (offset_down > HEIGHT)
-		offdo = (float)ft_abs(offset_down - HEIGHT) / (float)HEIGHT;
+		sp.offup = 0;
+	if (sp.offset_down > HEIGHT)
+		sp.offdo = (float)ft_abs(sp.offset_down - HEIGHT) / (float)HEIGHT;
 	else
-		offdo = 0;
-	offset = (offup) * ((float)r_wall_len);
-	initial = screenx - ((float)(r_wall_len) / (float)2.35);
-	chunk = (r_wall_len * 0.85);
-	final = initial + chunk;
+		sp.offdo = 0;
+	sp.offset = (sp.offup) * ((float)sp.r_wall_len);
+	sp.initial = sp.screenx - ((float)(sp.r_wall_len) / (float)2.35);
+	sp.chunk = (sp.r_wall_len * 0.85);
+	sp.final = sp.initial + sp.chunk;
 	//===================================================================//
-	y = 0;
-	start_point = 0;
-	end_point = size;
-	start_point = 0;
-	end_point = size;
-	real_wall_ds = ft_abs(offset_up - offset_down);
-	if (offset_up < 0)
+	sp.y = 0;
+	sp.start_point = 0;
+	sp.end_point = sp.size;
+	sp.start_point = 0;
+	sp.end_point = sp.size;
+	sp.real_wall_ds = ft_abs(sp.offset_up - sp.offset_down);
+	if (sp.offset_up < 0)
 	{
-		start_point = (float)(ft_abs(offset_up) * size) / (float)real_wall_ds;
-		if (offset_down > HEIGHT)
-			end_point = size - ((float)(ft_abs(offset_down - HEIGHT) * size) / (float)real_wall_ds);
+		sp.start_point = (float)(ft_abs(sp.offset_up) * sp.size) / (float)sp.real_wall_ds;
+		if (sp.offset_down > HEIGHT)
+			sp.end_point = sp.size - ((float)(ft_abs(sp.offset_down - HEIGHT) * sp.size) / (float)sp.real_wall_ds);
 	}
-	new_size = ft_abs2(start_point - end_point);
+	sp.new_size = ft_abs2(sp.start_point - sp.end_point);
 	//===================================================================//
-	if (initial < 0)
-		offl = ft_abs(initial);
+	if (sp.initial < 0)
+		sp.offl = ft_abs(sp.initial);
 	else
-		offl = 0;
-	if (final > 640)
-		offr = final - WIDTH;
+		sp.offl = 0;
+	if (sp.final > 640)
+		sp.offr = sp.final - WIDTH;
 	else
-		offr = 0;
-	txt_i = (float)(ft_abs(offl) * new_size) / chunk;
-	if (txt_i < 0)
-		txt_i = 0;
-	if (txt_i > size - 1)
-		txt_i = size - 1;
-	txt_f = size - (float)(ft_abs(offr) * new_size) / chunk;
-	if (txt_f < 0)
-		txt_f = 0;
-	if (txt_f > size - 1)
-		txt_f = size - 1;
-	z = 0;
-	x = 0;
-	y = 0;
-	chunk = (float)(ft_abs2(txt_i - txt_f)) / (float)(r_wall_len * 0.85);
-	chunk2 = 1;
+		sp.offr = 0;
+	sp.txt_i = (float)(ft_abs(sp.offl) * sp.new_size) / sp.chunk;
+	if (sp.txt_i < 0)
+		sp.txt_i = 0;
+	if (sp.txt_i > sp.size - 1)
+		sp.txt_i = sp.size - 1;
+	sp.txt_f = sp.size - (float)(ft_abs(sp.offr) * sp.new_size) / sp.chunk;
+	if (sp.txt_f < 0)
+		sp.txt_f = 0;
+	if (sp.txt_f > sp.size - 1)
+		sp.txt_f = sp.size - 1;
+	sp.z = 0;
+	sp.x = 0;
+	sp.y = 0;
+	sp.chunk = (float)(ft_abs2(sp.txt_i - sp.txt_f)) / (float)(sp.r_wall_len * 0.85);
+	sp.chunk2 = 1;
 	//===================================================================//
-	while (i < HEIGHT)
+	while (sp.i < HEIGHT)
 	{
-		x = txt_i;
-		j = initial;
-		k = 0;
-		if (i > offset_up && i < offset_down)
-			y++;
-		if (i % 3 == 0)
-			zx = 0;
+		sp.x = sp.txt_i;
+		sp.j = sp.initial;
+		sp.k = 0;
+		if (sp.i > sp.offset_up && sp.i < sp.offset_down)
+			sp.y++;
+		if (sp.i % 3 == 0)
+			sp.zx = 0;
 		else
-			zx = 1;
+			sp.zx = 1;
 		if (cub->cam_status == OFF)
-			zx = 1;
-		while (k < (r_wall_len * 0.85)  && (k < WIDTH * 4))
+			sp.zx = 1;
+		while (sp.k < (sp.r_wall_len * 0.85)  && (sp.k < WIDTH * 4))
 		{
-			if (k % 3 == 0)
-				zz = 0;
+			if (sp.k % 3 == 0)
+				sp.zz = 0;
 			else
-				zz = 1;
+				sp.zz = 1;
 			if (cub->cam_status == OFF)
-				zz = 1;
-			translucid = 0;
+				sp.zz = 1;
+			sp.translucid = 0;
 			//===================================================================//
-			if (i > offset_up && i < offset_down && (zz && zx))
+			if (sp.i > sp.offset_up && sp.i < sp.offset_down && (sp.zz && sp.zx))
 			{
-				if (x < 0)
-					x = 0;
-				if (x > size - 1)
-					x = size - 1;
-				y2 = (y * new_size) / wall_len;
-				y2 += start_point;
-				if (y2 < 0)
-					y2 = 0;
-				if (y2 > size - 1)
-					y2 = size - 1;
-				color = tex->tex[(int)y2][(int)x];
-				if (color == 0x00FF00FF)
+				if (sp.x < 0)
+					sp.x = 0;
+				if (sp.x > sp.size - 1)
+					sp.x = sp.size - 1;
+				sp.y2 = (sp.y * sp.new_size) / sp.wall_len;
+				sp.y2 += sp.start_point;
+				if (sp.y2 < 0)
+					sp.y2 = 0;
+				if (sp.y2 > sp.size - 1)
+					sp.y2 = sp.size - 1;
+				sp.color = tex->tex[(int)sp.y2][(int)sp.x];
+				if (sp.color == 0x00FF00FF)
 				{
-					translucid = 1;
-					tmp = j + k;
-					if (tmp < 0)
-						tmp = 0;
-					if (tmp > WIDTH - 1)
-						tmp = 0;
-					color = get_pixel_img(cub->game, tmp, i);
+					sp.translucid = 1;
+					sp.tmp = sp.j + sp.k;
+					if (sp.tmp < 0)
+						sp.tmp = 0;
+					if (sp.tmp > WIDTH - 1)
+						sp.tmp = 0;
+					sp.color = get_pixel_img(cub->game, sp.tmp, sp.i);
 				}
-				u = j + k;
-				if (u > WIDTH - 1)
-					u = WIDTH - 1;
-				if (u < 0)
-					u = 0;
-				tmp1 = cub->screen[i][u];
-				if (!translucid)
+				sp.u = sp.j + sp.k;
+				if (sp.u > WIDTH - 1)
+					sp.u = WIDTH - 1;
+				if (sp.u < 0)
+					sp.u = 0;
+				sp.tmp1 = cub->screen[sp.i][sp.u];
+				if (!sp.translucid)
 				{
 					if (cub->cam_status == OFF)
-						shadow = 17;
+						sp.shadow = 17;
 					else
-						shadow = 30;
-					shadow = ds / shadow;
-					if (shadow >= 1)
-						shadow = 1;
-					color = ft_mix_color(color, 0x00000000, shadow);
+						sp.shadow = 30;
+					sp.shadow = sp.ds / sp.shadow;
+					if (sp.shadow >= 1)
+						sp.shadow = 1;
+					sp.color = ft_mix_color(sp.color, 0x00000000, sp.shadow);
 				}
-				if (tmp1 > ds)
+				if (sp.tmp1 > sp.ds)
 				{
-					ft_put_pixel(cub->game, j + k, i, color);
-					if (!translucid)
-						cub->screen[i][u] = ds;
+					ft_put_pixel(cub->game, sp.j + sp.k, sp.i, sp.color);
+					if (!sp.translucid)
+						cub->screen[sp.i][sp.u] = sp.ds;
 				}
 			}
 			//===================================================================//
-			x += chunk;
-			k++;
+			sp.x += sp.chunk;
+			sp.k++;
 		}
-		i++;
+		sp.i++;
 	}
 	//===================================================================//
-	(void)tmp1;
+	(void)sp.tmp1;
 }

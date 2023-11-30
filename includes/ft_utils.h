@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:20:28 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 15:01:48 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:35:33 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,53 @@ typedef struct s_stat1{
 	int		m;
 }				t_stat1;
 
+typedef struct s_sp{
+	float	x;
+	float	y;
+	float	angle;
+	float	angle2;
+	float	up;
+	float	down;
+	float	screenx;
+	float	ds;
+	float	distance;
+	float	offset_up;
+	float	offset_down;
+	float	offset_left;
+	float	offset_right;
+	float	offup;
+	float	offdo;
+	float	offset;
+	float	chunk;
+	float	offl;
+	float	offr;
+	float	txt_i;
+	float	txt_f;
+	float	y2;
+	float	new_size;
+	float	start_point;
+	float	end_point;
+	float	real_wall_ds;
+	float	z;
+	float	chunk2;
+	float	shadow;
+	float	tmp1;
+	int		side;
+	int		i;
+	int		j;
+	int		r_wall_len;
+	int		k;
+	int		initial;
+	int		final;
+	int		size;
+	int		color;
+	int		tmp;
+	int		u;
+	int		zz;
+	int		zx;
+	int		translucid;
+	size_t	wall_len;
+}				t_sp;
 
 #endif
 
