@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 20:21:06 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:25:56 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ double	closer_int(double n);
 void	put_deltas(t_cub *cub);
 //============================================================================//
 //=================================MLX========================================//
+t_dwu	dwu_tmp(size_t total_rays, int side, int win);
 int		get_pixel_img(t_img *img, int x, int y);
 int		cub_open_utils(t_cub *cub);
 void	ft_put_pixel(t_img *img, int x, int y, int color);
@@ -253,7 +254,20 @@ void	free_split(char **input);
 void	write_map(t_cub *cub);
 void	draw_direction(t_cub *cub);
 void	draw_minimark(t_cub *cub);
-void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int side, int win);
+void	draw_walls_utlis_8(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_7(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_6(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_5(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_4(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_3(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_2(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_1(t_cub *cub, t_ray ray, t_dw *dw, size_t actual_ray);
+void	draw_walls_utlis_11(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_13(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_12(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_10(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls_utlis_9(t_cub *cub, t_ray ray, t_dw *dw);
+void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, t_dwu du);
 t_p		default_ray(t_cub *cub);
 t_p		calculate_cam_plane(t_ray ray, t_cub *cub);
 t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color);
@@ -270,6 +284,19 @@ void	draw_cross(t_cub *cub);
 t_win	tmp_win(void *mlx, void *win, t_img *result);
 void	put_noise(t_cub *cub);
 void	ray_caster(t_cub *cub);
+void	sprites_utils_16(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_15(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_14(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_13(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_12(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_11(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_10(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_9(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_8(t_cub *cub, t_sp *sp, t_tex *tex);
+void	sprites_utils_7(t_cub *cub, t_sp *sp);
+void	sprites_utils_6(t_cub *cub, t_sp *sp);
+void	sprites_utils_5(t_cub *cub, t_sp *sp);
+void	sprites_utils_4(t_cub *cub, t_sp *sp, t_tex *tex);
 void	sprites(t_cub *cub, float sx, float sy, t_tex *tex);
 t_tex	*get_tex(t_cub *cub, t_spr *tmp);
 void	ft_put_sprites(t_cub *cub);

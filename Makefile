@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 20:23:55 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/11/30 20:25:11 by lyandriy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,9 @@ SRCS	= $(MAIN) \
 		./src/cub/sprites/ft_put_sprites.c \
 		./src/cub/sprites/get_tex.c \
 		./src/cub/sprites/sprites.c \
+		./src/cub/sprites/sprites_utils_1.c \
+		./src/cub/sprites/sprites_utils_2.c \
+		./src/cub/sprites/sprites_utils_3.c \
 		 \
 		./src/cub/start_cub.c \
 		 \
