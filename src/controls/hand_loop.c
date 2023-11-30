@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:53:03 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 13:11:35 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:21:19 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static void	put_hand(t_cub *cub, int x, int y)
 {
-		cub->handx = x;
-		cub->handy = y;
+	cub->handx = x;
+	cub->handy = y;
 }
 
 void	hand_loop(t_cub *cub)
 {
-	static int x = 0;
-	static int sign = 1;
+	static int	x = 0;
+	static int	sign = 1;
 
 	if (x >= 5 || x < 0)
 		sign *= -1;

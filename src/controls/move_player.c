@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:54:09 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 13:20:12 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:24:38 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	calculate_if(t_cub *cub, int finalx, int finaly)
 {
 	if ((finalx >= 0 && finalx < (int)cub->map_width) \
-	&& (finaly >= 0 && finaly < (int)cub->map_width ))
+	&& (finaly >= 0 && finaly < (int)cub->map_width))
 		return (1);
 	else
 		return (0);
