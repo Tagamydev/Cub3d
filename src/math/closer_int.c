@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 11:57:50 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 11:58:04 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:25:32 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 double	closer_int(double n)
 {
-	double decimal;
-	double result;
+	double	decimal;
+	double	result;
 
 	decimal = get_decimal(n);
 	if (decimal == 0.5)

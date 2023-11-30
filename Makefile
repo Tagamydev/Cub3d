@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 13:00:20 by samusanc         ###   ########.fr        #
+#    Updated: 2023/11/30 13:27:38 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,6 +90,7 @@ SRCS	= $(MAIN) \
 		./src/math/get_angle.c \
 		./src/math/get_decimal.c \
 		./src/math/math.c \
+		./src/math/math_utils.c \
 		 \
 		./src/parsing/check.c \
 		./src/parsing/check_map.c \
