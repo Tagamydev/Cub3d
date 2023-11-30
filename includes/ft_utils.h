@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:20:28 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 18:34:26 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:39:41 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,37 @@ typedef struct s_sp{
 	int		translucid;
 	size_t	wall_len;
 }				t_sp;
+
+typedef struct s_dw{
+	int		side;
+	int		win;
+	int		total_rays;
+	int		i;
+	int		j;
+	int		k;
+	int		start_x;
+	int		len;
+	int		offset_up;
+	int		offset_down;
+	int		fog;
+	int		actual_chunk;
+	int		size;
+	int		real_wall_ds;
+	int		**tex;
+	float	pixel;
+	float	start_point;
+	float	end_point;
+	float	x;
+	float	color_ground_mix;
+	double	distance;
+	size_t	wall_len;
+}				t_dw;
+
+typedef struct s_dwu{
+	int		side;
+	int		win;
+	size_t	total_rays;
+}				t_dwu;
 
 #endif
 

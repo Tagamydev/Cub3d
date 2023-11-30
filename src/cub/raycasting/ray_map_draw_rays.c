@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:07:11 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 14:42:32 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:46:52 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,17 @@ void	ray_loop(t_cub *cub, t_rayc *ray)
 		ray_casting_loop(cub, ray);
 		calculate_side(cub, ray);
 		put_side(cub, ray);
-		ray->last_distance = ft_ds(cub->player_px, ray->x, \
-		cub->player_py, ray->y);
-		draw_walls(cub, calculate_ray(make_tmp_ray(ray->x, \
-		ray->y, ray->ray_a, cub), \
-		cub, ray->color2), ray->ray, WIDTH / 3, ray->color2, 0);
+		ray->last_distance = \
+		ft_ds(cub->player_px, ray->x, cub->player_py, ray->y);
+		draw_walls(cub, \
+		calculate_ray(make_tmp_ray(ray->x, ray->y, \
+		ray->ray_a, cub), cub, ray->color2), ray->ray, \
+		dwu_tmp(WIDTH / 3, ray->color2, 0));
 		if (ray->win == 1)
 			draw_walls(cub, \
-			calculate_ray(make_tmp_ray(ray->winx, ray->winy, ray->ray_a, cub), \
-			cub, ray->color2), ray->ray, WIDTH / 3, ray->color2, 1);
+			calculate_ray(make_tmp_ray(ray->winx, \
+			ray->winy, ray->ray_a, cub), cub, ray->color2), \
+			ray->ray, dwu_tmp(WIDTH / 3, ray->color2, 1));
 		ray->anglei += ray->angle_chunk;
 		ray->ray++;
 	}
