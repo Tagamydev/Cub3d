@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/29 22:00:10 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 11:53:37 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@
 # define COLOR_P 0x8CFF0000
 # define PI 3.1415926535
 # define DR 0.0174533
-//# define SPEED 0.5
-# define SPEED 0.1
+# define SPEED 0.5
 # define COSX cos(angle_to_radian(get_angle(ray_a)))
 # define SINY sin(angle_to_radian(get_angle(ray_a)))
 # define OFF 0
@@ -171,15 +170,23 @@ typedef struct s_ray{
 	int		side;
 }				t_ray;
 
+//============================================================================//
+//================================MATH========================================//
 float	ft_random(float n, float min, float max);
 void	free_split(char **input);
+double	ft_ds(double xi, double xf, double yi, double yf);
 double	angle_to_radian(double angle);
 double	get_angle(double angle);
+double	get_decimal(double x);
+double	ft_abs2(double x);
+float	ft_fit_char(float n, float min, float max);
+float	ft_random(float n, float min, float max);
+double	closer_int(double n);
 void	put_deltas(t_cub *cub);
-int	get_pixel_img(t_img *img, int x, int y);
-int	cub_open_utils(t_cub *cub);
 //============================================================================//
 //=================================MLX========================================//
+int		get_pixel_img(t_img *img, int x, int y);
+int		cub_open_utils(t_cub *cub);
 void	ft_put_pixel(t_img *img, int x, int y, int color);
 void	ft_fill_img(t_img *img, int color);
 t_img	*ft_init_img(void *mlx, int width, int height);
@@ -187,6 +194,9 @@ void	draw_square(t_img *img, t_square sq);
 void	fill_img_sky_n_ground(t_img *img, int color1, int color2, int status);
 void	make_img_translucent(t_img *img, double o);
 t_tex	*img_to_tex(t_img *img);
+double	get_opacity(int color);
+int		get_flat_color(int color);
+void	make_img_translucent(t_img *img, double o);
 //============================================================================//
 //================================ERROR=======================================//
 void	*ft_perror(char *error);
@@ -230,6 +240,27 @@ void	put_pixels_minimap(char **minimap, t_cub *cub);
 void	draw_minimap(t_cub *cub);
 //============================================================================//
 //=================================CUB========================================//
+void	fill_img_sky_n_ground(t_img *img, int color1, int color2, int status);
+void	free_split(char **input);
+void	write_map(t_cub *cub);
+void	draw_direction(t_cub *cub);
+void	draw_minimark(t_cub *cub);
+void	draw_walls(t_cub *cub, t_ray ray, size_t actual_ray, size_t total_rays, int side, int win);
+t_p		default_ray(t_cub *cub);
+t_p		calculate_cam_plane(t_ray ray, t_cub *cub);
+t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color);
+t_ray	make_tmp_ray(float x, float y, float angle, t_cub *cub);
+t_p		ray_to_point(t_ray ray);
+int		get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distance);
+void	ray_map_draw_rays(t_cub *cub);
+void	draw_ray_map(t_cub *cub);
+void	draw_cross(t_cub *cub);
+t_win	tmp_win(void *mlx, void *win, t_img *result);
+void	put_noise(t_cub *cub);
+void	ray_caster(t_cub *cub);
+void	sprites(t_cub *cub, float sx, float sy, t_tex *tex);
+t_tex	*get_tex(t_cub *cub, t_spr *tmp);
+void	ft_put_sprites(t_cub *cub);
 void	start_cub(t_cub *cub);
 //============================================================================//
 //===============================CONTROLS=====================================//
