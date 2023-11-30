@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:42:39 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 14:42:52 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:05:37 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ void	calculate_side_util(t_cub *cub, t_rayc *ray)
 	int		before_status;
 
 	actual_distance = ft_ds(cub->player_px, ray->x, cub->player_py, ray->y);
-	after_status = get_next_status(cub, ray->ray_a, \
-	&after_distance, 1, ray->last_distance);
-	before_status = get_next_status(cub, ray->ray_a, \
-	&before_distance, -1, ray->last_distance);
+	after_status = get_next_status(cub, \
+	tmp_status(ray->ray_a, &after_distance, 1, ray->last_distance));
+	before_status = get_next_status(cub, \
+	tmp_status(ray->ray_a, &before_distance, -1, ray->last_distance));
 	before_distance = ft_abs2(before_distance - actual_distance);
 	after_distance = ft_abs2(after_distance - actual_distance);
 	if (after_distance < before_distance)

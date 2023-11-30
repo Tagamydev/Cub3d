@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 14:42:20 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:03:05 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,7 @@ void	put_pixels_minimap(char **minimap, t_cub *cub);
 void	draw_minimap(t_cub *cub);
 //============================================================================//
 //=================================CUB========================================//
+t_stat1	tmp_status(float ray_a, float *ds, int m, float last_distance);
 void	fill_img_sky_n_ground(t_img *img, int color1, int color2, int status);
 void	free_split(char **input);
 void	write_map(t_cub *cub);
@@ -251,7 +252,7 @@ t_p		calculate_cam_plane(t_ray ray, t_cub *cub);
 t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color);
 t_ray	make_tmp_ray(float x, float y, float angle, t_cub *cub);
 t_p		ray_to_point(t_ray ray);
-int		get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distance);
+int		get_next_status(t_cub *cub, t_stat1 b);
 void	init_ray_loop(t_cub *cub, t_rayc *ray);
 void	init_ray_casting_loop(t_cub *cub, t_rayc *ray);
 void	ray_casting_loop(t_cub *cub, t_rayc *ray);

@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:20:28 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 14:21:29 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:01:48 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,23 @@ typedef struct s_rayc{
 	int			chunks;
 	int			win;
 }				t_rayc;
+
+typedef struct s_stat{
+	double	x;
+	double	y;
+	double	ray_dx;
+	double	ray_dy;
+	float	ray_proyection;
+	int		status1;
+}				t_stat;
+
+typedef struct s_stat1{
+	float	last_distance;
+	float	ray_a;
+	float	*ds;
+	int		m;
+}				t_stat1;
+
 
 #endif
 

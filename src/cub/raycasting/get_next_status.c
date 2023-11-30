@@ -6,41 +6,56 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:06:35 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 12:06:48 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:06:08 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
 
-int	get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distance)
+t_stat1	tmp_status(float ray_a, float *ds, int m, float last_distance)
 {
-	double		x;
-	double		y;
-	double		ray_dx;
-	double		ray_dy;
-	float		ray_proyection;
-	int			status1;
+	t_stat1	result;
 
-	ray_proyection = 0;
-	ray_dx = cos(angle_to_radian(get_angle(ray_a)));
-	ray_dy = sin(angle_to_radian(get_angle(ray_a)));
-	x = cub->player_px + ray_dx * 0;
-	y = cub->player_py + ray_dy * 0;
-	while (cub->map[(int)y][(int)x] != 1)
+	result.ray_a = ray_a;
+	result.ds = ds;
+	result.m = m;
+	result.last_distance = last_distance;
+	return (result);
+}
+
+static void	init_gns(t_cub *cub, float ray_a, t_stat *st)
+{
+	st->ray_proyection = 0;
+	st->ray_dx = cos(angle_to_radian(get_angle(ray_a)));
+	st->ray_dy = sin(angle_to_radian(get_angle(ray_a)));
+	st->x = cub->player_px + st->ray_dx * 0;
+	st->y = cub->player_py + st->ray_dy * 0;
+}
+
+int	get_next_status(t_cub *cub, t_stat1 b)
+{
+	t_stat	st;
+
+	init_gns(cub, b.ray_a, &st);
+	while (cub->map[(int)st.y][(int)st.x] != 1)
 	{
-		x = x + ray_dx * ray_proyection;
-		y = y + ray_dy * ray_proyection;
-		ray_proyection += 0.0001;
+		st.x = st.x + st.ray_dx * st.ray_proyection;
+		st.y = st.y + st.ray_dy * st.ray_proyection;
+		st.ray_proyection += 0.0001;
 	}
-	if (ft_abs2(closer_int(y) - y) > ft_abs2(closer_int(x) - x))
-		status1 = SIDE;
+	if (ft_abs2(closer_int(st.y) - st.y) > \
+		ft_abs2(closer_int(st.x) - st.x))
+		st.status1 = SIDE;
 	else
-		status1 = FRONT;
-	*ds = ft_ds(cub->player_px, x, cub->player_py, y);
-	if (ft_abs2(closer_int(y) - y) < 0.09 && ft_abs2(closer_int(x) - x) < 0.09)
+		st.status1 = FRONT;
+	*(b.ds) = ft_ds(cub->player_px, st.x, cub->player_py, st.y);
+	if (ft_abs2(closer_int(st.y) - st.y) < \
+	0.09 && ft_abs2(closer_int(st.x) - st.x) < 0.09)
 	{
-		if (ft_abs2(last_distance - ft_ds(cub->player_px, x, cub->player_py, y) < 1))
-			status1 = get_next_status(cub, ray_a + (0.046948 * m), ds, m, *ds);
+		if (ft_abs2(b.last_distance - \
+		ft_ds(cub->player_px, st.x, cub->player_py, st.y) < 1))
+			st.status1 = get_next_status(cub, \
+			tmp_status(b.ray_a + (0.046948 * b.m), b.ds, b.m, *(b.ds)));
 	}
-	return (status1);
+	return (st.status1);
 }
