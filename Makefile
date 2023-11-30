@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 13:33:34 by samusanc         ###   ########.fr        #
+#    Updated: 2023/11/30 14:43:29 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,6 +69,7 @@ SRCS	= $(MAIN) \
 		./src/cub/raycasting/make_tmp_ray.c \
 		./src/cub/raycasting/ray_caster_funtions.c \
 		./src/cub/raycasting/ray_map_draw_rays.c \
+		./src/cub/raycasting/ray_map_draw_rays_utils.c \
 		./src/cub/raycasting/ray_to_point.c \
 		 \
 		./src/cub/sprites/ft_put_sprites.c \

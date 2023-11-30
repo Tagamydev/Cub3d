@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 12:48:17 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:42:20 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,10 @@ t_ray	calculate_ray(t_ray tmp_ray, t_cub *cub, int color);
 t_ray	make_tmp_ray(float x, float y, float angle, t_cub *cub);
 t_p		ray_to_point(t_ray ray);
 int		get_next_status(t_cub *cub, float ray_a, float *ds, int m, float last_distance);
+void	init_ray_loop(t_cub *cub, t_rayc *ray);
+void	init_ray_casting_loop(t_cub *cub, t_rayc *ray);
+void	ray_casting_loop(t_cub *cub, t_rayc *ray);
+void	calculate_side_util(t_cub *cub, t_rayc *ray);
 void	ray_map_draw_rays(t_cub *cub);
 void	draw_ray_map(t_cub *cub);
 void	draw_cross(t_cub *cub);
