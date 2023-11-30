@@ -6,18 +6,18 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 11:58:52 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 11:59:07 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:36:05 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub.h>
 
-int		get_flat_color(int color)
+int	get_flat_color(int color)
 {
-	int r;
-	int g;
-	int b;
-	int t;
+	int	r;
+	int	g;
+	int	b;
+	int	t;
 
 	t = 0;
 	r = ((color >> 16) & 0xFF);

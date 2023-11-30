@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 13:27:38 by samusanc         ###   ########.fr        #
+#    Updated: 2023/11/30 13:33:34 by samusanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS	= $(MAIN) \
 		./src/controls/turn_camera.c \
 		 \
 		./src/cub/bresenham/bresenham.c \
+		./src/cub/bresenham/color_utils.c \
 		 \
 		./src/cub/draw_utils/draw_cross.c \
 		./src/cub/draw_utils/fill_img_sky_n_ground.c \

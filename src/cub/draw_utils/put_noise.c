@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:09:02 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 12:09:13 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:35:14 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	put_noise(t_cub *cub)
 {
-	static int last_noise = 0;
-	int	noise;
+	static int	last_noise = 0;
+	int			noise;
 
 	noise = ft_random(1, 1, 7);
 	while (noise == last_noise)
