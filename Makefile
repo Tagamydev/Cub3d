@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 14:43:29 by samusanc         ###   ########.fr        #
+#    Updated: 2023/11/30 19:28:06 by lyandriy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,6 +105,8 @@ SRCS	= $(MAIN) \
 		./src/parsing/parsing.c \
 		./src/parsing/separate.c \
 		./src/parsing/utils_parsing.c \
+		./src/parsing/open_img.c \
+		./src/parsing/img_to_tex.c \
 
 
 O_DIR	= ./objects/

@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:58:04 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/26 12:36:40 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:05:12 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ int	main(int argc, char **argv)
 	{
 		cub = map_parsing(argv[1]);
 		if (!cub)
+		{
+			write(STDERR_FILENO, "Error\nFailed texture\n", 21);
 			exit(-1);
+		}
 		start_cub(cub);
 		start_controls(cub);
 		start_loop(cub);

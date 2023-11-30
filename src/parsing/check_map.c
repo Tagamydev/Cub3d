@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:40:47 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/29 21:36:57 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:41:40 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,18 @@ void	char_of_str(t_cub *cub, int *count, size_t *len_str, char **archive)
 		cub->map[*count][*len_str] = 10;
 }
 
-int	check_char_of_str(t_cub *cub, char **arr, int *c)
+int	check_char_of_str(t_cub *cub, char **ar, int *c)
 {
 	size_t	len;
 
 	len = 0;
-	while (arr[*c][len] || arr[*c][len] == '\n')
+	while (ar[*c][len] || ar[*c][len] == '\n')
 	{
-		if (arr[*c][len] == '0' || arr[*c][len] == '1' || arr[*c][len] == 'N'
-			|| arr[*c][len] == 'S' || arr[*c][len] == 'E'
-			|| arr[*c][len] == 'W' || arr[*c][len] == ' ' \
-			|| arr[*c][len] == 'D' || arr[*c][len] == 'G')
-			char_of_str(cub, c, &len, arr);
-		else if (arr[*c][len] == '\n')
+		if (ar[*c][len] == '0' || ar[*c][len] == '1' || ar[*c][len] == 'N'
+			|| ar[*c][len] == 'S' || ar[*c][len] == 'E' || ar[*c][len] == 'W'
+			|| ar[*c][len] == ' ' || ar[*c][len] == 'D' || ar[*c][len] == 'G')
+			char_of_str(cub, c, &len, ar);
+		else if (ar[*c][len] == '\n')
 		{
 			if (len < cub->map_width)
 			{
@@ -75,7 +74,7 @@ int	check_char_of_str(t_cub *cub, char **arr, int *c)
 		}
 		else
 			return (0);
-		if (!check_str_final(cub, c, &len, arr))
+		if (!check_str_final(cub, c, &len, ar))
 			break ;
 		len++;
 	}

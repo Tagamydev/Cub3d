@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:59:01 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 15:11:11 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:37:50 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,8 @@ int		separate(t_cub *cub, char **archive);
 size_t	ft_strlcpys(char *dst, const char *src, size_t dstsize);
 int		identifier_color(char *line, int *color, int *count);
 int		check_wall(t_cub *cub, size_t *count_line, size_t *count_int);
+int		open_all_img(t_cub *cub);
+int		img_to_tex_all(t_cub *cub);
 //============================================================================//
 //===============================MINIMAP======================================//
 void	set_zero_minimap(char **minimap, int size);

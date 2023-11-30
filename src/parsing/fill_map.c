@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:50:50 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/25 19:27:13 by lyandriy         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:43:37 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,6 @@ int	fill_struct(t_cub *cub, char *line)
 		&& cub->color_sky != -1)
 		return (2);
 	else if (line[count] != '\n' && line[count] != '\0')
-	{
-		printf("hola %c\n", line[count]);
 		return (0);
-	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:29:48 by lyandriy          #+#    #+#             */
-/*   Updated: 2023/11/30 18:33:50 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:04:37 by lyandriy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,33 +53,23 @@ int	get_line(int fd, char *file, t_cub *cub)
 	return (0);
 }
 
-void	print_parse(t_cub *cub)
+void	free_result(size_t **result, size_t *i)
 {
-	size_t i = 0;
-	size_t y = 0;
-	while (i < (cub->map_height))
-	{
-		y = 0;
-		while (y < cub->map_width)
-		{
-			printf("[%zu]", cub->map[i][y]);
-			y++;
-		}
-		printf("\n");
-		i++;
-	}
-}
+	size_t	j;
 
+	j = 0;
+	while (j < *i)
+		free(result[j++]);
+	free(result);
+}
 
 size_t	**alloc_new_map(size_t size)
 {
 	size_t	i;
-	size_t	j;
 	size_t	k;
 	size_t	**result;
 
 	i = 0;
-	j = 0;
 	result = ft_calloc(sizeof(size_t *), size);
 	if (!result)
 		return (NULL);
@@ -89,9 +79,7 @@ size_t	**alloc_new_map(size_t size)
 		result[i] = ft_calloc(sizeof(size_t), size);
 		if (!result[i])
 		{
-			while (j < i)
-				free(result[j++]);
-			free(result);
+			free_result(result, &i);
 			return (NULL);
 		}
 		while (k < size)
@@ -101,12 +89,34 @@ size_t	**alloc_new_map(size_t size)
 	return (result);
 }
 
+int	resize_map_aux(t_cub *cub, size_t *tmp, size_t *i, size_t **new_map)
+{
+	size_t	j;
+
+	j = 0;
+	while (j < cub->map_width)
+	{
+		*tmp = cub->map[*i][j];
+		if (*tmp == 9)
+			*tmp = 1;
+		if (!BONUS)
+		{
+			if (*tmp == 6)
+				return (0);
+		}
+		new_map[*i + 20][j + 20] = *tmp;
+		j++;
+	}
+	free(cub->map[*i]);
+	*i += 1;
+	return (1);
+}
+
 int	resize_map(t_cub *cub)
 {
 	size_t	x;
 	size_t	**new_map;
 	size_t	i;
-	size_t	j;
 	size_t	tmp;
 
 	if (cub->map_width > cub->map_height)
@@ -117,25 +127,10 @@ int	resize_map(t_cub *cub)
 	if (!new_map)
 		return (0);
 	i = 0;
-	j = 0;
 	while (i < cub->map_height)
 	{
-		j = 0;
-		while (j < cub->map_width)
-		{
-			tmp = cub->map[i][j];
-			if (tmp == 9)
-				tmp = 1;
-			if (!BONUS)
-			{
-				if (tmp == 6)
-					return (0);
-			}
-			new_map[i + 20][j + 20] = tmp;
-			j++;
-		}
-		free(cub->map[i]);
-		i++;
+		if (!resize_map_aux(cub, &tmp, &i, new_map))
+			return (0);
 	}
 	free(cub->map);
 	cub->map = new_map;
@@ -164,38 +159,12 @@ t_spr	*new_sprite(size_t x, size_t y, int frame)
 	return (new);
 }
 
-int	put_sprites(t_cub *cub)
+int	put_sprites_aux(t_cub *cub, size_t *tmp)
 {
 	size_t	i;
 	size_t	j;
-	size_t	k;
 	size_t	x;
-	size_t	tmp;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	while (i < cub->map_height)
-	{
-		j = 0;
-		while (j < cub->map_width)
-		{
-			tmp = cub->map[i][j];
-			if (!BONUS)
-			{
-				if (tmp == 10)
-					return (0);
-			}
-			if (tmp == 10)
-				k++;
-			j++;
-		}
-		i++;
-	}
-	cub->sprites = malloc(sizeof(t_spr *) * (k + 1));
-	if (!cub->sprites)
-		return (0);
-	cub->sprites[k] = NULL;
 	i = 0;
 	j = 0;
 	x = 0;
@@ -204,8 +173,8 @@ int	put_sprites(t_cub *cub)
 		j = 0;
 		while (j < cub->map_width)
 		{
-			tmp = cub->map[i][j];
-			if (tmp == 10)
+			*tmp = cub->map[i][j];
+			if (*tmp == 10)
 			{
 				cub->sprites[x] = new_sprite(j, i, ft_random(1, 0, 4));
 				if (!cub->sprites[x++])
@@ -219,15 +188,67 @@ int	put_sprites(t_cub *cub)
 	return (1);
 }
 
-float	**alloc_screen(void)
+int	count_tam_spr(t_cub *cub, size_t *tmp, size_t *k)
 {
 	size_t	i;
 	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (i < cub->map_height)
+	{
+		j = 0;
+		while (j < cub->map_width)
+		{
+			*tmp = cub->map[i][j];
+			if (!BONUS)
+			{
+				if (*tmp == 10)
+					return (0);
+			}
+			if (*tmp == 10)
+				*k += 1;
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	put_sprites(t_cub *cub)
+{
+	size_t	k;
+	size_t	tmp;
+
+	k = 0;
+	if (!count_tam_spr(cub, &tmp, &k))
+		return (0);
+	cub->sprites = malloc(sizeof(t_spr *) * (k + 1));
+	if (!cub->sprites)
+		return (0);
+	cub->sprites[k] = NULL;
+	if (!put_sprites_aux(cub, &tmp))
+		return (0);
+	return (1);
+}
+
+void	free_result_float(float **result, size_t *i)
+{
+	size_t	j;
+
+	j = 0;
+	while (j < *i)
+		free(result[j++]);
+	free(result);
+}
+
+float	**alloc_screen(void)
+{
+	size_t	i;
 	size_t	k;
 	float	**result;
 
 	i = 0;
-	j = 0;
 	result = ft_calloc(sizeof(float *), HEIGHT);
 	if (!result)
 		return (NULL);
@@ -237,9 +258,7 @@ float	**alloc_screen(void)
 		result[i] = ft_calloc(sizeof(float), WIDTH);
 		if (!result[i])
 		{
-			while (j < i)
-				free(result[j++]);
-			free(result);
+			free_result_float(result, &i);
 			return (NULL);
 		}
 		while (k < WIDTH)
@@ -249,216 +268,47 @@ float	**alloc_screen(void)
 	return (result);
 }
 
-t_cub	*map_parsing(char *file)
+int	init_img_cub(t_cub *cub)
 {
-	t_cub	*cub;
-
-	cub = ft_calloc(sizeof(t_cub), 1);
-	if (!cub)
-		return (NULL);
-	if (!init_cub(cub))
-		return (NULL);
-	//============================================================================//
-	if (!get_line(fd_cub(file), file, cub))
-	{
-		printf("Error\n");
-		return (NULL);
-	}
-	//============================================================================//
-	if (!resize_map(cub))
-		return (NULL);
-	cub->win = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "cub3d");
-	if (!cub->win)
-		return (NULL);
-	//============================================================================//
 	cub->game = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->game)
-		return (NULL);
+		return (0);
 	cub->cam = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->cam)
-		return (NULL);
+		return (0);
 	cub->atm = ft_init_img(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->atm)
-		return (NULL);
+		return (0);
 	if (!cub_open_utils(cub))
 	{
 		write(STDERR_FILENO, "error\n", 6);
-		return (NULL);
+		return (0);
 	}
 	cub->minimap = ft_init_img(cub->mlx, 140, 140);
 	if (!cub->minimap)
-		return (NULL);
-	//============================================================================//
-	cub->black = ft_open_img(cub->mlx, "./src/img/black.xpm");
-	if (!cub->no_texture)
-		return (NULL);
-	//============================================================================//
-	//============================================================================//
-	//============================================================================//
-	cub->nina_cam[0][0] = ft_open_img(cub->mlx, "./src/img/nina/ncam/nbk/f1.xpm");
-	if (!cub->nina_cam[0][0])
-		return (NULL);
-	cub->nina_cam[0][1] = ft_open_img(cub->mlx, "./src/img/nina/ncam/nbk/f2.xpm");
-	if (!cub->nina_cam[0][1])
-		return (NULL);
-	cub->nina_cam[0][2] = ft_open_img(cub->mlx, "./src/img/nina/ncam/nbk/f3.xpm");
-	if (!cub->nina_cam[0][2])
-		return (NULL);
-	cub->nina_cam[0][3] = ft_open_img(cub->mlx, "./src/img/nina/ncam/nbk/f4.xpm");
-	if (!cub->nina_cam[0][3])
-		return (NULL);
-	cub->nina_cam[0][4] = ft_open_img(cub->mlx, "./src/img/nina/ncam/nbk/f5.xpm");
-	if (!cub->nina_cam[0][4])
-		return (NULL);
+		return (0);
+	return (1);
+}
 
-	//============================================================================//
-	cub->nina_cam[1][0] = ft_open_img(cub->mlx, "./src/img/nina/ncam/mbk/f1.xpm");
-	if (!cub->nina_cam[1][0])
-		return (NULL);
-	cub->nina_cam[1][1] = ft_open_img(cub->mlx, "./src/img/nina/ncam/mbk/f2.xpm");
-	if (!cub->nina_cam[1][1])
-		return (NULL);
-	cub->nina_cam[1][2] = ft_open_img(cub->mlx, "./src/img/nina/ncam/mbk/f3.xpm");
-	if (!cub->nina_cam[1][2])
-		return (NULL);
-	cub->nina_cam[1][3] = ft_open_img(cub->mlx, "./src/img/nina/ncam/mbk/f4.xpm");
-	if (!cub->nina_cam[1][3])
-		return (NULL);
-	cub->nina_cam[1][4] = ft_open_img(cub->mlx, "./src/img/nina/ncam/mbk/f5.xpm");
-	if (!cub->nina_cam[1][4])
-		return (NULL);
-
-	//============================================================================//
-	cub->nina_cam[2][0] = ft_open_img(cub->mlx, "./src/img/nina/ncam/bk/f1.xpm");
-	if (!cub->nina_cam[2][0])
-		return (NULL);
-	cub->nina_cam[2][1] = ft_open_img(cub->mlx, "./src/img/nina/ncam/bk/f2.xpm");
-	if (!cub->nina_cam[2][1])
-		return (NULL);
-	cub->nina_cam[2][2] = ft_open_img(cub->mlx, "./src/img/nina/ncam/bk/f3.xpm");
-	if (!cub->nina_cam[2][2])
-		return (NULL);
-	cub->nina_cam[2][3] = ft_open_img(cub->mlx, "./src/img/nina/ncam/bk/f4.xpm");
-	if (!cub->nina_cam[2][3])
-		return (NULL);
-	cub->nina_cam[2][4] = ft_open_img(cub->mlx, "./src/img/nina/ncam/bk/f5.xpm");
-	if (!cub->nina_cam[2][4])
-		return (NULL);
-
-
-	//============================================================================//
-	cub->nina_ncam[0] = ft_open_img(cub->mlx, "./src/img/nina/cam/f1.xpm");
-	if (!cub->nina_ncam[0])
-		return (NULL);
-	cub->nina_ncam[1] = ft_open_img(cub->mlx, "./src/img/nina/cam/f2.xpm");
-	if (!cub->nina_ncam[1])
-		return (NULL);
-	cub->nina_ncam[2] = ft_open_img(cub->mlx, "./src/img/nina/cam/f3.xpm");
-	if (!cub->nina_ncam[2])
-		return (NULL);
-	cub->nina_ncam[3] = ft_open_img(cub->mlx, "./src/img/nina/cam/f4.xpm");
-	if (!cub->nina_ncam[3])
-		return (NULL);
-	cub->nina_ncam[4] = ft_open_img(cub->mlx, "./src/img/nina/cam/f5.xpm");
-	if (!cub->nina_ncam[4])
-		return (NULL);
-
-	//============================================================================//
-	//============================================================================//
-
-	cub->t_nina_cam[0][0] = img_to_tex(cub->nina_cam[0][0]);
-	if (!cub->t_nina_cam[0][0])
-		return (NULL);
-	cub->t_nina_cam[0][1] = img_to_tex(cub->nina_cam[0][1]);
-	if (!cub->t_nina_cam[0][1])
-		return (NULL);
-	cub->t_nina_cam[0][2] = img_to_tex(cub->nina_cam[0][2]);
-	if (!cub->t_nina_cam[0][2])
-		return (NULL);
-	cub->t_nina_cam[0][3] = img_to_tex(cub->nina_cam[0][3]);
-	if (!cub->t_nina_cam[0][3])
-		return (NULL);
-	cub->t_nina_cam[0][4] = img_to_tex(cub->nina_cam[0][4]);
-	if (!cub->t_nina_cam[0][4])
-		return (NULL);
-
-	//============================================================================//
-	cub->t_nina_cam[1][0] = img_to_tex(cub->nina_cam[1][0]);
-	if (!cub->t_nina_cam[1][0])
-		return (NULL);
-	cub->t_nina_cam[1][1] = img_to_tex(cub->nina_cam[1][1]);
-	if (!cub->t_nina_cam[1][1])
-		return (NULL);
-	cub->t_nina_cam[1][2] = img_to_tex(cub->nina_cam[1][2]);
-	if (!cub->t_nina_cam[1][2])
-		return (NULL);
-	cub->t_nina_cam[1][3] = img_to_tex(cub->nina_cam[1][3]);
-	if (!cub->t_nina_cam[1][3])
-		return (NULL);
-	cub->t_nina_cam[1][4] = img_to_tex(cub->nina_cam[1][4]);
-	if (!cub->t_nina_cam[1][4])
-		return (NULL);
-
-	//============================================================================//
-	cub->t_nina_cam[2][0] = img_to_tex(cub->nina_cam[2][0]);
-	if (!cub->t_nina_cam[2][0])
-		return (NULL);
-	cub->t_nina_cam[2][1] = img_to_tex(cub->nina_cam[2][1]);
-	if (!cub->t_nina_cam[2][1])
-		return (NULL);
-	cub->t_nina_cam[2][2] = img_to_tex(cub->nina_cam[2][2]);
-	if (!cub->t_nina_cam[2][2])
-		return (NULL);
-	cub->t_nina_cam[2][3] = img_to_tex(cub->nina_cam[2][3]);
-	if (!cub->t_nina_cam[2][3])
-		return (NULL);
-	cub->t_nina_cam[2][4] = img_to_tex(cub->nina_cam[2][4]);
-	if (!cub->t_nina_cam[2][4])
-		return (NULL);
-
-
-	//============================================================================//
-	cub->t_nina_ncam[0] = img_to_tex(cub->nina_ncam[0]);
-	if (!cub->t_nina_ncam[0])
-		return (NULL);
-	cub->t_nina_ncam[1] = img_to_tex(cub->nina_ncam[1]);
-	if (!cub->t_nina_ncam[1])
-		return (NULL);
-	cub->t_nina_ncam[2] = img_to_tex(cub->nina_ncam[2]);
-	if (!cub->t_nina_ncam[2])
-		return (NULL);
-	cub->t_nina_ncam[3] = img_to_tex(cub->nina_ncam[3]);
-	if (!cub->t_nina_ncam[3])
-		return (NULL);
-	cub->t_nina_ncam[4] = img_to_tex(cub->nina_ncam[4]);
-	if (!cub->t_nina_ncam[4])
-		return (NULL);
-
-
-	//============================================================================//
-	//============================================================================//
-
-	if (!put_sprites(cub))
-		return (NULL);
-
-	//============================================================================//
-	//============================================================================//
+int	do_img_to_tex(t_cub *cub)
+{
 	cub->no_t = img_to_tex(cub->no_texture);
 	if (!cub->no_t)
-		return (NULL);
+		return (0);
 	cub->so_t = img_to_tex(cub->so_texture);
 	if (!cub->so_t)
-		return (NULL);
+		return (0);
 	cub->we_t = img_to_tex(cub->we_texture);
 	if (!cub->we_t)
-		return (NULL);
+		return (0);
 	cub->ea_t = img_to_tex(cub->ea_texture);
 	if (!cub->ea_t)
-		return (NULL);
-	//============================================================================//
-	cub->black_t = img_to_tex(cub->black);
-	if (!cub->black_t)
-		return (NULL);
+		return (0);
+	return (1);
+}
+
+void	map_parsing_aux(t_cub *cub)
+{
 	if (cub->player_a == 2)
 		cub->player_a = 270;
 	else if (cub->player_a == 3)
@@ -480,8 +330,34 @@ t_cub	*map_parsing(char *file)
 	cub->handy = 0;
 	cub->frame = 0;
 	cub->cam_animation = 0;
-	//============================================================================//
 	cub->screen = alloc_screen();
-	//============================================================================//
+}
+
+t_cub	*map_parsing(char *file)
+{
+	t_cub	*cub;
+
+	cub = ft_calloc(sizeof(t_cub), 1);
+	if (!cub)
+		return (NULL);
+	if (!init_cub(cub))
+		return (NULL);
+	if (!get_line(fd_cub(file), file, cub))
+	{
+		write(STDERR_FILENO, "Error\nFailed map\n", 17);
+		exit(-1);
+	}
+	if (!resize_map(cub))
+		return (NULL);
+	cub->win = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "cub3d");
+	if (!cub->win)
+		return (NULL);
+	if (!init_img_cub(cub) || !open_all_img(cub) || !img_to_tex_all(cub)
+		|| !put_sprites(cub) || !do_img_to_tex(cub))
+		return (NULL);
+	cub->black_t = img_to_tex(cub->black);
+	if (!cub->black_t)
+		return (NULL);
+	map_parsing_aux(cub);
 	return (cub);
 }
