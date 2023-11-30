@@ -6,7 +6,7 @@
 #    By: lyandriy <lyandriy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/24 19:28:25 by samusanc          #+#    #+#              #
-#    Updated: 2023/11/30 20:21:18 by lyandriy         ###   ########.fr        #
+#    Updated: 2023/11/30 20:23:55 by lyandriy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,7 @@ SRCS	= $(MAIN) \
 		./src/parsing/put_sprites.c \
 		./src/parsing/parsing_aux.c \
 		./src/parsing/cub_open_noise.c \
-		./touch src/parsing/init_img.c \
+		./src/parsing/init_img.c \
 
 O_DIR	= ./objects/
 OBJS	= $(addprefix $(O_DIR)/, $(SRCS:.c=.o))
