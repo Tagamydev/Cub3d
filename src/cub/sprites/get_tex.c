@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:10:32 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 12:10:44 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:26:55 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_tex	*get_tex(t_cub *cub, t_spr *tmp)
 			tmp->next_frame = cub->frame + (10 * slow);
 		}
 	}
-	if (cub->cam_status == OFF)
+	if (cub->cam_status == ON)
 	{
 		if (cub->frame >= tmp->next_blink)
 		{
