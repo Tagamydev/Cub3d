@@ -6,7 +6,7 @@
 /*   By: samusanc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 12:10:05 by samusanc          #+#    #+#             */
-/*   Updated: 2023/11/30 12:10:17 by samusanc         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:15:03 by samusanc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 	float	z;
 	float	chunk2;
 	float	shadow;
+	float	tmp1;
 	int		side;
 	int		i;
 	int		j;
@@ -54,7 +55,9 @@ void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 	int		color;
 	int		tmp;
 	int		u;
-	float	tmp1;
+	int		zz;
+	int		zx;
+	int		translucid;
 	size_t	wall_len;
 
 	//=========================================================//
@@ -158,7 +161,6 @@ void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 	y = 0;
 	chunk = (float)(ft_abs2(txt_i - txt_f)) / (float)(r_wall_len * 0.85);
 	chunk2 = 1;
-	int	translucid;
 	//===================================================================//
 	while (i < HEIGHT)
 	{
@@ -167,11 +169,23 @@ void	sprites(t_cub *cub, float sx, float sy, t_tex *tex)
 		k = 0;
 		if (i > offset_up && i < offset_down)
 			y++;
+		if (i % 3 == 0)
+			zx = 0;
+		else
+			zx = 1;
+		if (cub->cam_status == OFF)
+			zx = 1;
 		while (k < (r_wall_len * 0.85)  && (k < WIDTH * 4))
 		{
+			if (k % 3 == 0)
+				zz = 0;
+			else
+				zz = 1;
+			if (cub->cam_status == OFF)
+				zz = 1;
 			translucid = 0;
 			//===================================================================//
-			if (i > offset_up && i < offset_down)
+			if (i > offset_up && i < offset_down && (zz && zx))
 			{
 				if (x < 0)
 					x = 0;
