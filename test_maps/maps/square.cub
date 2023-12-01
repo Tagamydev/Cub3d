@@ -1,7 +1,7 @@
-NO ./wall.xpm
-SO ./wall.xpm
-WE ./wall.xpm
-EA ./wall.xpm
+NO ./test_maps/textures/wall.xpm
+SO ./test_maps/textures/wall.xpm
+WE ./test_maps/textures/wall.xpm
+EA ./test_maps/textures/wall.xpm
 
 
 C 171, 154, 58
