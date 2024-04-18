@@ -1,5 +1,5 @@
 # Demo
-[oshw2 demo fast]()
+[oshw2 demo fast](https://github.com/Tagamydev/Cub3d/blob/master/resources/Demo.gif)
 
 # About
 
