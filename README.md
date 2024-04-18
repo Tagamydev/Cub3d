@@ -48,3 +48,5 @@ F 255, 86, 2
 - Optimizing code for smoother gameplay.
 
 # Credits
+
+[Parsing - lyandriy](https://github.com/lyandriy)
